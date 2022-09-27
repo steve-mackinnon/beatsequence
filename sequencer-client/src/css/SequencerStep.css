@@ -1,0 +1,8 @@
+.SequencerStep {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type=range] {
+  width: 70px;
+}

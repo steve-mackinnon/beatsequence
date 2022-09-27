@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { useRecoilState } from "recoil";
 import { Step, StepInfo } from "../state/StepState";
 import { globalTrackState } from "../state/TrackState";
+import "../css/SequencerStep.css";
 
 export function SequencerStep(props: StepInfo): ReactElement {
   const [stepState, setStepState] = useRecoilState<Step>(

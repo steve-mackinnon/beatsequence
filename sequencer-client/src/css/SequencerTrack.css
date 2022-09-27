@@ -1,0 +1,4 @@
+.SequencerTrack {
+  display: flex;
+  flex-direction: row;
+}
