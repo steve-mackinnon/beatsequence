@@ -36,12 +36,20 @@ export function SequencerStep(props: StepInfo): ReactElement {
         onChange={onStepEnableChange}
       />
       <input
+        name="Coarse Pitch"
         type="range"
-        min={-64}
+        id={`Step ${props.stepIndex.toString()} Coarse Pitch`}
+        min={-12}
         max={64}
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />
+      <output
+        name="Coarse Pitch"
+        htmlFor={`Step ${props.stepIndex.toString()} Coarse Pitch`}
+      >
+        {stepState.coarsePitch}
+      </output>
     </div>
   );
 }
