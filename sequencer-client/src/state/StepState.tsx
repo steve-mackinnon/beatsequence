@@ -15,7 +15,13 @@ export function MakeStep(key: string, index: number): RecoilState<StepState> {
       coarsePitch: 24,
     },
     effects: [
-      ({ onSet }) => {
+      ({ onSet, setSelf, trigger }) => {
+        if (trigger === "get") {
+          // Initialize the atom by fetching the correct StepState from
+          // sequencerEngine to intiailize.
+          setSelf(sequencerEngine.getStepState(index));
+        }
+        // Forward StepState changes over to the sequencerEngine
         onSet((stepState: StepState) => {
           sequencerEngine.setStepState(index, stepState);
         });

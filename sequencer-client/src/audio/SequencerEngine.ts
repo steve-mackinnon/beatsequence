@@ -46,6 +46,10 @@ export default class SequencerEngine {
     this._stepStates[index] = state;
   }
 
+  getStepState(index: number): StepState {
+    return this._stepStates[index];
+  }
+
   private _scheduleNoteForStep(stepIndex: number, time: number): void {
     if (this._audioEngine == null) {
       return;
