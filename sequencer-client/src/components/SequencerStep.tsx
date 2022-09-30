@@ -39,8 +39,8 @@ export function SequencerStep(props: StepInfo): ReactElement {
         name="Coarse Pitch"
         type="range"
         id={`Step ${props.stepIndex.toString()} Coarse Pitch`}
-        min={-12}
-        max={64}
+        min={-48}
+        max={48}
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />
