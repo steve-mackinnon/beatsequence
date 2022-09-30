@@ -1,19 +1,20 @@
-import { MakeStep, Step } from "./StepState";
+import { MakeStep } from "./StepState";
 import { RecoilState } from "recoil";
+import { StepState } from "../audio/SequencerEngine";
 
 const NUM_STEPS = 16;
 
 export interface Track {
-  steps: Step[];
+  steps: StepState[];
 }
 
 export default class TrackState {
-  steps: Array<RecoilState<Step>>;
+  steps: Array<RecoilState<StepState>>;
 
   constructor() {
-    this.steps = new Array<RecoilState<Step>>();
+    this.steps = new Array<RecoilState<StepState>>();
     for (const i of Array(NUM_STEPS).keys()) {
-      this.steps.push(MakeStep(i.toString()));
+      this.steps.push(MakeStep(i.toString(), i));
     }
   }
 }

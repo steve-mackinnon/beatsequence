@@ -1,29 +1,38 @@
 import AudioEngine from "./AudioEngine";
+import { semitoneToHz } from "./PitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
 
+export interface StepState {
+  active: boolean;
+  coarsePitch: number;
+}
+
 export default class SequencerEngine {
-  private readonly _audioEngine: AudioEngine;
+  private _audioEngine: AudioEngine | null = null;
 
   private _timerID: any = undefined;
   private _currentNote: number = 0;
   private _nextNoteTime: number = 0.0; // when the next note is due.
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
-  private _stepsEnabled: boolean[] = new Array<boolean>(this._numSteps);
+  private readonly _stepStates: StepState[] = new Array<StepState>(
+    this._numSteps
+  );
 
-  constructor(audioEngine: AudioEngine) {
+  constructor() {
+    this._stepStates.fill({ active: true, coarsePitch: 0 });
+  }
+
+  setAudioEngine(audioEngine: AudioEngine): void {
     this._audioEngine = audioEngine;
   }
 
   startPlayback(): void {
-    this._stepsEnabled.fill(false);
-    this._stepsEnabled[0] = true;
-    this._stepsEnabled[4] = true;
-    this._stepsEnabled[8] = true;
-    this._stepsEnabled[12] = true;
-
+    if (this._audioEngine == null) {
+      return;
+    }
     this._currentNote = 0;
     this._nextNoteTime = this._audioEngine.currentTime();
     this._runNoteScheduler();
@@ -33,11 +42,22 @@ export default class SequencerEngine {
     clearTimeout(this._timerID);
   }
 
-  private _scheduleNoteForStep(stepNumber: number, time: number): void {
-    if (!this._stepsEnabled[stepNumber]) {
+  setStepState(index: number, state: StepState): void {
+    this._stepStates[index] = state;
+  }
+
+  private _scheduleNoteForStep(stepIndex: number, time: number): void {
+    if (this._audioEngine == null) {
       return;
     }
-    this._audioEngine.scheduleNote(time, 420);
+
+    if (!this._stepStates[stepIndex].active) {
+      return;
+    }
+    this._audioEngine.scheduleNote(
+      time,
+      semitoneToHz(this._stepStates[stepIndex].coarsePitch)
+    );
   }
 
   private _advanceStep(): void {
@@ -50,6 +70,9 @@ export default class SequencerEngine {
   }
 
   private _runNoteScheduler(): void {
+    if (this._audioEngine == null) {
+      return;
+    }
     // While there are notes that will need to play before the next interval,
     // schedule them.
     while (

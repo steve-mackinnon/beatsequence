@@ -5,9 +5,9 @@ export default class AudioEngine {
   private readonly _sequencer: SequencerEngine;
   private _playing: boolean = false;
 
-  constructor() {
+  constructor(sequencer: SequencerEngine) {
     this._context = new AudioContext();
-    this._sequencer = new SequencerEngine(this);
+    this._sequencer = sequencer;
   }
 
   get playing(): boolean {

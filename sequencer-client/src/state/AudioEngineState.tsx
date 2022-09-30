@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import AudioEngine from "../audio/AudioEngine";
+import SequencerEngine from "../audio/SequencerEngine";
 
 export default class AudioEngineState {
   playing: boolean;
@@ -12,6 +13,7 @@ export default class AudioEngineState {
 }
 
 let audioEngine: AudioEngine | null = null;
+export const sequencerEngine: SequencerEngine = new SequencerEngine();
 
 export const globalAudioEngineState = atom<AudioEngineState>({
   key: "globalAudioEngineState",
@@ -20,7 +22,8 @@ export const globalAudioEngineState = atom<AudioEngineState>({
     ({ onSet }) => {
       onSet((newValue: AudioEngineState) => {
         if (audioEngine == null) {
-          audioEngine = new AudioEngine();
+          audioEngine = new AudioEngine(sequencerEngine);
+          sequencerEngine.setAudioEngine(audioEngine);
         }
         audioEngine.playing = newValue.playing;
       });

@@ -1,16 +1,17 @@
 import React, { ReactElement } from "react";
 import { useRecoilState } from "recoil";
-import { Step, StepInfo } from "../state/StepState";
+import { StepInfo } from "../state/StepState";
 import { globalTrackState } from "../state/TrackState";
+import { StepState } from "../audio/SequencerEngine";
 import "../css/SequencerStep.css";
 
 export function SequencerStep(props: StepInfo): ReactElement {
-  const [stepState, setStepState] = useRecoilState<Step>(
+  const [stepState, setStepState] = useRecoilState<StepState>(
     globalTrackState.steps[props.stepIndex]
   );
 
   const onStepEnableChange = (event: any): void => {
-    setStepState((current: Step) => {
+    setStepState((current: StepState) => {
       return {
         active: event.target.checked,
         coarsePitch: current.coarsePitch,
@@ -19,7 +20,7 @@ export function SequencerStep(props: StepInfo): ReactElement {
   };
 
   const onCoarsePitchChange = (event: any): void => {
-    setStepState((current: Step) => {
+    setStepState((current: StepState) => {
       return {
         active: current.active,
         coarsePitch: event.target.value,
