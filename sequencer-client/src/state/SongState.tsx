@@ -3,7 +3,7 @@ import { RecoilState } from "recoil";
 import { StepState } from "../audio/SequencerEngine";
 
 const NUM_STEPS = 16;
-const NUM_TRACKS = 2;
+const NUM_TRACKS = 3;
 
 export default class SongState {
   private readonly _steps: Array<Array<RecoilState<StepState>>>;

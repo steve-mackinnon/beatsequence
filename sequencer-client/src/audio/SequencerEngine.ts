@@ -4,12 +4,21 @@ import { semitoneToHz } from "./PitchUtils";
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
 
+function randomPitch(): number {
+  return Math.floor(Math.random() * (36 * 2) - 36);
+}
+
 class TrackState {
   steps: StepState[];
+  oscType: OscillatorType = "sine";
+  isKick: boolean = false;
 
   constructor(numSteps: number) {
     this.steps = new Array<StepState>(numSteps);
-    this.steps.fill({ active: true, coarsePitch: 0 });
+    for (const stepIndex of Array(numSteps).keys()) {
+      const active = Math.random() > 0.5;
+      this.steps[stepIndex] = { active, coarsePitch: randomPitch() };
+    }
   }
 }
 
@@ -26,12 +35,16 @@ export default class SequencerEngine {
   private _nextNoteTime: number = 0.0; // when the next note is due.
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
-  private readonly _numTracks: number = 2;
+  private readonly _numTracks: number = 3;
 
   private readonly _tracks: TrackState[];
   constructor() {
     this._tracks = new Array<TrackState>(this._numTracks);
-    this._tracks.fill(new TrackState(this._numSteps));
+    for (const trackIndex of Array(this._numTracks).keys()) {
+      this._tracks[trackIndex] = new TrackState(this._numSteps);
+    }
+    this._tracks[2].oscType = "square";
+    this._tracks[0].isKick = true;
   }
 
   setAudioEngine(audioEngine: AudioEngine): void {
@@ -68,7 +81,15 @@ export default class SequencerEngine {
       if (!step.active) {
         continue;
       }
-      this._audioEngine.scheduleNote(time, semitoneToHz(step.coarsePitch));
+      if (track.isKick) {
+        this._audioEngine.scheduleKick(time, 0.4);
+      } else {
+        this._audioEngine.scheduleNote(
+          track.oscType,
+          time,
+          semitoneToHz(step.coarsePitch)
+        );
+      }
     }
   }
 
