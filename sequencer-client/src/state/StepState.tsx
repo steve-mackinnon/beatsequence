@@ -7,9 +7,12 @@ export interface StepInfo {
   stepIndex: number;
 }
 
-export function MakeStep(key: string, index: number): RecoilState<StepState> {
+export function MakeStep(
+  trackIndex: number,
+  stepIndex: number
+): RecoilState<StepState> {
   return atom<StepState>({
-    key,
+    key: `T${trackIndex}S${stepIndex}`,
     default: {
       active: true,
       coarsePitch: 24,
@@ -19,11 +22,11 @@ export function MakeStep(key: string, index: number): RecoilState<StepState> {
         if (trigger === "get") {
           // Initialize the atom by fetching the correct StepState from
           // sequencerEngine to intiailize.
-          setSelf(sequencerEngine.getStepState(index));
+          setSelf(sequencerEngine.getStepState(trackIndex, stepIndex));
         }
         // Forward StepState changes over to the sequencerEngine
         onSet((stepState: StepState) => {
-          sequencerEngine.setStepState(index, stepState);
+          sequencerEngine.setStepState(trackIndex, stepIndex, stepState);
         });
       },
     ],

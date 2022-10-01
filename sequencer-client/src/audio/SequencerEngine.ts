@@ -4,6 +4,15 @@ import { semitoneToHz } from "./PitchUtils";
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
 
+class TrackState {
+  steps: StepState[];
+
+  constructor(numSteps: number) {
+    this.steps = new Array<StepState>(numSteps);
+    this.steps.fill({ active: true, coarsePitch: 0 });
+  }
+}
+
 export interface StepState {
   active: boolean;
   coarsePitch: number;
@@ -17,12 +26,12 @@ export default class SequencerEngine {
   private _nextNoteTime: number = 0.0; // when the next note is due.
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
-  private readonly _stepStates: StepState[] = new Array<StepState>(
-    this._numSteps
-  );
+  private readonly _numTracks: number = 2;
 
+  private readonly _tracks: TrackState[];
   constructor() {
-    this._stepStates.fill({ active: true, coarsePitch: 0 });
+    this._tracks = new Array<TrackState>(this._numTracks);
+    this._tracks.fill(new TrackState(this._numSteps));
   }
 
   setAudioEngine(audioEngine: AudioEngine): void {
@@ -42,26 +51,25 @@ export default class SequencerEngine {
     clearTimeout(this._timerID);
   }
 
-  setStepState(index: number, state: StepState): void {
-    this._stepStates[index] = state;
+  setStepState(trackIndex: number, stepIndex: number, state: StepState): void {
+    this._tracks[trackIndex].steps[stepIndex] = state;
   }
 
-  getStepState(index: number): StepState {
-    return this._stepStates[index];
+  getStepState(trackIndex: number, stepIndex: number): StepState {
+    return this._tracks[trackIndex].steps[stepIndex];
   }
 
   private _scheduleNoteForStep(stepIndex: number, time: number): void {
     if (this._audioEngine == null) {
       return;
     }
-
-    if (!this._stepStates[stepIndex].active) {
-      return;
+    for (const track of this._tracks) {
+      const step = track.steps[stepIndex];
+      if (!step.active) {
+        continue;
+      }
+      this._audioEngine.scheduleNote(time, semitoneToHz(step.coarsePitch));
     }
-    this._audioEngine.scheduleNote(
-      time,
-      semitoneToHz(this._stepStates[stepIndex].coarsePitch)
-    );
   }
 
   private _advanceStep(): void {

@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
 import { useRecoilState } from "recoil";
 import { StepInfo } from "../state/StepState";
-import { globalTrackState } from "../state/TrackState";
+import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
 import "../css/SequencerStep.css";
 
 export function SequencerStep(props: StepInfo): ReactElement {
   const [stepState, setStepState] = useRecoilState<StepState>(
-    globalTrackState.steps[props.stepIndex]
+    songState.getStepState(props.trackIndex, props.stepIndex)
   );
 
   const onStepEnableChange = (event: any): void => {
