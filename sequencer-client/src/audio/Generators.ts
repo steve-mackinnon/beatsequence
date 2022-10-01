@@ -10,7 +10,7 @@ export function makeKick(
 ): void {
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.6, startTime);
+  ampEnvelope.gain.setValueAtTime(1.2, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.05);
 
   const osc = new OscillatorNode(context, {
