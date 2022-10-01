@@ -1,3 +1,4 @@
+import { makeKick, makeBleep } from "./Generators";
 import SequencerEngine from "./SequencerEngine";
 
 export default class AudioEngine {
@@ -46,36 +47,15 @@ export default class AudioEngine {
     startTime: number,
     frequency: number
   ): void {
-    const osc = new OscillatorNode(this._context, {
-      type: oscType,
-      frequency,
+    makeBleep(this._context, this._context.destination, startTime, frequency, {
+      oscType,
     });
-
-    const ampEnvelope = new GainNode(this._context);
-    ampEnvelope.gain.cancelScheduledValues(startTime);
-    ampEnvelope.gain.setValueAtTime(0.6, startTime);
-    ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
-
-    osc.connect(ampEnvelope).connect(this._context.destination);
-    osc.start(startTime);
-    osc.stop(startTime + 0.1);
   }
 
   scheduleKick(startTime: number, decayTime: number): void {
-    const ampEnvelope = new GainNode(this._context);
-    ampEnvelope.gain.cancelScheduledValues(startTime);
-    ampEnvelope.gain.setValueAtTime(4, startTime);
-    ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.05);
-
-    const osc = new OscillatorNode(this._context, {
-      type: "sine",
-      frequency: 60, // 60 Hz kick? sure
+    makeKick(this._context, this._context.destination, startTime, {
+      decayTime,
     });
-
-    // Amp envelope
-    osc.connect(ampEnvelope).connect(this._context.destination);
-    osc.start(startTime);
-    osc.stop(startTime + decayTime);
   }
 
   currentTime(): number {
