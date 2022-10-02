@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
+.SequencerStep-active {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(26, 62, 83)
+}
+
 input[type=range] {
   width: 70px;
 }
@@ -28,12 +34,10 @@ input[type=checkbox] {
 
 input[type="checkbox"]:checked::before {
   background-color: mediumturquoise;
-  border-color: black;
 }
 
 input[type="checkbox"]::before {
   content: "";
   width: 60px;
   height: 60px;
-  border-color: #1e1e1e;
 }

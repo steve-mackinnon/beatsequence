@@ -1,14 +1,22 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useRecoilState } from "recoil";
 import { StepInfo } from "../state/StepState";
 import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
+import { sequencerEngine } from "../state/AudioEngineState";
 import "../css/SequencerStep.css";
 
 export function SequencerStep(props: StepInfo): ReactElement {
   const [stepState, setStepState] = useRecoilState<StepState>(
     songState.getStepState(props.trackIndex, props.stepIndex)
   );
+  const [isCurrentStep, setIsCurrentStep] = useState(false);
+
+  const maybeUpdateStyle = (): void => {
+    setIsCurrentStep(sequencerEngine.getCurrentStep() === props.stepIndex);
+    requestAnimationFrame(maybeUpdateStyle);
+  };
+  requestAnimationFrame(maybeUpdateStyle);
 
   const onStepEnableChange = (event: any): void => {
     setStepState((current: StepState) => {
@@ -27,9 +35,9 @@ export function SequencerStep(props: StepInfo): ReactElement {
       };
     });
   };
-
+  const className = "SequencerStep" + (isCurrentStep ? "-active" : "");
   return (
-    <div className="SequencerStep">
+    <div className={className}>
       <input
         type="checkbox"
         checked={stepState.active}

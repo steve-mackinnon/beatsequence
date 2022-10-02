@@ -31,7 +31,7 @@ export default class SequencerEngine {
   private _audioEngine: AudioEngine | null = null;
 
   private _timerID: any = undefined;
-  private _currentNote: number = 0;
+  private _currentStep: number = 0;
   private _nextNoteTime: number = 0.0; // when the next note is due.
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
@@ -55,7 +55,7 @@ export default class SequencerEngine {
     if (this._audioEngine == null) {
       return;
     }
-    this._currentNote = 0;
+    this._currentStep = 0;
     this._nextNoteTime = this._audioEngine.currentTime();
     this._runNoteScheduler();
   }
@@ -70,6 +70,10 @@ export default class SequencerEngine {
 
   getStepState(trackIndex: number, stepIndex: number): StepState {
     return this._tracks[trackIndex].steps[stepIndex];
+  }
+
+  getCurrentStep(): number {
+    return this._currentStep;
   }
 
   private _scheduleNoteForStep(stepIndex: number, time: number): void {
@@ -99,7 +103,7 @@ export default class SequencerEngine {
     this._nextNoteTime += secondsPerStep; // Add step length to last step time
 
     // Advance the beat number, wrap to zero when reaching 4
-    this._currentNote = (this._currentNote + 1) % this._numSteps;
+    this._currentStep = (this._currentStep + 1) % this._numSteps;
   }
 
   private _runNoteScheduler(): void {
@@ -112,7 +116,7 @@ export default class SequencerEngine {
       this._nextNoteTime <
       this._audioEngine.currentTime() + scheduleAheadTimeSecs
     ) {
-      this._scheduleNoteForStep(this._currentNote, this._nextNoteTime);
+      this._scheduleNoteForStep(this._currentStep, this._nextNoteTime);
       this._advanceStep();
     }
     this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
