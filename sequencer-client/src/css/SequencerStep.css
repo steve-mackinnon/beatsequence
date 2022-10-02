@@ -6,7 +6,7 @@
 .SequencerStep-active {
   display: flex;
   flex-direction: column;
-  background-color: rgb(26, 62, 83)
+  background-color: deeppink
 }
 
 input[type=range] {
@@ -18,7 +18,7 @@ input[type=checkbox] {
   -webkit-appearance: none;
   appearance: none;
   /* For iOS < 15 to remove gradient background */
-  background-color: #fff;
+  background-color: bisque;
   /* Not removed via appearance */
   margin: 0;
   font: inherit;
