@@ -6,3 +6,34 @@
 input[type=range] {
   width: 70px;
 }
+
+input[type=checkbox] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 70px;
+  height: 70px;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]:checked::before {
+  background-color: mediumturquoise;
+  border-color: black;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 60px;
+  height: 60px;
+  border-color: #1e1e1e;
+}
