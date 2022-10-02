@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { StepInfo } from "../state/StepState";
 import { songState } from "../state/SongState";
@@ -12,10 +12,20 @@ export function SequencerStep(props: StepInfo): ReactElement {
   );
   const [isCurrentStep, setIsCurrentStep] = useState(false);
 
+  const requestRef = useRef<number>();
   const maybeUpdateStyle = (): void => {
     setIsCurrentStep(sequencerEngine.getCurrentStep() === props.stepIndex);
-    requestAnimationFrame(maybeUpdateStyle);
+    requestRef.current = requestAnimationFrame(maybeUpdateStyle);
   };
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(maybeUpdateStyle);
+    return () => {
+      if (requestRef.current === undefined) {
+        return;
+      }
+      cancelAnimationFrame(requestRef.current);
+    };
+  }, []);
   requestAnimationFrame(maybeUpdateStyle);
 
   const onStepEnableChange = (event: any): void => {
