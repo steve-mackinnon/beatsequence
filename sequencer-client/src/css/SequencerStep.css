@@ -6,7 +6,7 @@
 .SequencerStep-active {
   display: flex;
   flex-direction: column;
-  background-color: deeppink
+  background-color: rgb(0, 91, 124);
 }
 
 input[type=range] {
@@ -18,26 +18,24 @@ input[type=checkbox] {
   -webkit-appearance: none;
   appearance: none;
   /* For iOS < 15 to remove gradient background */
-  background-color: bisque;
+  background-color: rgb(141, 149, 147);
   /* Not removed via appearance */
   margin: 0;
   font: inherit;
   color: currentColor;
   width: 70px;
   height: 70px;
-  border: 2px solid currentColor;
-  border-radius: 2px;
   transform: translateY(-0.075em);
   display: grid;
   place-content: center;
 }
 
 input[type="checkbox"]:checked::before {
-  background-color: mediumturquoise;
+  background-color: rgb(31, 224, 218);
 }
 
 input[type="checkbox"]::before {
   content: "";
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
 }
