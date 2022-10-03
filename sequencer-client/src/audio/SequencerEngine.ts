@@ -61,6 +61,7 @@ export default class SequencerEngine {
   }
 
   stopPlayback(): void {
+    this._currentStep = 0;
     clearTimeout(this._timerID);
   }
 
