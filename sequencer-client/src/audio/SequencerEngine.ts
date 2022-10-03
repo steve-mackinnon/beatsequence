@@ -76,16 +76,31 @@ export default class SequencerEngine {
     return this._currentStep;
   }
 
+  setNumTracks(numTracks: number): void {
+    if (numTracks < 2) {
+      throw Error("setNumTracks() does not accept numTracks less than 2.");
+    }
+    if (numTracks < this._tracks.length) {
+      const numTracksToRemove = numTracks - this._tracks.length;
+      const startIndex = this._tracks.length - numTracksToRemove - 1;
+      this._tracks.splice(startIndex, numTracksToRemove);
+    } else {
+      this._tracks.push(new TrackState(this._numSteps));
+    }
+  }
+
   private _scheduleNoteForStep(stepIndex: number, time: number): void {
     if (this._audioEngine == null) {
       return;
     }
-    for (const track of this._tracks) {
+    this._tracks.forEach((track: TrackState, index: number) => {
       const step = track.steps[stepIndex];
-      if (!step.active) {
-        continue;
+      if (!step.active || this._audioEngine == null) {
+        return;
       }
-      if (track.isKick) {
+      if (index === 1) {
+        this._audioEngine.scheduleSnare(time);
+      } else if (index === 0) {
         this._audioEngine.scheduleKick(time, 0.4);
       } else {
         this._audioEngine.scheduleNote(
@@ -94,7 +109,7 @@ export default class SequencerEngine {
           semitoneToHz(step.coarsePitch)
         );
       }
-    }
+    });
   }
 
   private _advanceStep(): void {

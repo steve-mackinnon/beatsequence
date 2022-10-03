@@ -49,3 +49,42 @@ export function makeBleep(
   osc.start(startTime);
   osc.stop(startTime + 0.1);
 }
+
+export function makeSnare(
+  context: AudioContext,
+  destination: AudioNode,
+  startTime: number
+): void {
+  const bufferSize = context.sampleRate * 0.15;
+  const noiseBuffer = new AudioBuffer({
+    length: bufferSize,
+    sampleRate: context.sampleRate,
+  });
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = Math.random() * 2 - 1;
+  }
+  const noise = new AudioBufferSourceNode(context, {
+    buffer: noiseBuffer,
+  });
+  const ampEnvelope = new GainNode(context);
+  ampEnvelope.gain.cancelScheduledValues(startTime);
+  ampEnvelope.gain.setValueAtTime(1.2, startTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
+
+  const lowpass = new BiquadFilterNode(context, {
+    type: "lowpass",
+    frequency: 4000,
+  });
+  const highpass = new BiquadFilterNode(context, {
+    type: "highpass",
+    frequency: 90,
+  });
+
+  noise
+    .connect(lowpass)
+    .connect(highpass)
+    .connect(ampEnvelope)
+    .connect(destination);
+  noise.start(startTime);
+}

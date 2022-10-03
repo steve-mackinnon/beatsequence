@@ -1,4 +1,4 @@
-import { makeKick, makeBleep } from "./Generators";
+import { makeKick, makeBleep, makeSnare } from "./Generators";
 import SequencerEngine from "./SequencerEngine";
 
 export default class AudioEngine {
@@ -56,6 +56,10 @@ export default class AudioEngine {
     makeKick(this._context, this._context.destination, startTime, {
       decayTime,
     });
+  }
+
+  scheduleSnare(startTime: number): void {
+    makeSnare(this._context, this._context.destination, startTime);
   }
 
   currentTime(): number {
