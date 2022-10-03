@@ -86,7 +86,12 @@ export default class SequencerEngine {
       const startIndex = this._tracks.length - numTracksToRemove - 1;
       this._tracks.splice(startIndex, numTracksToRemove);
     } else {
-      this._tracks.push(new TrackState(this._numSteps));
+      const numTracksToAdd = numTracks - this._numTracks;
+      Array(numTracksToAdd)
+        .fill(0)
+        .forEach(() => {
+          this._tracks.push(new TrackState(this._numSteps));
+        });
     }
   }
 
@@ -99,10 +104,12 @@ export default class SequencerEngine {
       if (!step.active || this._audioEngine == null) {
         return;
       }
-      if (index === 1) {
-        this._audioEngine.scheduleSnare(time);
-      } else if (index === 0) {
+      if (index === 0) {
         this._audioEngine.scheduleKick(time, 0.4);
+      } else if (index === 1) {
+        this._audioEngine.scheduleSnare(time);
+      } else if (index === 2) {
+        this._audioEngine.scheduleClosedHH(time);
       } else {
         this._audioEngine.scheduleNote(
           track.oscType,
