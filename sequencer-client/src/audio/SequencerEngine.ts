@@ -9,16 +9,13 @@ function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
 }
 
-class TrackState {
-  steps: StepState[];
-
-  constructor(numSteps: number) {
-    this.steps = new Array<StepState>(numSteps);
-    for (const stepIndex of Array(numSteps).keys()) {
-      const active = Math.random() > 0.5;
-      this.steps[stepIndex] = { active, coarsePitch: randomPitch() };
-    }
+function makeStepsForTrack(numSteps: number): StepState[] {
+  const steps = new Array<StepState>(numSteps);
+  for (const stepIndex of Array(numSteps).keys()) {
+    const active = Math.random() > 0.5;
+    steps[stepIndex] = { active, coarsePitch: randomPitch() };
   }
+  return steps;
 }
 
 export interface StepState {
@@ -34,7 +31,7 @@ export default class SequencerEngine {
   private _nextNoteTime: number = 0.0; // when the next note is due.
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
-  private readonly _tracks: TrackState[];
+  private readonly _steps: StepState[][];
   private _trackParams: TrackParams[];
   readonly numTracks: number;
 
@@ -42,10 +39,10 @@ export default class SequencerEngine {
     // Object.keys() returns 2 keys per enumeration for numeric enums,
     // which is why the / 2 is necessary here.
     this.numTracks = Object.keys(GeneratorType).length / 2;
-    this._tracks = new Array<TrackState>(this.numTracks);
+    this._steps = new Array<StepState[]>(this.numTracks);
     this._trackParams = new Array<TrackParams>(this.numTracks);
     for (const trackIndex of Array(this.numTracks).keys()) {
-      this._tracks[trackIndex] = new TrackState(this._numSteps);
+      this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
       this._trackParams[trackIndex] = new TrackParams(trackIndex);
     }
   }
@@ -77,11 +74,11 @@ export default class SequencerEngine {
   }
 
   setStepState(trackIndex: number, stepIndex: number, state: StepState): void {
-    this._tracks[trackIndex].steps[stepIndex] = state;
+    this._steps[trackIndex][stepIndex] = state;
   }
 
   getStepState(trackIndex: number, stepIndex: number): StepState {
-    return this._tracks[trackIndex].steps[stepIndex];
+    return this._steps[trackIndex][stepIndex];
   }
 
   getCurrentStep(): number {
@@ -92,8 +89,8 @@ export default class SequencerEngine {
     if (this._audioEngine == null) {
       return;
     }
-    this._tracks.forEach((track: TrackState, index: number) => {
-      const step = track.steps[stepIndex];
+    this._steps.forEach((steps: StepState[], index: number) => {
+      const step = steps[stepIndex];
       const trackParams = this._trackParams[index];
       if (!step.active || trackParams.muted || this._audioEngine == null) {
         return;
