@@ -7,6 +7,7 @@ interface TrackControlsProps {
   trackParams: RecoilState<TrackParams>;
   fourOnTheFloorPressed: () => void;
   twoOnTheFloorPressed: () => void;
+  randomizePressed: () => void;
 }
 
 export function TrackControls(props: TrackControlsProps): ReactElement {
@@ -33,6 +34,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
       />
       <button onClick={props.fourOnTheFloorPressed}>4x4</button>
       <button onClick={props.twoOnTheFloorPressed}>2x4</button>
+      <button onClick={props.randomizePressed}>Rand</button>
     </div>
   );
 }
