@@ -10,8 +10,8 @@ export function makeKick(
 ): void {
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(1.2, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.05);
+  ampEnvelope.gain.setValueAtTime(2.25, startTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.07);
 
   const osc = new OscillatorNode(context, {
     type: "sine",
@@ -55,7 +55,7 @@ export function makeSnare(
   destination: AudioNode,
   startTime: number
 ): void {
-  const bufferSize = context.sampleRate * 0.15;
+  const bufferSize = context.sampleRate * 0.1;
   const noiseBuffer = new AudioBuffer({
     length: bufferSize,
     sampleRate: context.sampleRate,
@@ -74,7 +74,7 @@ export function makeSnare(
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",
-    frequency: 4000,
+    frequency: 8000,
   });
   const highpass = new BiquadFilterNode(context, {
     type: "highpass",
@@ -109,7 +109,7 @@ export function makeClosedHH(
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(0.6, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.07);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.03);
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",
@@ -117,7 +117,7 @@ export function makeClosedHH(
   });
   const highpass = new BiquadFilterNode(context, {
     type: "highpass",
-    frequency: 1000,
+    frequency: 2000,
   });
 
   noise
