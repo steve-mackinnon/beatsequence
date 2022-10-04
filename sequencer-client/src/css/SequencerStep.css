@@ -13,7 +13,7 @@ input[type=range] {
   width: 70px;
 }
 
-input[type=checkbox] {
+input.SequencerStep[type=checkbox] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   appearance: none;
@@ -30,12 +30,12 @@ input[type=checkbox] {
   place-content: center;
 }
 
-input[type="checkbox"]:checked::before {
+input.SequencerStep[type="checkbox"]:checked::before {
   background-color: rgb(31, 224, 218);
 }
 
-input[type="checkbox"]::before {
+input.SequencerStep[type="checkbox"]::before {
   content: "";
-  width: 64px;
-  height: 64px;
+  width: 66px;
+  height: 66px;
 }

@@ -49,6 +49,7 @@ export function SequencerStep(props: StepInfo): ReactElement {
     <div className={className}>
       <input
         type="checkbox"
+        className="SequencerStep"
         checked={stepState.active}
         onChange={onStepEnableChange}
       />

@@ -2,6 +2,7 @@ import { SequencerStep } from "./SequencerStep";
 import { songState } from "../state/SongState";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
+import { TrackControls } from "./TrackControls";
 
 export interface TrackInfo {
   trackIndex: number;
@@ -19,5 +20,11 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
         />
       );
     });
+  steps.push(
+    <TrackControls
+      key={`trackcontrols${props.trackIndex}`}
+      trackParams={songState.getTrackParamsAtom(props.trackIndex)}
+    />
+  );
   return <div className="SequencerTrack">{steps}</div>;
 }

@@ -1,3 +1,4 @@
+import { TrackParams } from "../model/TrackParams";
 import AudioEngine from "./AudioEngine";
 import { semitoneToHz } from "./PitchUtils";
 
@@ -44,6 +45,7 @@ export default class SequencerEngine {
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
   private readonly _tracks: TrackState[];
+  private _trackParams: TrackParams[];
   readonly numTracks: number;
 
   constructor() {
@@ -51,8 +53,10 @@ export default class SequencerEngine {
     // which is why the / 2 is necessary here.
     this.numTracks = Object.keys(TrackType).length / 2;
     this._tracks = new Array<TrackState>(this.numTracks);
+    this._trackParams = new Array<TrackParams>(this.numTracks);
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._tracks[trackIndex] = new TrackState(this._numSteps, trackIndex);
+      this._trackParams[trackIndex] = new TrackParams();
     }
   }
 
@@ -74,6 +78,14 @@ export default class SequencerEngine {
     clearTimeout(this._timerID);
   }
 
+  setTrackParams(trackIndex: number, trackParams: TrackParams): void {
+    this._trackParams[trackIndex] = trackParams;
+  }
+
+  getTrackParams(trackIndex: number): TrackParams {
+    return this._trackParams[trackIndex];
+  }
+
   setStepState(trackIndex: number, stepIndex: number, state: StepState): void {
     this._tracks[trackIndex].steps[stepIndex] = state;
   }
@@ -92,7 +104,8 @@ export default class SequencerEngine {
     }
     this._tracks.forEach((track: TrackState, index: number) => {
       const step = track.steps[stepIndex];
-      if (!step.active || this._audioEngine == null) {
+      const trackParams = this._trackParams[index];
+      if (!step.active || trackParams.muted || this._audioEngine == null) {
         return;
       }
       switch (track.generatorType) {
