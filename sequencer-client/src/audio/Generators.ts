@@ -69,7 +69,7 @@ export function makeSnare(
   });
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(1.2, startTime);
+  ampEnvelope.gain.setValueAtTime(0.8, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
 
   const lowpass = new BiquadFilterNode(context, {
@@ -108,7 +108,7 @@ export function makeClosedHH(
   });
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(1.0, startTime);
+  ampEnvelope.gain.setValueAtTime(0.6, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.07);
 
   const lowpass = new BiquadFilterNode(context, {
