@@ -1,4 +1,4 @@
-import { TrackParams } from "../model/TrackParams";
+import { GeneratorType, TrackParams } from "../model/TrackParams";
 import AudioEngine from "./AudioEngine";
 import { semitoneToHz } from "./PitchUtils";
 
@@ -9,20 +9,10 @@ function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
 }
 
-enum TrackType {
-  Kick,
-  Snare,
-  ClosedHH,
-  SineBleep,
-  SquareBleep,
-}
-
 class TrackState {
   steps: StepState[];
-  generatorType: TrackType;
 
-  constructor(numSteps: number, generatorType: TrackType) {
-    this.generatorType = generatorType;
+  constructor(numSteps: number) {
     this.steps = new Array<StepState>(numSteps);
     for (const stepIndex of Array(numSteps).keys()) {
       const active = Math.random() > 0.5;
@@ -51,12 +41,12 @@ export default class SequencerEngine {
   constructor() {
     // Object.keys() returns 2 keys per enumeration for numeric enums,
     // which is why the / 2 is necessary here.
-    this.numTracks = Object.keys(TrackType).length / 2;
+    this.numTracks = Object.keys(GeneratorType).length / 2;
     this._tracks = new Array<TrackState>(this.numTracks);
     this._trackParams = new Array<TrackParams>(this.numTracks);
     for (const trackIndex of Array(this.numTracks).keys()) {
-      this._tracks[trackIndex] = new TrackState(this._numSteps, trackIndex);
-      this._trackParams[trackIndex] = new TrackParams();
+      this._tracks[trackIndex] = new TrackState(this._numSteps);
+      this._trackParams[trackIndex] = new TrackParams(trackIndex);
     }
   }
 
@@ -108,24 +98,24 @@ export default class SequencerEngine {
       if (!step.active || trackParams.muted || this._audioEngine == null) {
         return;
       }
-      switch (track.generatorType) {
-        case TrackType.Kick:
+      switch (trackParams.generatorType) {
+        case GeneratorType.Kick:
           this._audioEngine.scheduleKick(time, 0.4);
           break;
-        case TrackType.Snare:
+        case GeneratorType.Snare:
           this._audioEngine.scheduleSnare(time);
           break;
-        case TrackType.ClosedHH:
+        case GeneratorType.ClosedHH:
           this._audioEngine.scheduleClosedHH(time);
           break;
-        case TrackType.SineBleep:
+        case GeneratorType.SineBleep:
           this._audioEngine.scheduleNote(
             "sine",
             time,
             semitoneToHz(step.coarsePitch)
           );
           break;
-        case TrackType.SquareBleep:
+        case GeneratorType.SquareBleep:
           this._audioEngine.scheduleNote(
             "square",
             time,
