@@ -108,7 +108,7 @@ export default class SequencerEngine {
   setFourOnTheFloorSequence(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = stepIndex === 0 || (stepIndex + 1) % 4 === 0;
+      newStep.active = stepIndex === 0 || stepIndex % 4 === 0;
       if (newStep !== step) {
         this._steps[trackIndex][stepIndex] = newStep;
         this._broadcastStepUpdate(trackIndex, stepIndex);
@@ -119,7 +119,7 @@ export default class SequencerEngine {
   setTwoOnTheFloorSequence(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = stepIndex === 3 || stepIndex === 11;
+      newStep.active = stepIndex === 4 || stepIndex === 12;
       if (newStep !== step) {
         this._steps[trackIndex][stepIndex] = newStep;
         this._broadcastStepUpdate(trackIndex, stepIndex);
