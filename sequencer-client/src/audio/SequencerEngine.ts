@@ -23,6 +23,8 @@ export interface StepState {
   coarsePitch: number;
 }
 
+export type StepChangedCallback = () => void;
+
 export default class SequencerEngine {
   private _audioEngine: AudioEngine | null = null;
 
@@ -33,6 +35,10 @@ export default class SequencerEngine {
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
   private _trackParams: TrackParams[];
+  private readonly _stepChangedCallbacks: Array<
+    Array<StepChangedCallback | null>
+  >;
+
   readonly numTracks: number;
 
   constructor() {
@@ -41,9 +47,16 @@ export default class SequencerEngine {
     this.numTracks = Object.keys(GeneratorType).length / 2;
     this._steps = new Array<StepState[]>(this.numTracks);
     this._trackParams = new Array<TrackParams>(this.numTracks);
+    this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
+      this.numTracks
+    );
+
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
       this._trackParams[trackIndex] = new TrackParams(trackIndex);
+      this._stepChangedCallbacks[trackIndex] =
+        new Array<StepChangedCallback | null>(this._numSteps);
+      this._stepChangedCallbacks[trackIndex].fill(null);
     }
   }
 
@@ -83,6 +96,43 @@ export default class SequencerEngine {
 
   getCurrentStep(): number {
     return this._currentStep;
+  }
+
+  private _broadcastStepUpdate(trackIndex: number, stepIndex: number): void {
+    const callback = this._stepChangedCallbacks[trackIndex][stepIndex];
+    if (callback != null) {
+      callback();
+    }
+  }
+
+  setFourOnTheFloorSequence(trackIndex: number): void {
+    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
+      const newStep = { ...step };
+      newStep.active = stepIndex === 0 || (stepIndex + 1) % 4 === 0;
+      if (newStep !== step) {
+        this._steps[trackIndex][stepIndex] = newStep;
+        this._broadcastStepUpdate(trackIndex, stepIndex);
+      }
+    });
+  }
+
+  setTwoOnTheFloorSequence(trackIndex: number): void {
+    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
+      const newStep = { ...step };
+      newStep.active = stepIndex === 3 || stepIndex === 11;
+      if (newStep !== step) {
+        this._steps[trackIndex][stepIndex] = newStep;
+        this._broadcastStepUpdate(trackIndex, stepIndex);
+      }
+    });
+  }
+
+  registerStepUpdateCallback(
+    trackIndex: number,
+    stepIndex: number,
+    callback: StepChangedCallback | null
+  ): void {
+    this._stepChangedCallbacks[trackIndex][stepIndex] = callback;
   }
 
   private _scheduleNoteForStep(stepIndex: number, time: number): void {

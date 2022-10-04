@@ -5,7 +5,10 @@ import { TrackParams } from "../model/TrackParams";
 
 interface TrackControlsProps {
   trackParams: RecoilState<TrackParams>;
+  fourOnTheFloorPressed: () => void;
+  twoOnTheFloorPressed: () => void;
 }
+
 export function TrackControls(props: TrackControlsProps): ReactElement {
   const [trackParams, setTrackParams] = useRecoilState<TrackParams>(
     props.trackParams
@@ -21,13 +24,15 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
 
   return (
     <div>
+      <label htmlFor="mute">Mute</label>
       <input
         type="checkbox"
         checked={trackParams.muted}
         onChange={onMuteStateChanged}
         id="mute"
       />
-      <label htmlFor="mute">Mute</label>
+      <button onClick={props.fourOnTheFloorPressed}>4x4</button>
+      <button onClick={props.twoOnTheFloorPressed}>2x4</button>
     </div>
   );
 }

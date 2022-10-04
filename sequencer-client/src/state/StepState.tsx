@@ -28,6 +28,14 @@ export function MakeStep(
         onSet((stepState: StepState) => {
           sequencerEngine.setStepState(trackIndex, stepIndex, stepState);
         });
+
+        sequencerEngine.registerStepUpdateCallback(
+          trackIndex,
+          stepIndex,
+          () => {
+            setSelf(sequencerEngine.getStepState(trackIndex, stepIndex));
+          }
+        );
       },
     ],
   });

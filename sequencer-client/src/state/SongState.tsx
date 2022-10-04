@@ -42,6 +42,12 @@ export default class SongState {
   getTrackParamsAtom(trackIndex: number): RecoilState<TrackParams> {
     return this._trackParams[trackIndex];
   }
+
+  setStepState(
+    trackIndex: number,
+    stepIndex: number,
+    newState: StepState
+  ): void {}
 }
 
 export const songState = new SongState();
