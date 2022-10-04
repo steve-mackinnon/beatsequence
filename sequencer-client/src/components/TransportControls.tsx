@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { useRecoilState } from "recoil";
 import AudioEngineState, {
   globalAudioEngineState,
+  sequencerEngine,
 } from "../state/AudioEngineState";
 
 export function TransportControls(): ReactElement {
@@ -15,11 +16,16 @@ export function TransportControls(): ReactElement {
       return newState;
     });
   };
+  const onRandomizeClick = (event: any): void => {
+    sequencerEngine.randomizeAllTracks();
+  };
+
   return (
     <div>
       <button onClick={onPlayStopClick}>
         {audioEngineState.playing ? "Stop" : "Play"}
       </button>
+      <button onClick={onRandomizeClick}>Rand</button>
     </div>
   );
 }

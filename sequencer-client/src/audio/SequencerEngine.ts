@@ -127,13 +127,19 @@ export default class SequencerEngine {
     });
   }
 
-  randomizeTrackSequence(trackIndex: number): void {
+  randomizeTrack(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
       newStep.active = Math.random() > 0.5;
       newStep.coarsePitch = randomPitch();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
+    });
+  }
+
+  randomizeAllTracks(): void {
+    this._steps.forEach((_: StepState[], index: number) => {
+      this.randomizeTrack(index);
     });
   }
 

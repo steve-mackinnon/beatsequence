@@ -30,9 +30,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       fourOnTheFloorPressed={() =>
         sequencerEngine.setFourOnTheFloorSequence(props.trackIndex)
       }
-      randomizePressed={() =>
-        sequencerEngine.randomizeTrackSequence(props.trackIndex)
-      }
+      randomizePressed={() => sequencerEngine.randomizeTrack(props.trackIndex)}
     />
   );
   return <div className="SequencerTrack">{steps}</div>;
