@@ -1,23 +1,32 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, RecoilState } from "recoil";
 import { StepInfo } from "../state/StepState";
 import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
 import { sequencerEngine } from "../state/AudioEngineState";
+import { TrackParams } from "../model/TrackParams";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 
 import "../css/SequencerStep.css";
 
-export function SequencerStep(props: StepInfo): ReactElement {
+export interface SequencerStepProps {
+  stepInfo: StepInfo;
+  trackParams: RecoilState<TrackParams>;
+}
+export function SequencerStep(props: SequencerStepProps): ReactElement {
   const [stepState, setStepState] = useRecoilState<StepState>(
-    songState.getStepState(props.trackIndex, props.stepIndex)
+    songState.getStepState(props.stepInfo.trackIndex, props.stepInfo.stepIndex)
   );
+  // const trackParams = useRecoilState<TrackParams>(props.trackParams);
+
   const [isCurrentStep, setIsCurrentStep] = useState(false);
 
   const requestRef = useRef<number>();
   const maybeUpdateStyle = (): void => {
-    setIsCurrentStep(sequencerEngine.getCurrentStep() === props.stepIndex);
+    setIsCurrentStep(
+      sequencerEngine.getCurrentStep() === props.stepInfo.stepIndex
+    );
     requestRef.current = requestAnimationFrame(maybeUpdateStyle);
   };
   useEffect(() => {
@@ -58,13 +67,15 @@ export function SequencerStep(props: StepInfo): ReactElement {
       />
       <Slider
         name="Coarse Pitch"
-        id={`Step ${props.stepIndex.toString()} Coarse Pitch`}
+        id={`Step ${props.stepInfo.stepIndex.toString()} Coarse Pitch`}
         min={-48}
         max={48}
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />
-      <InputLabel htmlFor={`Step ${props.stepIndex.toString()} Coarse Pitch`}>
+      <InputLabel
+        htmlFor={`Step ${props.stepInfo.stepIndex.toString()} Coarse Pitch`}
+      >
         {stepState.coarsePitch}
       </InputLabel>
     </div>

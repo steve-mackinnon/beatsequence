@@ -15,8 +15,11 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       return (
         <SequencerStep
           key={`step${index}`}
-          stepIndex={index}
-          trackIndex={props.trackIndex}
+          trackParams={songState.getTrackParamsAtom(props.trackIndex)}
+          stepInfo={{
+            trackIndex: props.trackIndex,
+            stepIndex: index,
+          }}
         />
       );
     });
