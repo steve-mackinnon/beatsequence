@@ -4,6 +4,7 @@ import AudioEngineState, {
   globalAudioEngineState,
   sequencerEngine,
 } from "../state/AudioEngineState";
+import Button from "@mui/material/Button";
 
 export function TransportControls(): ReactElement {
   const [audioEngineState, setAudioEngineState] =
@@ -22,10 +23,10 @@ export function TransportControls(): ReactElement {
 
   return (
     <div>
-      <button onClick={onPlayStopClick}>
+      <Button onClick={onPlayStopClick}>
         {audioEngineState.playing ? "Stop" : "Play"}
-      </button>
-      <button onClick={onRandomizeClick}>Rand</button>
+      </Button>
+      <Button onClick={onRandomizeClick}>Rand</Button>
     </div>
   );
 }

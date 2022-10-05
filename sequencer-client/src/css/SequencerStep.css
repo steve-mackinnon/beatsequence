@@ -23,6 +23,8 @@ input.SequencerStep[type=checkbox] {
   margin: 0;
   font: inherit;
   color: currentColor;
+  border-style: solid;
+  border-color: rgb(30, 30, 30);
   width: 70px;
   height: 70px;
   transform: translateY(-0.075em);

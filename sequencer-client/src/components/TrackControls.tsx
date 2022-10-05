@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 // import "../css/TrackControls.css";
 import { RecoilState, useRecoilState } from "recoil";
 import { TrackParams } from "../model/TrackParams";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 
 interface TrackControlsProps {
   trackParams: RecoilState<TrackParams>;
@@ -25,16 +26,19 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
 
   return (
     <div>
-      <label htmlFor="mute">Mute</label>
-      <input
-        type="checkbox"
-        checked={trackParams.muted}
-        onChange={onMuteStateChanged}
-        id="mute"
+      <FormControlLabel
+        label="Mute"
+        control={
+          <Checkbox
+            checked={trackParams.muted}
+            onChange={onMuteStateChanged}
+            id="mute"
+          />
+        }
       />
-      <button onClick={props.fourOnTheFloorPressed}>4x4</button>
-      <button onClick={props.twoOnTheFloorPressed}>2x4</button>
-      <button onClick={props.randomizePressed}>Rand</button>
+      <Button onClick={props.fourOnTheFloorPressed}>4x4</Button>
+      <Button onClick={props.twoOnTheFloorPressed}>2x4</Button>
+      <Button onClick={props.randomizePressed}>Rand</Button>
     </div>
   );
 }

@@ -4,6 +4,9 @@ import { StepInfo } from "../state/StepState";
 import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
 import { sequencerEngine } from "../state/AudioEngineState";
+import Slider from "@mui/material/Slider";
+import InputLabel from "@mui/material/InputLabel";
+
 import "../css/SequencerStep.css";
 
 export function SequencerStep(props: StepInfo): ReactElement {
@@ -53,21 +56,17 @@ export function SequencerStep(props: StepInfo): ReactElement {
         checked={stepState.active}
         onChange={onStepEnableChange}
       />
-      <input
+      <Slider
         name="Coarse Pitch"
-        type="range"
         id={`Step ${props.stepIndex.toString()} Coarse Pitch`}
         min={-48}
         max={48}
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />
-      <output
-        name="Coarse Pitch"
-        htmlFor={`Step ${props.stepIndex.toString()} Coarse Pitch`}
-      >
+      <InputLabel htmlFor={`Step ${props.stepIndex.toString()} Coarse Pitch`}>
         {stepState.coarsePitch}
-      </output>
+      </InputLabel>
     </div>
   );
 }
