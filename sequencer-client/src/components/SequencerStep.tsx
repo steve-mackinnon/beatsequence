@@ -4,7 +4,7 @@ import { StepInfo } from "../state/StepState";
 import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
 import { sequencerEngine } from "../state/AudioEngineState";
-import { TrackParams } from "../model/TrackParams";
+import { TrackState } from "../model/TrackState";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 
@@ -12,13 +12,13 @@ import "../css/SequencerStep.css";
 
 export interface SequencerStepProps {
   stepInfo: StepInfo;
-  trackParams: RecoilState<TrackParams>;
+  trackState: RecoilState<TrackState>;
 }
 export function SequencerStep(props: SequencerStepProps): ReactElement {
   const [stepState, setStepState] = useRecoilState<StepState>(
     songState.getStepState(props.stepInfo.trackIndex, props.stepInfo.stepIndex)
   );
-  const trackParams = useRecoilValue<TrackParams>(props.trackParams);
+  const trackState = useRecoilValue<TrackState>(props.trackState);
 
   const [isCurrentStep, setIsCurrentStep] = useState(false);
 
@@ -58,7 +58,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
   };
   const containerClassName = "SequencerStep" + (isCurrentStep ? "-active" : "");
   const checkboxClassName =
-    "SequencerStep" + (trackParams.muted ? "-muted" : "");
+    "SequencerStep" + (trackState.muted ? "-muted" : "");
   return (
     <div className={containerClassName}>
       <input

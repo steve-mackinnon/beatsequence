@@ -1,11 +1,11 @@
 import { atom, RecoilState } from "recoil";
 import { sequencerEngine } from "./AudioEngineState";
-import { GeneratorType, TrackParams } from "../model/TrackParams";
+import { GeneratorType, TrackState } from "../model/TrackState";
 
-export function MakeTrackParamsAtom(
+export function MakeTrackStateAtom(
   trackIndex: number
-): RecoilState<TrackParams> {
-  return atom<TrackParams>({
+): RecoilState<TrackState> {
+  return atom<TrackState>({
     key: `T${trackIndex}`,
     default: {
       muted: false,
@@ -16,11 +16,11 @@ export function MakeTrackParamsAtom(
         if (trigger === "get") {
           // Initialize the atom by fetching the correct TrackParams from
           // sequencerEngine to intiailize.
-          setSelf(sequencerEngine.getTrackParams(trackIndex));
+          setSelf(sequencerEngine.getTrackState(trackIndex));
         }
-        // Forward TrackParams changes over to the sequencerEngine
-        onSet((trackParams: TrackParams) => {
-          sequencerEngine.setTrackParams(trackIndex, trackParams);
+        // Forward TrackState changes over to the sequencerEngine
+        onSet((trackState: TrackState) => {
+          sequencerEngine.setTrackState(trackIndex, trackState);
         });
       },
     ],

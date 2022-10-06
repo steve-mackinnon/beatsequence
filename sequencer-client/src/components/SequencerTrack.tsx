@@ -15,7 +15,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       return (
         <SequencerStep
           key={`step${index}`}
-          trackParams={songState.getTrackParamsAtom(props.trackIndex)}
+          trackState={songState.getTrackStateAtom(props.trackIndex)}
           stepInfo={{
             trackIndex: props.trackIndex,
             stepIndex: index,
@@ -26,7 +26,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
   steps.push(
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
-      trackParams={songState.getTrackParamsAtom(props.trackIndex)}
+      trackState={songState.getTrackStateAtom(props.trackIndex)}
       twoOnTheFloorPressed={() =>
         sequencerEngine.setTwoOnTheFloorSequence(props.trackIndex)
       }

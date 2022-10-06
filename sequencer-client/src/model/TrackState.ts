@@ -6,7 +6,7 @@ export enum GeneratorType {
   SquareBleep,
 }
 
-export class TrackParams {
+export class TrackState {
   muted: boolean = false;
   generatorType: GeneratorType;
 

@@ -1,4 +1,4 @@
-import { GeneratorType, TrackParams } from "../model/TrackParams";
+import { GeneratorType, TrackState } from "../model/TrackState";
 import AudioEngine from "./AudioEngine";
 import { semitoneToHz } from "./PitchUtils";
 
@@ -34,7 +34,7 @@ export default class SequencerEngine {
   private readonly _tempo: number = 127.0;
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
-  private _trackParams: TrackParams[];
+  private _trackStates: TrackState[];
   private readonly _stepChangedCallbacks: Array<
     Array<StepChangedCallback | null>
   >;
@@ -46,14 +46,14 @@ export default class SequencerEngine {
     // which is why the / 2 is necessary here.
     this.numTracks = Object.keys(GeneratorType).length / 2;
     this._steps = new Array<StepState[]>(this.numTracks);
-    this._trackParams = new Array<TrackParams>(this.numTracks);
+    this._trackStates = new Array<TrackState>(this.numTracks);
     this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
       this.numTracks
     );
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
-      this._trackParams[trackIndex] = new TrackParams(trackIndex);
+      this._trackStates[trackIndex] = new TrackState(trackIndex);
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
@@ -78,12 +78,12 @@ export default class SequencerEngine {
     clearTimeout(this._timerID);
   }
 
-  setTrackParams(trackIndex: number, trackParams: TrackParams): void {
-    this._trackParams[trackIndex] = trackParams;
+  setTrackState(trackIndex: number, trackState: TrackState): void {
+    this._trackStates[trackIndex] = trackState;
   }
 
-  getTrackParams(trackIndex: number): TrackParams {
-    return this._trackParams[trackIndex];
+  getTrackState(trackIndex: number): TrackState {
+    return this._trackStates[trackIndex];
   }
 
   setStepState(trackIndex: number, stepIndex: number, state: StepState): void {
@@ -157,11 +157,11 @@ export default class SequencerEngine {
     }
     this._steps.forEach((steps: StepState[], index: number) => {
       const step = steps[stepIndex];
-      const trackParams = this._trackParams[index];
-      if (!step.active || trackParams.muted || this._audioEngine == null) {
+      const trackState = this._trackStates[index];
+      if (!step.active || trackState.muted || this._audioEngine == null) {
         return;
       }
-      switch (trackParams.generatorType) {
+      switch (trackState.generatorType) {
         case GeneratorType.Kick:
           this._audioEngine.scheduleKick(time, 0.4);
           break;
