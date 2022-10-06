@@ -37,7 +37,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       }
       cancelAnimationFrame(requestRef.current);
     };
-  }, []);
+  });
 
   const onStepEnableChange = (event: any): void => {
     setStepState((current: StepState) => {
