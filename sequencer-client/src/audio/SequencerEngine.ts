@@ -1,4 +1,4 @@
-import { GeneratorType, TrackState } from "../model/TrackState";
+import { GeneratorType, TrackState } from "../recoil/track";
 import AudioEngine from "./AudioEngine";
 import { DecayTime, OscType } from "./generators/SharedParams";
 import { Param, DiscreteParam, ContinuousParam } from "../model/Param";

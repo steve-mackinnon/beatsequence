@@ -2,8 +2,7 @@ import MakeStepAtom from "../../recoil/step";
 import { RecoilState } from "recoil";
 import { StepState } from "../../audio/SequencerEngine";
 import { sequencerEngine } from "../audioEngine";
-import { TrackState } from "../../model/TrackState";
-import MakeTrackStateAtom from "../../recoil/track";
+import MakeTrackStateAtom, { TrackState } from "../../recoil/track";
 
 const NUM_STEPS = 16;
 

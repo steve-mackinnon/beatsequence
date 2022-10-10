@@ -4,7 +4,7 @@ import { StepInfo } from "../recoil/step";
 import songStore from "../recoil/song";
 import { StepState } from "../audio/SequencerEngine";
 import { sequencerEngine } from "../recoil/audioEngine";
-import { TrackState } from "../model/TrackState";
+import { TrackState } from "../recoil/track";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 

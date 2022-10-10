@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { RecoilState, useRecoilState } from "recoil";
-import { TrackState } from "../model/TrackState";
+import { TrackState } from "../recoil/track";
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 
