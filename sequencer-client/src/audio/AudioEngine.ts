@@ -1,3 +1,4 @@
+import { Param } from "../model/Param";
 import { makeKick, makeBleep, makeSnare, makeClosedHH } from "./Generators";
 import SequencerEngine from "./SequencerEngine";
 
@@ -45,11 +46,16 @@ export default class AudioEngine {
   scheduleNote(
     oscType: OscillatorType,
     startTime: number,
-    frequency: number
+    frequency: number,
+    params: Map<string, Param>
   ): void {
-    makeBleep(this._context, this._context.destination, startTime, frequency, {
-      oscType,
-    });
+    makeBleep(
+      this._context,
+      this._context.destination,
+      startTime,
+      frequency,
+      params
+    );
   }
 
   scheduleKick(startTime: number, decayTime: number): void {

@@ -1,6 +1,7 @@
 import { atom, RecoilState } from "recoil";
 import { sequencerEngine } from "./AudioEngineState";
 import { GeneratorType, TrackState } from "../model/TrackState";
+import { Param } from "../model/Param";
 
 export function MakeTrackStateAtom(
   trackIndex: number
@@ -10,6 +11,7 @@ export function MakeTrackStateAtom(
     default: {
       muted: false,
       generatorType: GeneratorType.SineBleep,
+      generatorParams: new Map<string, Param>(),
     },
     effects: [
       ({ onSet, setSelf, trigger }) => {

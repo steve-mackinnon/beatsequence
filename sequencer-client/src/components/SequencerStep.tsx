@@ -41,19 +41,17 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
 
   const onStepEnableChange = (event: any): void => {
     setStepState((current: StepState) => {
-      return {
-        active: event.target.checked,
-        coarsePitch: current.coarsePitch,
-      };
+      const newState = { ...current };
+      newState.active = event.target.checked;
+      return newState;
     });
   };
 
   const onCoarsePitchChange = (event: any): void => {
     setStepState((current: StepState) => {
-      return {
-        active: current.active,
-        coarsePitch: event.target.value,
-      };
+      const newState = { ...current };
+      newState.coarsePitch = event.target.value;
+      return newState;
     });
   };
   const containerClassName = "SequencerStep" + (isCurrentStep ? "-active" : "");

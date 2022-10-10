@@ -1,5 +1,37 @@
+import { Param, ContinuousParam, DiscreteParam } from "../model/Param";
+import { OscType, DecayTime } from "./generators/SharedParams";
+import { ContinuousParamInfo, DiscreteParamInfo } from "../model/ParamInfo";
+
 export class KickOptions {
   decayTime: number = 0.2;
+}
+
+function getContinuousParamValue(
+  paramInfo: ContinuousParamInfo,
+  params: Map<string, Param>
+): number {
+  const param = params.get(paramInfo.id);
+  if (param === undefined) {
+    return paramInfo.default;
+  }
+  if (param.info.kind === "continuous") {
+    return (param as ContinuousParam).value;
+  }
+  return paramInfo.default;
+}
+
+function getDiscreteParamValue(
+  paramInfo: DiscreteParamInfo,
+  params: Map<string, Param>
+): string {
+  const param = params.get(paramInfo.id);
+  if (param === undefined) {
+    return paramInfo.default;
+  }
+  if (param.info.kind === "discrete") {
+    return (param as DiscreteParam).value;
+  }
+  return paramInfo.default;
 }
 
 export function makeKick(
@@ -33,21 +65,23 @@ export function makeBleep(
   destination: AudioNode,
   startTime: number,
   frequency: number,
-  options: BleepOptions
+  parameters: Map<string, Param>
 ): void {
+  const oscType = getDiscreteParamValue(OscType, parameters);
   const osc = new OscillatorNode(context, {
-    type: options.oscType,
+    type: oscType as OscillatorType,
     frequency,
   });
 
+  const decayTime = getContinuousParamValue(DecayTime, parameters);
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(0.3, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
 
   osc.connect(ampEnvelope).connect(destination);
   osc.start(startTime);
-  osc.stop(startTime + 0.1);
+  osc.stop(startTime + decayTime);
 }
 
 export function makeSnare(

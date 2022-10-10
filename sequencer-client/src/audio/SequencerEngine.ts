@@ -1,5 +1,7 @@
 import { GeneratorType, TrackState } from "../model/TrackState";
 import AudioEngine from "./AudioEngine";
+import { DecayTime, OscType } from "./generators/SharedParams";
+import { Param, DiscreteParam, ContinuousParam } from "../model/Param";
 import { semitoneToHz } from "./PitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;
@@ -13,7 +15,10 @@ function makeStepsForTrack(numSteps: number): StepState[] {
   const steps = new Array<StepState>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
     const active = Math.random() > 0.5;
-    steps[stepIndex] = { active, coarsePitch: randomPitch() };
+    steps[stepIndex] = {
+      active,
+      coarsePitch: randomPitch(),
+    };
   }
   return steps;
 }
@@ -54,6 +59,19 @@ export default class SequencerEngine {
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
       this._trackStates[trackIndex] = new TrackState(trackIndex);
+      const generatorParams = new Map<string, Param>();
+      const oscTypeParam: DiscreteParam = {
+        info: OscType,
+        value: "sine",
+      };
+      generatorParams.set(OscType.id, oscTypeParam);
+      const decayTimeParam: ContinuousParam = {
+        info: DecayTime,
+        value: 0.2,
+      };
+      generatorParams.set(DecayTime.id, decayTimeParam);
+      this._trackStates[trackIndex].generatorParams = generatorParams;
+
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
@@ -175,14 +193,16 @@ export default class SequencerEngine {
           this._audioEngine.scheduleNote(
             "sine",
             time,
-            semitoneToHz(step.coarsePitch)
+            semitoneToHz(step.coarsePitch),
+            trackState.generatorParams
           );
           break;
         case GeneratorType.SquareBleep:
           this._audioEngine.scheduleNote(
             "square",
             time,
-            semitoneToHz(step.coarsePitch)
+            semitoneToHz(step.coarsePitch),
+            trackState.generatorParams
           );
           break;
       }
