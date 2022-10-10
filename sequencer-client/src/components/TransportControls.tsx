@@ -1,14 +1,14 @@
 import React, { ReactElement } from "react";
 import { useRecoilState } from "recoil";
-import AudioEngineState, {
-  globalAudioEngineState,
+import audioEngineAtom, {
+  AudioEngineState,
   sequencerEngine,
-} from "../state/AudioEngineState";
+} from "../recoil/audioEngine";
 import Button from "@mui/material/Button";
 
 export function TransportControls(): ReactElement {
   const [audioEngineState, setAudioEngineState] =
-    useRecoilState<AudioEngineState>(globalAudioEngineState);
+    useRecoilState<AudioEngineState>(audioEngineAtom);
 
   const onPlayStopClick = (event: any): void => {
     setAudioEngineState((current: AudioEngineState) => {

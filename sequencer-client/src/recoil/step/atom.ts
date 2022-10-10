@@ -1,13 +1,13 @@
 import { atom, RecoilState } from "recoil";
-import { sequencerEngine } from "./AudioEngineState";
-import { StepState } from "../audio/SequencerEngine";
+import { sequencerEngine } from "../audioEngine";
+import { StepState } from "../../audio/SequencerEngine";
 
 export interface StepInfo {
   trackIndex: number;
   stepIndex: number;
 }
 
-export function MakeStep(
+export default function MakeStep(
   trackIndex: number,
   stepIndex: number
 ): RecoilState<StepState> {

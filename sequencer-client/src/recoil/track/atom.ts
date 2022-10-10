@@ -1,9 +1,9 @@
 import { atom, RecoilState } from "recoil";
-import { sequencerEngine } from "./AudioEngineState";
-import { GeneratorType, TrackState } from "../model/TrackState";
-import { Param } from "../model/Param";
+import { sequencerEngine } from "../audioEngine";
+import { GeneratorType, TrackState } from "../../model/TrackState";
+import { Param } from "../../model/Param";
 
-export function MakeTrackStateAtom(
+export default function MakeTrackStateAtom(
   trackIndex: number
 ): RecoilState<TrackState> {
   return atom<TrackState>({

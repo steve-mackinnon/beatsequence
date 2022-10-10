@@ -3,7 +3,7 @@ import { songState } from "../state/SongState";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
-import { sequencerEngine } from "../state/AudioEngineState";
+import { sequencerEngine } from "../recoil/audioEngine";
 export interface TrackInfo {
   trackIndex: number;
 }

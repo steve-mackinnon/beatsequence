@@ -1,9 +1,9 @@
-import { MakeStep } from "./StepState";
+import MakeStepAtom from "../recoil/step";
 import { RecoilState } from "recoil";
 import { StepState } from "../audio/SequencerEngine";
-import { sequencerEngine } from "./AudioEngineState";
+import { sequencerEngine } from "../recoil/audioEngine";
 import { TrackState } from "../model/TrackState";
-import { MakeTrackStateAtom } from "./TrackState";
+import MakeTrackStateAtom from "../recoil/track";
 
 const NUM_STEPS = 16;
 
@@ -22,7 +22,10 @@ export default class SongState {
       this._trackStates[trackIndex] = MakeTrackStateAtom(trackIndex);
       this._steps[trackIndex] = new Array<RecoilState<StepState>>(NUM_STEPS);
       for (const stepIndex of this._steps[trackIndex].keys()) {
-        this._steps[trackIndex][stepIndex] = MakeStep(trackIndex, stepIndex);
+        this._steps[trackIndex][stepIndex] = MakeStepAtom(
+          trackIndex,
+          stepIndex
+        );
       }
     }
   }
@@ -42,12 +45,6 @@ export default class SongState {
   getTrackStateAtom(trackIndex: number): RecoilState<TrackState> {
     return this._trackStates[trackIndex];
   }
-
-  setStepState(
-    trackIndex: number,
-    stepIndex: number,
-    newState: StepState
-  ): void {}
 }
 
 export const songState = new SongState();

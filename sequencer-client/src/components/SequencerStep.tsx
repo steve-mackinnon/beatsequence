@@ -1,9 +1,9 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, RecoilState } from "recoil";
-import { StepInfo } from "../state/StepState";
+import { StepInfo } from "../recoil/step";
 import { songState } from "../state/SongState";
 import { StepState } from "../audio/SequencerEngine";
-import { sequencerEngine } from "../state/AudioEngineState";
+import { sequencerEngine } from "../recoil/audioEngine";
 import { TrackState } from "../model/TrackState";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
