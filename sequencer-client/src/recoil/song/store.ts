@@ -1,13 +1,13 @@
-import MakeStepAtom from "../recoil/step";
+import MakeStepAtom from "../../recoil/step";
 import { RecoilState } from "recoil";
-import { StepState } from "../audio/SequencerEngine";
-import { sequencerEngine } from "../recoil/audioEngine";
-import { TrackState } from "../model/TrackState";
-import MakeTrackStateAtom from "../recoil/track";
+import { StepState } from "../../audio/SequencerEngine";
+import { sequencerEngine } from "../audioEngine";
+import { TrackState } from "../../model/TrackState";
+import MakeTrackStateAtom from "../../recoil/track";
 
 const NUM_STEPS = 16;
 
-export default class SongState {
+class SongStore {
   private readonly _steps: Array<Array<RecoilState<StepState>>>;
   private readonly _trackStates: Array<RecoilState<TrackState>>;
 
@@ -47,4 +47,5 @@ export default class SongState {
   }
 }
 
-export const songState = new SongState();
+const songStore = new SongStore();
+export default songStore;

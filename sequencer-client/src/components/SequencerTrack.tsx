@@ -1,5 +1,5 @@
 import { SequencerStep } from "./SequencerStep";
-import { songState } from "../state/SongState";
+import songStore from "../recoil/song";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
@@ -9,13 +9,13 @@ export interface TrackInfo {
 }
 
 export function SequencerTrack(props: TrackInfo): ReactElement {
-  const steps: ReactNode[] = songState
+  const steps: ReactNode[] = songStore
     .getStepsForTrack(props.trackIndex)
     .map((_, index: number) => {
       return (
         <SequencerStep
           key={`step${index}`}
-          trackState={songState.getTrackStateAtom(props.trackIndex)}
+          trackState={songStore.getTrackStateAtom(props.trackIndex)}
           stepInfo={{
             trackIndex: props.trackIndex,
             stepIndex: index,
@@ -26,7 +26,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
   steps.push(
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
-      trackState={songState.getTrackStateAtom(props.trackIndex)}
+      trackState={songStore.getTrackStateAtom(props.trackIndex)}
       twoOnTheFloorPressed={() =>
         sequencerEngine.setTwoOnTheFloorSequence(props.trackIndex)
       }

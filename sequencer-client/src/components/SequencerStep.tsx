@@ -1,7 +1,7 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, RecoilState } from "recoil";
 import { StepInfo } from "../recoil/step";
-import { songState } from "../state/SongState";
+import songStore from "../recoil/song";
 import { StepState } from "../audio/SequencerEngine";
 import { sequencerEngine } from "../recoil/audioEngine";
 import { TrackState } from "../model/TrackState";
@@ -16,7 +16,7 @@ export interface SequencerStepProps {
 }
 export function SequencerStep(props: SequencerStepProps): ReactElement {
   const [stepState, setStepState] = useRecoilState<StepState>(
-    songState.getStepState(props.stepInfo.trackIndex, props.stepInfo.stepIndex)
+    songStore.getStepState(props.stepInfo.trackIndex, props.stepInfo.stepIndex)
   );
   const trackState = useRecoilValue<TrackState>(props.trackState);
 
