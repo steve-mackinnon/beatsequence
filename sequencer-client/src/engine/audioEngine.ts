@@ -1,8 +1,8 @@
 import Param from "../parameters";
-import { makeKick, makeBleep, makeSnare, makeClosedHH } from "./Generators";
-import SequencerEngine from "./SequencerEngine";
+import { makeKick, makeBleep, makeSnare, makeClosedHH } from "./generators";
+import { SequencerEngine } from "./sequencerEngine";
 
-export default class AudioEngine {
+export class AudioEngine {
   private readonly _context: AudioContext;
   private readonly _sequencer: SequencerEngine;
   private _playing: boolean = false;

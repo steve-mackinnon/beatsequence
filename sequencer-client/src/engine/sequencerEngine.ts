@@ -1,8 +1,8 @@
 import { GeneratorType, TrackState } from "../recoil/track";
-import AudioEngine from "./AudioEngine";
+import { AudioEngine } from "./audioEngine";
 import { DecayTime, OscType } from "./generators/SharedParams";
 import Param, { DiscreteParam, ContinuousParam } from "../parameters";
-import { semitoneToHz } from "./PitchUtils";
+import { semitoneToHz } from "./pitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
@@ -30,7 +30,7 @@ export interface StepState {
 
 export type StepChangedCallback = () => void;
 
-export default class SequencerEngine {
+export class SequencerEngine {
   private _audioEngine: AudioEngine | null = null;
 
   private _timerID: any = undefined;

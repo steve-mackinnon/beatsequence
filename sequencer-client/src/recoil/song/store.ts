@@ -1,6 +1,6 @@
 import MakeStepAtom from "../../recoil/step";
 import { RecoilState } from "recoil";
-import { StepState } from "../../audio/SequencerEngine";
+import { StepState } from "../../engine";
 import { sequencerEngine } from "../audioEngine";
 import MakeTrackStateAtom, { TrackState } from "../../recoil/track";
 

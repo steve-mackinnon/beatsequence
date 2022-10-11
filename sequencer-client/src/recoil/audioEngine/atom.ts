@@ -1,6 +1,5 @@
 import { atom } from "recoil";
-import AudioEngine from "../../audio/AudioEngine";
-import SequencerEngine from "../../audio/SequencerEngine";
+import { AudioEngine, SequencerEngine } from "../../engine";
 
 let audioEngine: AudioEngine | null = null;
 export const sequencerEngine: SequencerEngine = new SequencerEngine();
