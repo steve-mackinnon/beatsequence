@@ -1,6 +1,9 @@
-import { ContinuousParamInfo, DiscreteParamInfo } from "../../model/ParamInfo";
+import {
+  ContinuousParamMetadata,
+  DiscreteParamMetadata,
+} from "../../parameters";
 
-export const DecayTime: ContinuousParamInfo = {
+export const DecayTime: ContinuousParamMetadata = {
   kind: "continuous",
   id: "decay_time",
   min: 0.01,
@@ -8,7 +11,7 @@ export const DecayTime: ContinuousParamInfo = {
   default: 0.1,
 };
 
-export const TransientDecayTime: ContinuousParamInfo = {
+export const TransientDecayTime: ContinuousParamMetadata = {
   kind: "continuous",
   id: "transient_decay_time",
   min: 0.01,
@@ -16,7 +19,7 @@ export const TransientDecayTime: ContinuousParamInfo = {
   default: 0.05,
 };
 
-export const AttackTime: ContinuousParamInfo = {
+export const AttackTime: ContinuousParamMetadata = {
   kind: "continuous",
   id: "attack_time",
   min: 0.01,
@@ -24,7 +27,7 @@ export const AttackTime: ContinuousParamInfo = {
   default: 0.01,
 };
 
-export const LPFCutoff: ContinuousParamInfo = {
+export const LPFCutoff: ContinuousParamMetadata = {
   kind: "continuous",
   id: "lpf_cutoff",
   min: 20.0,
@@ -32,7 +35,7 @@ export const LPFCutoff: ContinuousParamInfo = {
   default: 20.0,
 };
 
-export const HPFCutoff: ContinuousParamInfo = {
+export const HPFCutoff: ContinuousParamMetadata = {
   kind: "continuous",
   id: "hpf_cutoff",
   min: 20.0,
@@ -40,7 +43,7 @@ export const HPFCutoff: ContinuousParamInfo = {
   default: 20000.0,
 };
 
-export const CorasePitch: ContinuousParamInfo = {
+export const CorasePitch: ContinuousParamMetadata = {
   kind: "continuous",
   id: "coarse_pitch",
   min: 20.0,
@@ -48,7 +51,7 @@ export const CorasePitch: ContinuousParamInfo = {
   default: 200.0,
 };
 
-export const OscType: DiscreteParamInfo = {
+export const OscType: DiscreteParamMetadata = {
   kind: "discrete",
   id: "osc_type",
   choices: ["sine", "square", "saw", "triangle"],

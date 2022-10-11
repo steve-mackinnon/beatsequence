@@ -1,6 +1,6 @@
 import { atom, RecoilState } from "recoil";
 import { sequencerEngine } from "../audioEngine";
-import { Param } from "../../model/Param";
+import Param from "../../parameters";
 
 export class TrackState {
   muted: boolean = false;

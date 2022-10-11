@@ -1,4 +1,4 @@
-import { Param } from "../model/Param";
+import Param from "../parameters";
 import { makeKick, makeBleep, makeSnare, makeClosedHH } from "./Generators";
 import SequencerEngine from "./SequencerEngine";
 

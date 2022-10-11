@@ -1,7 +1,7 @@
 import { GeneratorType, TrackState } from "../recoil/track";
 import AudioEngine from "./AudioEngine";
 import { DecayTime, OscType } from "./generators/SharedParams";
-import { Param, DiscreteParam, ContinuousParam } from "../model/Param";
+import Param, { DiscreteParam, ContinuousParam } from "../parameters";
 import { semitoneToHz } from "./PitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;

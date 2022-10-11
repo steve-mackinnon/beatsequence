@@ -1,13 +1,17 @@
-import { Param, ContinuousParam, DiscreteParam } from "../model/Param";
+import Param, {
+  ContinuousParam,
+  DiscreteParam,
+  ContinuousParamMetadata,
+  DiscreteParamMetadata,
+} from "../parameters";
 import { OscType, DecayTime } from "./generators/SharedParams";
-import { ContinuousParamInfo, DiscreteParamInfo } from "../model/ParamInfo";
 
 export class KickOptions {
   decayTime: number = 0.2;
 }
 
 function getContinuousParamValue(
-  paramInfo: ContinuousParamInfo,
+  paramInfo: ContinuousParamMetadata,
   params: Map<string, Param>
 ): number {
   const param = params.get(paramInfo.id);
@@ -21,7 +25,7 @@ function getContinuousParamValue(
 }
 
 function getDiscreteParamValue(
-  paramInfo: DiscreteParamInfo,
+  paramInfo: DiscreteParamMetadata,
   params: Map<string, Param>
 ): string {
   const param = params.get(paramInfo.id);
