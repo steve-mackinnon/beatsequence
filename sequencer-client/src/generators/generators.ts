@@ -4,7 +4,7 @@ import Param, {
   ContinuousParamMetadata,
   DiscreteParamMetadata,
 } from "../parameters";
-import { OscType, DecayTime } from "../generators/sharedParams";
+import { OscType, DecayTime } from "../generators";
 
 export class KickOptions {
   decayTime: number = 0.2;

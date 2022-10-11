@@ -1,5 +1,5 @@
 import Param from "../parameters";
-import { makeKick, makeBleep, makeSnare, makeClosedHH } from "./generators";
+import { makeKick, makeBleep, makeSnare, makeClosedHH } from "../generators";
 import { SequencerEngine } from "./sequencerEngine";
 
 export class AudioEngine {

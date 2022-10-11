@@ -1,7 +1,4 @@
-import {
-  ContinuousParamMetadata,
-  DiscreteParamMetadata,
-} from "../../parameters";
+import { ContinuousParamMetadata, DiscreteParamMetadata } from "../parameters";
 
 export const DecayTime: ContinuousParamMetadata = {
   kind: "continuous",

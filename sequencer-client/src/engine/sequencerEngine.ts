@@ -1,6 +1,6 @@
 import { GeneratorType, TrackState } from "../recoil/track";
 import { AudioEngine } from "./audioEngine";
-import { DecayTime, OscType } from "./generators/SharedParams";
+import { DecayTime, OscType } from "../generators";
 import Param, { DiscreteParam, ContinuousParam } from "../parameters";
 import { semitoneToHz } from "./pitchUtils";
 
