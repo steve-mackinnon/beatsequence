@@ -1,7 +1,6 @@
 import { ContinuousParamMetadata, DiscreteParamMetadata } from "../parameters";
 
 export const DecayTime: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "decay_time",
   min: 0.01,
   max: 5.0,
@@ -9,7 +8,6 @@ export const DecayTime: ContinuousParamMetadata = {
 };
 
 export const TransientDecayTime: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "transient_decay_time",
   min: 0.01,
   max: 2.0,
@@ -17,7 +15,6 @@ export const TransientDecayTime: ContinuousParamMetadata = {
 };
 
 export const AttackTime: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "attack_time",
   min: 0.01,
   max: 2.0,
@@ -25,7 +22,6 @@ export const AttackTime: ContinuousParamMetadata = {
 };
 
 export const LPFCutoff: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "lpf_cutoff",
   min: 20.0,
   max: 20000.0,
@@ -33,7 +29,6 @@ export const LPFCutoff: ContinuousParamMetadata = {
 };
 
 export const HPFCutoff: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "hpf_cutoff",
   min: 20.0,
   max: 20000.0,
@@ -41,7 +36,6 @@ export const HPFCutoff: ContinuousParamMetadata = {
 };
 
 export const CorasePitch: ContinuousParamMetadata = {
-  kind: "continuous",
   id: "coarse_pitch",
   min: 20.0,
   max: 20000.0,
@@ -49,7 +43,6 @@ export const CorasePitch: ContinuousParamMetadata = {
 };
 
 export const OscType: DiscreteParamMetadata = {
-  kind: "discrete",
   id: "osc_type",
   choices: ["sine", "square", "saw", "triangle"],
   default: "sine",

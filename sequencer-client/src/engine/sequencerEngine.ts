@@ -63,11 +63,13 @@ export class SequencerEngine {
       const oscTypeParam: DiscreteParam = {
         info: OscType,
         value: "sine",
+        kind: "discrete",
       };
       generatorParams.set(OscType.id, oscTypeParam);
       const decayTimeParam: ContinuousParam = {
         info: DecayTime,
         value: 0.2,
+        kind: "continuous",
       };
       generatorParams.set(DecayTime.id, decayTimeParam);
       this._trackStates[trackIndex].generatorParams = generatorParams;

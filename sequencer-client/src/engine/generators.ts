@@ -1,6 +1,4 @@
 import Param, {
-  ContinuousParam,
-  DiscreteParam,
   ContinuousParamMetadata,
   DiscreteParamMetadata,
 } from "../parameters";
@@ -18,8 +16,8 @@ function getContinuousParamValue(
   if (param === undefined) {
     return paramInfo.default;
   }
-  if (param.info.kind === "continuous") {
-    return (param as ContinuousParam).value;
+  if (param.kind === "continuous") {
+    return param.value;
   }
   return paramInfo.default;
 }
@@ -32,8 +30,8 @@ function getDiscreteParamValue(
   if (param === undefined) {
     return paramInfo.default;
   }
-  if (param.info.kind === "discrete") {
-    return (param as DiscreteParam).value;
+  if (param.kind === "discrete") {
+    return param.value;
   }
   return paramInfo.default;
 }

@@ -9,7 +9,7 @@ export interface TrackInfo {
 }
 
 export function SequencerTrack(props: TrackInfo): ReactElement {
-  const steps: ReactNode[] = songStore
+  const elements: ReactNode[] = songStore
     .getStepsForTrack(props.trackIndex)
     .map((_, index: number) => {
       return (
@@ -23,9 +23,10 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
         />
       );
     });
-  steps.push(
+  elements.push(
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
+      trackIndex={props.trackIndex}
       trackState={songStore.getTrackStateAtom(props.trackIndex)}
       twoOnTheFloorPressed={() =>
         sequencerEngine.setTwoOnTheFloorSequence(props.trackIndex)
@@ -36,5 +37,5 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       randomizePressed={() => sequencerEngine.randomizeTrack(props.trackIndex)}
     />
   );
-  return <div className="SequencerTrack">{steps}</div>;
+  return <div className="SequencerTrack">{elements}</div>;
 }
