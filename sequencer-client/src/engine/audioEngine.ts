@@ -58,18 +58,16 @@ export class AudioEngine {
     );
   }
 
-  scheduleKick(startTime: number, decayTime: number): void {
-    makeKick(this._context, this._context.destination, startTime, {
-      decayTime,
-    });
+  scheduleKick(startTime: number, params: Map<string, Param>): void {
+    makeKick(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleSnare(startTime: number): void {
-    makeSnare(this._context, this._context.destination, startTime);
+  scheduleSnare(startTime: number, params: Map<string, Param>): void {
+    makeSnare(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleClosedHH(startTime: number): void {
-    makeClosedHH(this._context, this._context.destination, startTime);
+  scheduleClosedHH(startTime: number, params: Map<string, Param>): void {
+    makeClosedHH(this._context, this._context.destination, startTime, params);
   }
 
   currentTime(): number {

@@ -4,10 +4,6 @@ import Param, {
 } from "../parameters";
 import { OscType, DecayTime } from "../generators";
 
-export class KickOptions {
-  decayTime: number = 0.2;
-}
-
 function getContinuousParamValue(
   paramInfo: ContinuousParamMetadata,
   params: Map<string, Param>
@@ -40,22 +36,22 @@ export function makeKick(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
-  options: KickOptions
+  parameters: Map<string, Param>
 ): void {
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(2.25, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.07);
+  ampEnvelope.gain.setValueAtTime(1.2, startTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
 
   const osc = new OscillatorNode(context, {
     type: "sine",
     frequency: 60, // 60 Hz kick? sure
   });
-
+  const decayTime = getContinuousParamValue(DecayTime, parameters);
   // Amp envelope
   osc.connect(ampEnvelope).connect(destination);
   osc.start(startTime);
-  osc.stop(startTime + options.decayTime);
+  osc.stop(startTime + decayTime);
 }
 
 export class BleepOptions {
@@ -89,7 +85,8 @@ export function makeBleep(
 export function makeSnare(
   context: AudioContext,
   destination: AudioNode,
-  startTime: number
+  startTime: number,
+  parameters: Map<string, Param>
 ): void {
   const bufferSize = context.sampleRate * 0.1;
   const noiseBuffer = new AudioBuffer({
@@ -103,10 +100,12 @@ export function makeSnare(
   const noise = new AudioBufferSourceNode(context, {
     buffer: noiseBuffer,
   });
+
+  const decayTime = getContinuousParamValue(DecayTime, parameters);
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(0.8, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",
@@ -128,7 +127,8 @@ export function makeSnare(
 export function makeClosedHH(
   context: AudioContext,
   destination: AudioNode,
-  startTime: number
+  startTime: number,
+  parameters: Map<string, Param>
 ): void {
   const bufferSize = context.sampleRate * 0.07;
   const noiseBuffer = new AudioBuffer({
@@ -142,10 +142,12 @@ export function makeClosedHH(
   const noise = new AudioBufferSourceNode(context, {
     buffer: noiseBuffer,
   });
+
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(0.6, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.03);
+  const decayTime = getContinuousParamValue(DecayTime, parameters);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",

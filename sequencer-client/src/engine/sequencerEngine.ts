@@ -183,13 +183,13 @@ export class SequencerEngine {
       }
       switch (trackState.generatorType) {
         case GeneratorType.Kick:
-          this._audioEngine.scheduleKick(time, 0.4);
+          this._audioEngine.scheduleKick(time, trackState.generatorParams);
           break;
         case GeneratorType.Snare:
-          this._audioEngine.scheduleSnare(time);
+          this._audioEngine.scheduleSnare(time, trackState.generatorParams);
           break;
         case GeneratorType.ClosedHH:
-          this._audioEngine.scheduleClosedHH(time);
+          this._audioEngine.scheduleClosedHH(time, trackState.generatorParams);
           break;
         case GeneratorType.SineBleep:
           this._audioEngine.scheduleNote(
