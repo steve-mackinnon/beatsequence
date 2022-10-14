@@ -3,7 +3,7 @@ import { ContinuousParamMetadata, DiscreteParamMetadata } from "../parameters";
 export const DecayTime: ContinuousParamMetadata = {
   id: "decay_time",
   min: 0.01,
-  max: 5.0,
+  max: 2.0,
   default: 0.1,
 };
 
