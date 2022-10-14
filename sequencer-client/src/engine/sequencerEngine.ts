@@ -193,7 +193,6 @@ export class SequencerEngine {
           break;
         case GeneratorType.SineBleep:
           this._audioEngine.scheduleNote(
-            "sine",
             time,
             semitoneToHz(step.coarsePitch),
             trackState.generatorParams
@@ -201,7 +200,6 @@ export class SequencerEngine {
           break;
         case GeneratorType.SquareBleep:
           this._audioEngine.scheduleNote(
-            "square",
             time,
             semitoneToHz(step.coarsePitch),
             trackState.generatorParams

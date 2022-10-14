@@ -44,7 +44,6 @@ export class AudioEngine {
   }
 
   scheduleNote(
-    oscType: OscillatorType,
     startTime: number,
     frequency: number,
     params: Map<string, Param>
