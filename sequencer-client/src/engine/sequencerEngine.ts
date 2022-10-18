@@ -14,9 +14,9 @@ function randomPitch(): number {
 function makeStepsForTrack(numSteps: number): StepState[] {
   const steps = new Array<StepState>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
-    const active = Math.random() > 0.5;
+    const enabled = Math.random() > 0.5;
     steps[stepIndex] = {
-      active,
+      enabled,
       coarsePitch: randomPitch(),
     };
   }
@@ -24,7 +24,7 @@ function makeStepsForTrack(numSteps: number): StepState[] {
 }
 
 export interface StepState {
-  active: boolean;
+  enabled: boolean;
   coarsePitch: number;
 }
 
@@ -128,7 +128,7 @@ export class SequencerEngine {
   setFourOnTheFloorSequence(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = stepIndex === 0 || stepIndex % 4 === 0;
+      newStep.enabled = stepIndex === 0 || stepIndex % 4 === 0;
       if (newStep !== step) {
         this._steps[trackIndex][stepIndex] = newStep;
         this._broadcastStepUpdate(trackIndex, stepIndex);
@@ -139,7 +139,7 @@ export class SequencerEngine {
   setTwoOnTheFloorSequence(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = stepIndex === 4 || stepIndex === 12;
+      newStep.enabled = stepIndex === 4 || stepIndex === 12;
       if (newStep !== step) {
         this._steps[trackIndex][stepIndex] = newStep;
         this._broadcastStepUpdate(trackIndex, stepIndex);
@@ -150,7 +150,7 @@ export class SequencerEngine {
   randomizeTrack(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = Math.random() > 0.5;
+      newStep.enabled = Math.random() > 0.5;
       newStep.coarsePitch = randomPitch();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
@@ -178,7 +178,7 @@ export class SequencerEngine {
     this._steps.forEach((steps: StepState[], index: number) => {
       const step = steps[stepIndex];
       const trackState = this._trackStates[index];
-      if (!step.active || trackState.muted || this._audioEngine == null) {
+      if (!step.enabled || trackState.muted || this._audioEngine == null) {
         return;
       }
       switch (trackState.generatorType) {

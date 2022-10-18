@@ -88,6 +88,7 @@ export function stepStateForTrackAndStep(
   }
   return step;
 }
+
 export const { enable, disable, setCoarsePitch } = stepsSlice.actions;
 
 export default stepsSlice.reducer;

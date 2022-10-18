@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import stepsReducer from "./features/steps/steps";
+import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 
 export const store = configureStore({
   reducer: {
     steps: stepsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(stepsListenerMiddleware.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

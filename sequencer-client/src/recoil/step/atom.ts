@@ -14,7 +14,7 @@ export default function MakeStep(
   return atom<StepState>({
     key: `T${trackIndex}S${stepIndex}`,
     default: {
-      active: true,
+      enabled: true,
       coarsePitch: 24,
     },
     effects: [
