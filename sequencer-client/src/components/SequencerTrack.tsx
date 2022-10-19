@@ -3,7 +3,6 @@ import songStore from "../recoil/song";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
-import { sequencerEngine } from "../recoil/audioEngine";
 export interface TrackInfo {
   trackIndex: number;
 }
@@ -26,7 +25,6 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       key={`trackcontrols${props.trackIndex}`}
       trackIndex={props.trackIndex}
       trackState={songStore.getTrackStateAtom(props.trackIndex)}
-      randomizePressed={() => sequencerEngine.randomizeTrack(props.trackIndex)}
     />
   );
   return <div className="SequencerTrack">{elements}</div>;

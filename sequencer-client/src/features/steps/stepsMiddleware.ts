@@ -12,6 +12,7 @@ import {
   stepStateForTrackAndStep,
   twoOnTheFloor,
   fourOnTheFloor,
+  randomize,
   StepInfo,
 } from "./steps";
 import { sequencerEngine } from "../../recoil/audioEngine";
@@ -96,6 +97,17 @@ stepsListenerMiddleware.startListening({
 
 stepsListenerMiddleware.startListening({
   actionCreator: fourOnTheFloor,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngineForTrack(
+      action.payload.trackId,
+      state.steps
+    );
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: randomize,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sendAllStepStatesToSequencerEngineForTrack(

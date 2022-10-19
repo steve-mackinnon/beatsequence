@@ -5,13 +5,16 @@ import { Button, ButtonProps, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import songStore from "../recoil/song";
 import { GeneratorControls } from "./GeneratorControls";
-import { fourOnTheFloor, twoOnTheFloor } from "../features/steps/steps";
+import {
+  fourOnTheFloor,
+  twoOnTheFloor,
+  randomize,
+} from "../features/steps/steps";
 import { useAppDispatch } from "../hooks";
 
 interface TrackControlsProps {
   trackState: RecoilState<TrackState>;
   trackIndex: number;
-  randomizePressed: () => void;
 }
 
 const TrackButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -44,6 +47,11 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
   const fourOnTheFloorPressed = (_: any): void => {
     dispatch(fourOnTheFloor({ trackId: props.trackIndex }));
   };
+  const randomizePressed = (_: any): void => {
+    dispatch(
+      randomize({ trackId: props.trackIndex, seed: Date.now().toString() })
+    );
+  };
   return (
     <Grid container rowSpacing={1} maxHeight={80}>
       <Grid xs={3}>
@@ -58,7 +66,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
         <TrackButton onClick={twoOnTheFloorPressed}>2x4</TrackButton>
       </Grid>
       <Grid xs={3}>
-        <TrackButton onClick={props.randomizePressed}>Rand</TrackButton>
+        <TrackButton onClick={randomizePressed}>Rand</TrackButton>
       </Grid>
       <Grid xs={12}>
         <GeneratorControls

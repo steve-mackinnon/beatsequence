@@ -125,28 +125,6 @@ export class SequencerEngine {
     }
   }
 
-  setFourOnTheFloorSequence(trackIndex: number): void {
-    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
-      const newStep = { ...step };
-      newStep.enabled = stepIndex === 0 || stepIndex % 4 === 0;
-      if (newStep !== step) {
-        this._steps[trackIndex][stepIndex] = newStep;
-        this._broadcastStepUpdate(trackIndex, stepIndex);
-      }
-    });
-  }
-
-  setTwoOnTheFloorSequence(trackIndex: number): void {
-    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
-      const newStep = { ...step };
-      newStep.enabled = stepIndex === 4 || stepIndex === 12;
-      if (newStep !== step) {
-        this._steps[trackIndex][stepIndex] = newStep;
-        this._broadcastStepUpdate(trackIndex, stepIndex);
-      }
-    });
-  }
-
   randomizeTrack(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };

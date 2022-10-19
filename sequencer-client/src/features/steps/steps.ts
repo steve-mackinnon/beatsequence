@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import seedrandom from "seedrandom";
 
 export interface StepInfo {
   trackId: number;
@@ -20,6 +21,11 @@ interface SetPitchPayload {
 
 interface SequencerMacroPayload {
   trackId: number;
+}
+
+interface RandomizePayload {
+  trackId: number;
+  seed: string;
 }
 
 // Define the initial state using that type
@@ -91,6 +97,16 @@ export const stepsSlice = createSlice({
         return step;
       });
     },
+    randomize: (state, action: PayloadAction<RandomizePayload>) => {
+      const rng = seedrandom(action.payload.seed);
+      state.map((step: StepState) => {
+        if (step.trackId === action.payload.trackId) {
+          step.enabled = rng.quick() > 0.5;
+          step.coarsePitch = Math.floor(rng.quick() * (36 * 2) - 36);
+        }
+        return step;
+      });
+    },
   },
 });
 
@@ -117,6 +133,7 @@ export const {
   setCoarsePitch,
   twoOnTheFloor,
   fourOnTheFloor,
+  randomize,
 } = stepsSlice.actions;
 
 export default stepsSlice.reducer;
