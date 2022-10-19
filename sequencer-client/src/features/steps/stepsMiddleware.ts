@@ -10,6 +10,8 @@ import {
   disable,
   setCoarsePitch,
   stepStateForTrackAndStep,
+  twoOnTheFloor,
+  fourOnTheFloor,
   StepInfo,
 } from "./steps";
 import { sequencerEngine } from "../../recoil/audioEngine";
@@ -42,6 +44,21 @@ function sendStepStateToSequencerEngine(
   );
 }
 
+function sendAllStepStatesToSequencerEngineForTrack(
+  trackId: number,
+  steps: StepState[]
+): void {
+  steps.forEach((stepState: StepState) => {
+    if (stepState.trackId === trackId) {
+      sequencerEngine.setStepState(
+        stepState.trackId,
+        stepState.stepIndex,
+        stepState
+      );
+    }
+  });
+}
+
 stepsListenerMiddleware.startListening({
   actionCreator: enable,
   effect: (action, listenerApi) => {
@@ -63,5 +80,27 @@ stepsListenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sendStepStateToSequencerEngine(action.payload, state.steps);
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: twoOnTheFloor,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngineForTrack(
+      action.payload.trackId,
+      state.steps
+    );
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: fourOnTheFloor,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngineForTrack(
+      action.payload.trackId,
+      state.steps
+    );
   },
 });

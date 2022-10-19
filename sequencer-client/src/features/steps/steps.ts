@@ -18,6 +18,10 @@ interface SetPitchPayload {
   coarsePitch: number;
 }
 
+interface SequencerMacroPayload {
+  trackId: number;
+}
+
 // Define the initial state using that type
 const INITIAL_NUM_TRACKS = 5;
 const INITIAL_NUM_STEPS = 16;
@@ -69,6 +73,24 @@ export const stepsSlice = createSlice({
         return step;
       });
     },
+    twoOnTheFloor: (state, action: PayloadAction<SequencerMacroPayload>) => {
+      state.map((step: StepState) => {
+        if (step.trackId === action.payload.trackId) {
+          const enabled = step.stepIndex === 4 || step.stepIndex === 12;
+          step.enabled = enabled;
+        }
+        return step;
+      });
+    },
+    fourOnTheFloor: (state, action: PayloadAction<SequencerMacroPayload>) => {
+      state.map((step: StepState) => {
+        if (step.trackId === action.payload.trackId) {
+          const enabled = step.stepIndex === 0 || step.stepIndex % 4 === 0;
+          step.enabled = enabled;
+        }
+        return step;
+      });
+    },
   },
 });
 
@@ -89,6 +111,12 @@ export function stepStateForTrackAndStep(
   return step;
 }
 
-export const { enable, disable, setCoarsePitch } = stepsSlice.actions;
+export const {
+  enable,
+  disable,
+  setCoarsePitch,
+  twoOnTheFloor,
+  fourOnTheFloor,
+} = stepsSlice.actions;
 
 export default stepsSlice.reducer;

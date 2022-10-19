@@ -26,12 +26,6 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       key={`trackcontrols${props.trackIndex}`}
       trackIndex={props.trackIndex}
       trackState={songStore.getTrackStateAtom(props.trackIndex)}
-      twoOnTheFloorPressed={() =>
-        sequencerEngine.setTwoOnTheFloorSequence(props.trackIndex)
-      }
-      fourOnTheFloorPressed={() =>
-        sequencerEngine.setFourOnTheFloorSequence(props.trackIndex)
-      }
       randomizePressed={() => sequencerEngine.randomizeTrack(props.trackIndex)}
     />
   );
