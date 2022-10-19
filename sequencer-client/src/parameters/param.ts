@@ -4,7 +4,7 @@ import {
   BoolParamMetadata,
 } from "./metadata";
 
-export type Param = ContinuousParam | DiscreteParam | BoolParam;
+export type Param = string | number | boolean;
 
 export interface ContinuousParam {
   info: ContinuousParamMetadata;
@@ -32,8 +32,8 @@ export function getContinuousParamValue(
   if (param === undefined) {
     return paramInfo.default;
   }
-  if (param.kind === "continuous") {
-    return param.value;
+  if (typeof param === "number") {
+    return param;
   }
   return paramInfo.default;
 }
@@ -46,8 +46,8 @@ export function getDiscreteParamValue(
   if (param === undefined) {
     return paramInfo.default;
   }
-  if (param.kind === "discrete") {
-    return param.value;
+  if (typeof param === "string") {
+    return param;
   }
   return paramInfo.default;
 }

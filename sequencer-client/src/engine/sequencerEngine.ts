@@ -1,7 +1,5 @@
 import { GeneratorType, TrackState } from "../recoil/track";
 import { AudioEngine } from "./audioEngine";
-import { DecayTime, OscType } from "../generators";
-import { Param, DiscreteParam, ContinuousParam } from "../parameters";
 import { semitoneToHz } from "./pitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;
@@ -59,20 +57,6 @@ export class SequencerEngine {
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
       this._trackStates[trackIndex] = new TrackState(trackIndex);
-      const generatorParams = new Map<string, Param>();
-      const oscTypeParam: DiscreteParam = {
-        info: OscType,
-        value: "sine",
-        kind: "discrete",
-      };
-      generatorParams.set(OscType.id, oscTypeParam);
-      const decayTimeParam: ContinuousParam = {
-        info: DecayTime,
-        value: 0.2,
-        kind: "continuous",
-      };
-      generatorParams.set(DecayTime.id, decayTimeParam);
-      this._trackStates[trackIndex].generatorParams = generatorParams;
 
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);

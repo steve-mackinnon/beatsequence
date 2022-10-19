@@ -20,9 +20,6 @@ import type { RootState, AppDispatch } from "../../store";
 
 export const stepsListenerMiddleware = createListenerMiddleware();
 
-export const startAppListening =
-  stepsListenerMiddleware.startListening as AppStartListening;
-
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 export const addAppListener = addListener as TypedAddListener<
   RootState,

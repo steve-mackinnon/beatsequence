@@ -1,11 +1,13 @@
 import { atom, RecoilState } from "recoil";
 import { sequencerEngine } from "../audioEngine";
-import { Param } from "../../parameters";
 
 export class TrackState {
   muted: boolean = false;
   generatorType: GeneratorType;
-  generatorParams: Map<string, Param> = new Map<string, Param>();
+  generatorParams: Map<string, string | number | boolean> = new Map<
+    string,
+    string | number | boolean
+  >();
 
   constructor(generatorType: GeneratorType) {
     this.generatorType = generatorType;
@@ -28,7 +30,7 @@ export default function MakeTrackStateAtom(
     default: {
       muted: false,
       generatorType: GeneratorType.SineBleep,
-      generatorParams: new Map<string, Param>(),
+      generatorParams: new Map<string, string | number | boolean>(),
     },
     effects: [
       ({ onSet, setSelf, trigger }) => {

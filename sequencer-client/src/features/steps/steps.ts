@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
+import { INITIAL_NUM_TRACKS } from "../tracks/tracks";
 
 export interface StepInfo {
   trackId: number;
@@ -29,7 +30,6 @@ interface RandomizePayload {
 }
 
 // Define the initial state using that type
-const INITIAL_NUM_TRACKS = 5;
 const INITIAL_NUM_STEPS = 16;
 const initialState: StepState[] = new Array<StepState>();
 for (let index = 0; index < INITIAL_NUM_TRACKS * INITIAL_NUM_STEPS; ++index) {

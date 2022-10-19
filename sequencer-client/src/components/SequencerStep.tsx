@@ -1,8 +1,6 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
-import { useRecoilValue, RecoilState } from "recoil";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { sequencerEngine } from "../recoil/audioEngine";
-import { TrackState } from "../recoil/track";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 import {
@@ -17,15 +15,14 @@ import "../css/SequencerStep.css";
 export interface SequencerStepProps {
   stepIndex: number;
   trackId: number;
-  trackState: RecoilState<TrackState>;
 }
 export function SequencerStep(props: SequencerStepProps): ReactElement {
   const stepState = useAppSelector((state) =>
     stepStateForTrackAndStep(props.trackId, props.stepIndex, state.steps)
   );
-  const dispatch = useAppDispatch();
+  const trackState = useAppSelector((state) => state.tracks[props.trackId]);
 
-  const trackState = useRecoilValue<TrackState>(props.trackState);
+  const dispatch = useAppDispatch();
 
   const [isCurrentStep, setIsCurrentStep] = useState(false);
 
