@@ -26,10 +26,10 @@ export interface BoolParam {
 
 export function getContinuousParamValue(
   paramInfo: ContinuousParamMetadata,
-  params: Map<string, Param>
+  params: any
 ): number {
-  const param = params.get(paramInfo.id);
-  if (param === undefined) {
+  const param = params[paramInfo.id];
+  if (param == null) {
     return paramInfo.default;
   }
   if (typeof param === "number") {
@@ -40,10 +40,10 @@ export function getContinuousParamValue(
 
 export function getDiscreteParamValue(
   paramInfo: DiscreteParamMetadata,
-  params: Map<string, Param>
+  params: any
 ): string {
-  const param = params.get(paramInfo.id);
-  if (param === undefined) {
+  const param = params[paramInfo.id];
+  if (param == null) {
     return paramInfo.default;
   }
   if (typeof param === "string") {

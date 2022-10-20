@@ -57,15 +57,15 @@ export class AudioEngine {
     );
   }
 
-  scheduleKick(startTime: number, params: Map<string, Param>): void {
+  scheduleKick(startTime: number, params: any): void {
     makeKick(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleSnare(startTime: number, params: Map<string, Param>): void {
+  scheduleSnare(startTime: number, params: any): void {
     makeSnare(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleClosedHH(startTime: number, params: Map<string, Param>): void {
+  scheduleClosedHH(startTime: number, params: any): void {
     makeClosedHH(this._context, this._context.destination, startTime, params);
   }
 

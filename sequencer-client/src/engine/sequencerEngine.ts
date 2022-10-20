@@ -1,4 +1,4 @@
-import { GeneratorType, TrackState } from "../recoil/track";
+import { GeneratorType, TrackState } from "../features/tracks/tracks";
 import { AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 
@@ -56,7 +56,12 @@ export class SequencerEngine {
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
-      this._trackStates[trackIndex] = new TrackState(trackIndex);
+      this._trackStates[trackIndex] = {
+        id: trackIndex,
+        muted: false,
+        generatorType: GeneratorType.SineBleep,
+        generatorParams: {},
+      };
 
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);

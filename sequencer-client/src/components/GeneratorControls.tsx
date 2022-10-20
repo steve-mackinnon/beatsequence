@@ -21,10 +21,14 @@ const MIN_DECAY_TIME = 0.01;
 const MAX_DECAY_TIME = 1.0;
 
 export function GeneratorControls(props: GeneratorControlsProps): ReactElement {
-  const decayTime = useAppSelector(
-    (state) =>
-      state.tracks[props.trackIndex].generatorParams.get("decay_time") as number
-  );
+  const decayTime = useAppSelector((state) => {
+    const decayParam =
+      state.tracks[props.trackIndex].generatorParams.decay_time;
+    if (decayParam != null && typeof decayParam === "number") {
+      return decayParam;
+    }
+    return 0.15;
+  });
   const dispatch = useAppDispatch();
 
   const onDecayTimeChange = (event: any): void => {
