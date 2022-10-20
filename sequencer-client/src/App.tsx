@@ -1,5 +1,4 @@
 import "./App.css";
-import { RecoilRoot } from "recoil";
 import MainInterface from "./components/MainInterface";
 import React, { ReactElement } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -23,9 +22,7 @@ function App(): ReactElement {
     <Provider store={store}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <RecoilRoot>
-          <MainInterface />
-        </RecoilRoot>
+        <MainInterface />
       </ThemeProvider>
     </Provider>
   );
