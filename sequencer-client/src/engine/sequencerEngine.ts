@@ -1,4 +1,5 @@
-import { GeneratorType, TrackState } from "../features/tracks/tracks";
+import { TrackState } from "../features/tracks/tracks";
+import { GeneratorType } from "../features/tracks/GeneratorType";
 import { AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 

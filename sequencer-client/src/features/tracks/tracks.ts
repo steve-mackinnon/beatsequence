@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export enum GeneratorType {
-  Kick,
-  Snare,
-  ClosedHH,
-  SineBleep,
-  SquareBleep,
-}
+import { sequencerEngine } from "../../engine";
+import { GeneratorType } from "./GeneratorType";
 
 export interface TrackState {
   id: number;
@@ -50,6 +44,10 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
     generatorParams,
   });
 }
+
+initialState.forEach((trackState: TrackState) => {
+  sequencerEngine.setTrackState(trackState.id, trackState);
+});
 
 export interface TrackInfo {
   trackId: number;

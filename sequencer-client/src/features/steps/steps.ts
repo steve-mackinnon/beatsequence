@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
 import { INITIAL_NUM_TRACKS } from "../tracks/tracks";
+import { sequencerEngine } from "../../engine";
 
 export interface StepInfo {
   trackId: number;
@@ -40,6 +41,11 @@ for (let index = 0; index < INITIAL_NUM_TRACKS * INITIAL_NUM_STEPS; ++index) {
     trackId: Math.floor(index / INITIAL_NUM_STEPS),
   });
 }
+
+// Pass the initial state to the sequencer engine
+initialState.forEach((step: StepState) => {
+  sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+});
 
 export const stepsSlice = createSlice({
   name: "steps",
