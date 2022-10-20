@@ -35,7 +35,7 @@ export class SequencerEngine {
   private _timerID: any = undefined;
   private _currentStep: number = 0;
   private _nextNoteTime: number = 0.0; // when the next note is due.
-  private readonly _tempo: number = 127.0;
+  public tempo: number = 127.0;
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
   private _trackStates: TrackState[];
@@ -178,7 +178,7 @@ export class SequencerEngine {
   }
 
   private _advanceStep(): void {
-    const secondsPerStep = 60.0 / this._tempo / 4.0;
+    const secondsPerStep = 60.0 / this.tempo / 4.0;
 
     this._nextNoteTime += secondsPerStep; // Add step length to last step time
 
