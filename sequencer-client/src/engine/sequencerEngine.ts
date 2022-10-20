@@ -201,3 +201,5 @@ export class SequencerEngine {
     this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
   }
 }
+
+export const sequencerEngine = new SequencerEngine();

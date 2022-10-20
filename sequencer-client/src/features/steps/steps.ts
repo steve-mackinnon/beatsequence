@@ -25,7 +25,7 @@ interface SequencerMacroPayload {
 }
 
 interface RandomizePayload {
-  trackId: number;
+  trackId: number | undefined; // undefined is used to specify all tracks
   seed: string;
 }
 
@@ -100,7 +100,10 @@ export const stepsSlice = createSlice({
     randomize: (state, action: PayloadAction<RandomizePayload>) => {
       const rng = seedrandom(action.payload.seed);
       state.map((step: StepState) => {
-        if (step.trackId === action.payload.trackId) {
+        if (
+          action.payload.trackId == null ||
+          step.trackId === action.payload.trackId
+        ) {
           step.enabled = rng.quick() > 0.5;
           step.coarsePitch = Math.floor(rng.quick() * (36 * 2) - 36);
         }

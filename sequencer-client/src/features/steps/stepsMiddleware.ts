@@ -15,7 +15,7 @@ import {
   randomize,
   StepInfo,
 } from "./steps";
-import { sequencerEngine } from "../../recoil/audioEngine";
+import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
 
 export const stepsListenerMiddleware = createListenerMiddleware();
@@ -107,9 +107,16 @@ stepsListenerMiddleware.startListening({
   actionCreator: randomize,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendAllStepStatesToSequencerEngineForTrack(
-      action.payload.trackId,
-      state.steps
-    );
+    if (action.payload.trackId === undefined) {
+      // Update all steps
+      state.steps.forEach((step: StepState) => {
+        sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+      });
+    } else {
+      sendAllStepStatesToSequencerEngineForTrack(
+        action.payload.trackId,
+        state.steps
+      );
+    }
   },
 });

@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
-import { sequencerEngine } from "../recoil/audioEngine";
+import { sequencerEngine } from "../engine/sequencerEngine";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 import {

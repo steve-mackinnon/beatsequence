@@ -1,14 +1,13 @@
 import { Param } from "../parameters";
 import { makeKick, makeBleep, makeSnare, makeClosedHH } from "../generators";
-import { SequencerEngine } from "./sequencerEngine";
+import { SequencerEngine, sequencerEngine } from "./sequencerEngine";
 
 export class AudioEngine {
-  private readonly _context: AudioContext;
+  private _context: AudioContext | undefined = undefined;
   private readonly _sequencer: SequencerEngine;
   private _playing: boolean = false;
 
   constructor(sequencer: SequencerEngine) {
-    this._context = new AudioContext();
     this._sequencer = sequencer;
   }
 
@@ -20,6 +19,11 @@ export class AudioEngine {
     if (this._playing === playing) {
       return;
     }
+    if (this._context == null) {
+      this._context = new AudioContext();
+      this._sequencer.setAudioEngine(this);
+    }
+
     if (playing) {
       this._context
         .resume()
@@ -48,6 +52,9 @@ export class AudioEngine {
     frequency: number,
     params: Map<string, Param>
   ): void {
+    if (this._context === undefined) {
+      return;
+    }
     makeBleep(
       this._context,
       this._context.destination,
@@ -58,18 +65,32 @@ export class AudioEngine {
   }
 
   scheduleKick(startTime: number, params: any): void {
+    if (this._context === undefined) {
+      return;
+    }
     makeKick(this._context, this._context.destination, startTime, params);
   }
 
   scheduleSnare(startTime: number, params: any): void {
+    if (this._context === undefined) {
+      return;
+    }
     makeSnare(this._context, this._context.destination, startTime, params);
   }
 
   scheduleClosedHH(startTime: number, params: any): void {
+    if (this._context === undefined) {
+      return;
+    }
     makeClosedHH(this._context, this._context.destination, startTime, params);
   }
 
   currentTime(): number {
+    if (this._context === undefined) {
+      return -1;
+    }
     return this._context.currentTime;
   }
 }
+
+export const audioEngine = new AudioEngine(sequencerEngine);

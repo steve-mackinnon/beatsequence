@@ -1,4 +1,4 @@
-import { sequencerEngine } from "../../recoil/audioEngine";
+import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
 import {
   createListenerMiddleware,

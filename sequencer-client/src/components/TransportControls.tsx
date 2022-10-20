@@ -1,31 +1,29 @@
-import React, { ReactElement } from "react";
-import { useRecoilState } from "recoil";
-import audioEngineAtom, {
-  AudioEngineState,
-  sequencerEngine,
-} from "../recoil/audioEngine";
+import React, { ReactElement, useState } from "react";
+import { useAppDispatch } from "../hooks";
+import { randomize } from "../features/steps/steps";
+import { audioEngine } from "../engine";
 import Button from "@mui/material/Button";
 
 export function TransportControls(): ReactElement {
-  const [audioEngineState, setAudioEngineState] =
-    useRecoilState<AudioEngineState>(audioEngineAtom);
+  const dispatch = useAppDispatch();
+  const [playing, setPlaying] = useState(false);
 
   const onPlayStopClick = (event: any): void => {
-    setAudioEngineState((current: AudioEngineState) => {
-      const newState = { ...current };
-      newState.playing = !current.playing;
-      return newState;
-    });
+    setPlaying(!playing);
+    audioEngine.playing = !playing;
   };
   const onRandomizeClick = (event: any): void => {
-    sequencerEngine.randomizeAllTracks();
+    dispatch(
+      randomize({
+        trackId: undefined,
+        seed: Date.now().toString(),
+      })
+    );
   };
 
   return (
     <div>
-      <Button onClick={onPlayStopClick}>
-        {audioEngineState.playing ? "Stop" : "Play"}
-      </Button>
+      <Button onClick={onPlayStopClick}>{playing ? "Stop" : "Play"}</Button>
       <Button onClick={onRandomizeClick}>Rand</Button>
     </div>
   );
