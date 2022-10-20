@@ -21,10 +21,22 @@ export function TransportControls(): ReactElement {
       })
     );
   };
-  const onTempoChange = (event: any): void => {
+  const onTempoSliderChange = (event: any): void => {
     if (typeof event.target.value === "number") {
       dispatch(adjustTempo(event.target.value as number));
     }
+  };
+  const onTempoInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    if (event.target.value === "") {
+      return;
+    }
+    const tempo = Number(event.target.value);
+    if (tempo < 10) {
+      return;
+    }
+    dispatch(adjustTempo(Number(event.target.value)));
   };
 
   return (
@@ -42,7 +54,7 @@ export function TransportControls(): ReactElement {
           id={`Tempo Slider`}
           min={10}
           max={200}
-          onChange={onTempoChange}
+          onChange={onTempoSliderChange}
           sx={{
             width: 100,
           }}
@@ -52,7 +64,7 @@ export function TransportControls(): ReactElement {
         />
         <Input
           value={tempo}
-          onChange={onTempoChange}
+          onChange={onTempoInputChange}
           size="small"
           aria-labelledby="tempo-slider"
           sx={{
