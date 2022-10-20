@@ -1,18 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
 import stepsReducer from "./features/steps/steps";
 import tracksReducer from "./features/tracks/tracks";
+import songReducer from "./features/song/song";
 import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
-
+import { songListenerMiddleware } from "./features/song/songMiddleware";
 export const store = configureStore({
   reducer: {
     steps: stepsReducer,
     tracks: tracksReducer,
+    song: songReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       stepsListenerMiddleware.middleware,
-      tracksListenerMiddleware.middleware
+      tracksListenerMiddleware.middleware,
+      songListenerMiddleware.middleware
     ),
 });
 

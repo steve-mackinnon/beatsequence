@@ -1,16 +1,15 @@
-import React, { ReactElement, useState } from "react";
-import { useAppDispatch } from "../hooks";
+import React, { ReactElement } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { randomize } from "../features/steps/steps";
-import { audioEngine } from "../engine";
+import { togglePlayback } from "../features/song/song";
 import Button from "@mui/material/Button";
 
 export function TransportControls(): ReactElement {
   const dispatch = useAppDispatch();
-  const [playing, setPlaying] = useState(false);
+  const playing = useAppSelector((state) => state.song.playing);
 
   const onPlayStopClick = (event: any): void => {
-    setPlaying(!playing);
-    audioEngine.playing = !playing;
+    dispatch(togglePlayback({}));
   };
   const onRandomizeClick = (event: any): void => {
     dispatch(
