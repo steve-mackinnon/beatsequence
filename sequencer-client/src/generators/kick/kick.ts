@@ -1,11 +1,11 @@
-import { Param, getContinuousParamValue } from "../../parameters";
+import { getContinuousParamValue } from "../../parameters";
 import { DecayTime } from "../sharedParams";
 
 export function makeKick(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
-  parameters: Map<string, Param>
+  parameters: any
 ): void {
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);

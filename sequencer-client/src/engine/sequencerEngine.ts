@@ -1,7 +1,6 @@
-import { GeneratorType, TrackState } from "../recoil/track";
+import { TrackState } from "../features/tracks/tracks";
+import { GeneratorType } from "../features/tracks/GeneratorType";
 import { AudioEngine } from "./audioEngine";
-import { DecayTime, OscType } from "../generators";
-import { Param, DiscreteParam, ContinuousParam } from "../parameters";
 import { semitoneToHz } from "./pitchUtils";
 
 const scheduleAheadTimeSecs: number = 0.1;
@@ -14,9 +13,9 @@ function randomPitch(): number {
 function makeStepsForTrack(numSteps: number): StepState[] {
   const steps = new Array<StepState>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
-    const active = Math.random() > 0.5;
+    const enabled = Math.random() > 0.5;
     steps[stepIndex] = {
-      active,
+      enabled,
       coarsePitch: randomPitch(),
     };
   }
@@ -24,7 +23,7 @@ function makeStepsForTrack(numSteps: number): StepState[] {
 }
 
 export interface StepState {
-  active: boolean;
+  enabled: boolean;
   coarsePitch: number;
 }
 
@@ -58,21 +57,12 @@ export class SequencerEngine {
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
-      this._trackStates[trackIndex] = new TrackState(trackIndex);
-      const generatorParams = new Map<string, Param>();
-      const oscTypeParam: DiscreteParam = {
-        info: OscType,
-        value: "sine",
-        kind: "discrete",
+      this._trackStates[trackIndex] = {
+        id: trackIndex,
+        muted: false,
+        generatorType: GeneratorType.SineBleep,
+        generatorParams: {},
       };
-      generatorParams.set(OscType.id, oscTypeParam);
-      const decayTimeParam: ContinuousParam = {
-        info: DecayTime,
-        value: 0.2,
-        kind: "continuous",
-      };
-      generatorParams.set(DecayTime.id, decayTimeParam);
-      this._trackStates[trackIndex].generatorParams = generatorParams;
 
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);
@@ -125,32 +115,10 @@ export class SequencerEngine {
     }
   }
 
-  setFourOnTheFloorSequence(trackIndex: number): void {
-    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
-      const newStep = { ...step };
-      newStep.active = stepIndex === 0 || stepIndex % 4 === 0;
-      if (newStep !== step) {
-        this._steps[trackIndex][stepIndex] = newStep;
-        this._broadcastStepUpdate(trackIndex, stepIndex);
-      }
-    });
-  }
-
-  setTwoOnTheFloorSequence(trackIndex: number): void {
-    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
-      const newStep = { ...step };
-      newStep.active = stepIndex === 4 || stepIndex === 12;
-      if (newStep !== step) {
-        this._steps[trackIndex][stepIndex] = newStep;
-        this._broadcastStepUpdate(trackIndex, stepIndex);
-      }
-    });
-  }
-
   randomizeTrack(trackIndex: number): void {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
-      newStep.active = Math.random() > 0.5;
+      newStep.enabled = Math.random() > 0.5;
       newStep.coarsePitch = randomPitch();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
@@ -178,7 +146,7 @@ export class SequencerEngine {
     this._steps.forEach((steps: StepState[], index: number) => {
       const step = steps[stepIndex];
       const trackState = this._trackStates[index];
-      if (!step.active || trackState.muted || this._audioEngine == null) {
+      if (!step.enabled || trackState.muted || this._audioEngine == null) {
         return;
       }
       switch (trackState.generatorType) {
@@ -234,3 +202,5 @@ export class SequencerEngine {
     this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
   }
 }
+
+export const sequencerEngine = new SequencerEngine();

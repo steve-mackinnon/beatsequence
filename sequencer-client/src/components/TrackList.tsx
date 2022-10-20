@@ -1,10 +1,12 @@
 import { SequencerTrack } from "./SequencerTrack";
-import songStore from "../recoil/song";
 import React, { ReactElement } from "react";
+import { useAppSelector } from "../hooks";
 import "../css/SequencerTrack.css";
 
 export function TrackList(): ReactElement {
-  const trackIndices = Array.from(Array(songStore.getNumTracks()).keys());
+  const numTracks = useAppSelector((state) => state.tracks.length);
+
+  const trackIndices = Array.from(Array(numTracks).keys());
   const tracks = trackIndices.map((index: number) => (
     <SequencerTrack key={`track${index}`} trackIndex={index} />
   ));

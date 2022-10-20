@@ -1,25 +1,22 @@
 import { SequencerStep } from "./SequencerStep";
-import songStore from "../recoil/song";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
-import { sequencerEngine } from "../recoil/audioEngine";
 export interface TrackInfo {
   trackIndex: number;
 }
 
+const NUM_STEPS = 16;
+
 export function SequencerTrack(props: TrackInfo): ReactElement {
-  const elements: ReactNode[] = songStore
-    .getStepsForTrack(props.trackIndex)
+  const elements: ReactNode[] = Array(NUM_STEPS)
+    .fill(0)
     .map((_, index: number) => {
       return (
         <SequencerStep
           key={`step${index}`}
-          trackState={songStore.getTrackStateAtom(props.trackIndex)}
-          stepInfo={{
-            trackIndex: props.trackIndex,
-            stepIndex: index,
-          }}
+          stepIndex={index}
+          trackId={props.trackIndex}
         />
       );
     });
@@ -27,14 +24,6 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
       trackIndex={props.trackIndex}
-      trackState={songStore.getTrackStateAtom(props.trackIndex)}
-      twoOnTheFloorPressed={() =>
-        sequencerEngine.setTwoOnTheFloorSequence(props.trackIndex)
-      }
-      fourOnTheFloorPressed={() =>
-        sequencerEngine.setFourOnTheFloorSequence(props.trackIndex)
-      }
-      randomizePressed={() => sequencerEngine.randomizeTrack(props.trackIndex)}
     />
   );
   return <div className="SequencerTrack">{elements}</div>;
