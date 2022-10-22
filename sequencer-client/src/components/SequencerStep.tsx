@@ -72,9 +72,11 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       })
     );
   };
-  const containerClassName = "SequencerStep" + (isCurrentStep ? "-active" : "");
+  const containerClassName = "SequencerStep";
   const checkboxClassName =
-    "SequencerStep" + (trackState.muted ? "-muted" : "");
+    "SequencerStep" +
+    (trackState.muted ? "-muted" : "") +
+    (isCurrentStep ? "-playing" : "");
   const components = [
     <input
       key="step-enabled-checkbox"
