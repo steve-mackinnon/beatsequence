@@ -30,6 +30,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
   const twoOnTheFloorRef = useRef<HTMLButtonElement>(null);
   const fourOnTheFloorRef = useRef<HTMLButtonElement>(null);
   const randomizeRef = useRef<HTMLButtonElement>(null);
+  const muteRef = useRef<HTMLButtonElement>(null);
 
   const onMuteStateChanged = (_: any): void => {
     if (muted) {
@@ -58,7 +59,11 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
   return (
     <Grid container rowSpacing={1} maxHeight={80}>
       <Grid xs={3}>
-        <TrackButton onClick={onMuteStateChanged}>
+        <TrackButton
+          onClick={onMuteStateChanged}
+          ref={muteRef}
+          onFocus={(_) => blurOnFocus(muteRef)}
+        >
           {muted ? "Unmute" : "Mute"}
         </TrackButton>
       </Grid>

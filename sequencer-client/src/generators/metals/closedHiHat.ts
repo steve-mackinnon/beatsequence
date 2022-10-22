@@ -21,17 +21,17 @@ export function makeClosedHH(
 
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.6, startTime);
+  ampEnvelope.gain.setValueAtTime(0.5, startTime);
   const decayTime = getContinuousParamValue(DecayTime, parameters);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(0.00001, startTime + decayTime);
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",
-    frequency: 12000,
+    frequency: 14000,
   });
   const highpass = new BiquadFilterNode(context, {
     type: "highpass",
-    frequency: 2000,
+    frequency: 4400,
   });
 
   noise
