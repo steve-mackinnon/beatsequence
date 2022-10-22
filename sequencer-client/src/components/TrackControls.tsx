@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, RefObject, useRef } from "react";
 import { Button, ButtonProps, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import { GeneratorControls } from "./GeneratorControls";
@@ -27,6 +27,9 @@ const TrackButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export function TrackControls(props: TrackControlsProps): ReactElement {
   const muted = useAppSelector((state) => state.tracks[props.trackIndex].muted);
   const dispatch = useAppDispatch();
+  const twoOnTheFloorRef = useRef<HTMLButtonElement>(null);
+  const fourOnTheFloorRef = useRef<HTMLButtonElement>(null);
+  const randomizeRef = useRef<HTMLButtonElement>(null);
 
   const onMuteStateChanged = (_: any): void => {
     if (muted) {
@@ -36,6 +39,11 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
     }
   };
 
+  const blurOnFocus = (ref: RefObject<HTMLButtonElement>): void => {
+    if (ref.current != null) {
+      ref.current.blur();
+    }
+  };
   const twoOnTheFloorPressed = (_: any): void => {
     dispatch(twoOnTheFloor({ trackId: props.trackIndex }));
   };
@@ -55,13 +63,31 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
         </TrackButton>
       </Grid>
       <Grid xs={3}>
-        <TrackButton onClick={fourOnTheFloorPressed}>4x4</TrackButton>
+        <TrackButton
+          ref={fourOnTheFloorRef}
+          onFocus={(_) => blurOnFocus(fourOnTheFloorRef)}
+          onClick={fourOnTheFloorPressed}
+        >
+          4x4
+        </TrackButton>
       </Grid>
       <Grid xs={3}>
-        <TrackButton onClick={twoOnTheFloorPressed}>2x4</TrackButton>
+        <TrackButton
+          ref={twoOnTheFloorRef}
+          onFocus={(_) => blurOnFocus(twoOnTheFloorRef)}
+          onClick={twoOnTheFloorPressed}
+        >
+          2x4
+        </TrackButton>
       </Grid>
       <Grid xs={3}>
-        <TrackButton onClick={randomizePressed}>Rand</TrackButton>
+        <TrackButton
+          ref={randomizeRef}
+          onFocus={(_) => blurOnFocus(randomizeRef)}
+          onClick={randomizePressed}
+        >
+          Rand
+        </TrackButton>
       </Grid>
       <Grid xs={12}>
         <GeneratorControls

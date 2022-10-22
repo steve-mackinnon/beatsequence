@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { randomize } from "../features/steps/steps";
 import { togglePlayback, adjustTempo } from "../features/song/song";
@@ -9,6 +9,8 @@ export function TransportControls(): ReactElement {
   const dispatch = useAppDispatch();
   const playing = useAppSelector((state) => state.song.playing);
   const tempo = useAppSelector((state) => state.song.tempo);
+  const playRef = useRef<HTMLButtonElement>(null);
+  const randRef = useRef<HTMLButtonElement>(null);
 
   const onPlayStopClick = (event: any): void => {
     dispatch(togglePlayback({}));
@@ -37,6 +39,12 @@ export function TransportControls(): ReactElement {
       return;
     }
     dispatch(adjustTempo(Number(event.target.value)));
+  };
+
+  const blurOnFocus = (ref: RefObject<HTMLButtonElement>): void => {
+    if (ref.current != null) {
+      ref.current.blur();
+    }
   };
 
   return (
@@ -73,8 +81,20 @@ export function TransportControls(): ReactElement {
         />
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center" flex={2}>
-        <Button onClick={onPlayStopClick}>{playing ? "Stop" : "Play"}</Button>
-        <Button onClick={onRandomizeClick}>Rand</Button>
+        <Button
+          onClick={onPlayStopClick}
+          onFocus={(_) => blurOnFocus(playRef)}
+          ref={playRef}
+        >
+          {playing ? "Stop" : "Play"}
+        </Button>
+        <Button
+          onClick={onRandomizeClick}
+          onFocus={(_) => blurOnFocus(randRef)}
+          ref={randRef}
+        >
+          Rand
+        </Button>
       </Stack>
     </Box>
   );

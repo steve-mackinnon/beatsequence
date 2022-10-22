@@ -26,6 +26,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
 
   const [isCurrentStep, setIsCurrentStep] = useState(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const requestRef = useRef<number>();
   const maybeUpdateStyle = (): void => {
     setIsCurrentStep(sequencerEngine.getCurrentStepIndex() === props.stepIndex);
@@ -78,6 +79,14 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         className={checkboxClassName}
         checked={stepState.enabled}
         onChange={onStepEnableChange}
+        ref={inputRef}
+        onFocus={(event: React.FocusEvent<HTMLInputElement, Element>) => {
+          // Hack to fix bug where pressing spacebar for playback toggle
+          // would toggle a step if had focus.
+          if (inputRef.current != null) {
+            inputRef.current.blur();
+          }
+        }}
       />
       <Slider
         name="Coarse Pitch"
