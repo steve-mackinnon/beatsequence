@@ -28,7 +28,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
 
   const requestRef = useRef<number>();
   const maybeUpdateStyle = (): void => {
-    setIsCurrentStep(sequencerEngine.getCurrentStep() === props.stepIndex);
+    setIsCurrentStep(sequencerEngine.getCurrentStepIndex() === props.stepIndex);
     requestRef.current = requestAnimationFrame(maybeUpdateStyle);
   };
   useEffect(() => {

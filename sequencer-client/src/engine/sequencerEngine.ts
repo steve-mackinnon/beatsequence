@@ -104,8 +104,15 @@ export class SequencerEngine {
     return this._steps[trackIndex][stepIndex];
   }
 
-  getCurrentStep(): number {
-    return this._currentStep;
+  getCurrentStepIndex(): number {
+    if (this._audioEngine == null || !this._audioEngine.playing) {
+      return 0;
+    }
+    // Internally, _currentStep is always leading because we schedule each
+    // step with the audio engine ahead of time. For display purposes, the
+    // current step is really this._currentStep - 1 to compensate for this
+    // ahead-of-time scheduling.
+    return this._currentStep === 0 ? this._numSteps - 1 : this._currentStep - 1;
   }
 
   private _broadcastStepUpdate(trackIndex: number, stepIndex: number): void {
