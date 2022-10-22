@@ -1,10 +1,11 @@
 import "./App.css";
 import MainInterface from "./components/MainInterface";
 import React, { ReactElement } from "react";
+import { PersistGate } from "redux-persist/integration/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store, persistor } from "./store";
 import { randomize } from "./features/steps/steps";
 
 import "@fontsource/roboto/300.css";
@@ -29,10 +30,12 @@ store.dispatch(
 function App(): ReactElement {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <MainInterface />
-      </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <MainInterface />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -4,7 +4,9 @@ import { useAppSelector } from "../hooks";
 import "../css/SequencerTrack.css";
 
 export function TrackList(): ReactElement {
-  const numTracks = useAppSelector((state) => state.tracks.length);
+  const numTracks = useAppSelector(
+    (state) => state.persistedReducer.tracks.length
+  );
 
   const trackIndices = Array.from(Array(numTracks).keys());
   const tracks = trackIndices.map((index: number) => (
