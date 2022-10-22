@@ -21,7 +21,7 @@ export function makeClosedHH(
 
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.6, startTime);
+  ampEnvelope.gain.setValueAtTime(0.5, startTime);
   const decayTime = getContinuousParamValue(DecayTime, parameters);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.00001, startTime + decayTime);
 
