@@ -25,25 +25,29 @@ export class AudioEngine {
     }
 
     if (playing) {
-      this._context
-        .resume()
-        .then(() => {
-          this._playing = true;
-          this._sequencer.startPlayback();
-        })
-        .catch((e: any) => {
-          console.log(e);
-        });
+      const setPlaying = (): void => {
+        this._playing = true;
+        this._sequencer.startPlayback();
+      };
+      if (this._context.state !== "running") {
+        // resume() the context if it is not already running
+        this._context
+          .resume()
+          .then(() => {
+            setPlaying();
+          })
+          .catch((e: any) => {
+            console.log(e);
+          });
+      } else {
+        setPlaying();
+      }
     } else {
-      this._context
-        .suspend()
-        .then(() => {
-          this._playing = false;
-          this._sequencer.stopPlayback();
-        })
-        .catch((e: any) => {
-          console.log(e);
-        });
+      // Intentionally do not suspend() the audio context when playback
+      // stops. resume() requires a noticable amount of latency before
+      // playback starts and it introduces audible glitches.
+      this._playing = false;
+      this._sequencer.stopPlayback();
     }
   }
 
