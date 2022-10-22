@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sequencerEngine } from "../../engine";
 import { GeneratorType } from "./GeneratorType";
+import { RootState } from "../../store";
 
 export interface TrackState {
   id: number;
@@ -90,6 +91,22 @@ export const tracksSlice = createSlice({
     },
   },
 });
+
+export function selectTrackHasCoarsePitchParam(
+  state: RootState,
+  trackId: number
+): boolean {
+  const generatorType = state.tracks[trackId].generatorType;
+  switch (generatorType) {
+    case GeneratorType.ClosedHH:
+    case GeneratorType.Kick:
+    case GeneratorType.Snare:
+      return false;
+    case GeneratorType.SineBleep:
+    case GeneratorType.SquareBleep:
+      return true;
+  }
+}
 
 export const { mute, unmute, setGeneratorParam } = tracksSlice.actions;
 export default tracksSlice.reducer;
