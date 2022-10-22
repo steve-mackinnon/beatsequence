@@ -3,19 +3,7 @@
   flex-direction: column;
 }
 
-.SequencerStep-active {
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(0, 91, 124);
-}
-
-.SequencerStep-muted {
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(80, 84, 83);
-}
-
-.SequencerStep-active-muted {
+.SequencerStep-muted-playing {
   display: flex;
   flex-direction: column;
   background-color: rgb(0, 87, 119);
@@ -44,6 +32,43 @@ input.SequencerStep[type=checkbox] {
   place-content: center;
 }
 
+input.SequencerStep-playing[type=checkbox] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: rgb(127, 135, 35);
+  /* Not removed via appearance */
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  border-style: solid;
+  border-color: rgb(47, 47, 47);
+  width: 70px;
+  height: 70px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+input.SequencerStep-muted-playing[type=checkbox] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: rgb(72, 77, 75);
+  /* Not removed via appearance */
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  border-style: solid;
+  border-color: rgb(30, 30, 30);
+  width: 70px;
+  height: 70px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
 input.SequencerStep-muted[type=checkbox] {
     /* Add if not using autoprefixer */
     -webkit-appearance: none;
@@ -71,6 +96,13 @@ input.SequencerStep[type="checkbox"]:checked::before {
   background-color: rgb(31, 224, 218);
 }
 
+input.SequencerStep-playing[type="checkbox"]:checked::before {
+  background-color: rgb(211, 224, 31);
+}
+
+input.SequencerStep-muted-playing[type="checkbox"]:checked::before {
+  background-color: rgb(121, 128, 18);
+}
 input.SequencerStep[type="checkbox"]::before {
   content: "";
   width: 66px;
@@ -78,6 +110,18 @@ input.SequencerStep[type="checkbox"]::before {
 }
 
 input.SequencerStep-muted[type="checkbox"]::before {
+  content: "";
+  width: 66px;
+  height: 66px;
+}
+
+input.SequencerStep-muted-playing[type="checkbox"]::before {
+  content: "";
+  width: 66px;
+  height: 66px;
+}
+
+input.SequencerStep-playing[type="checkbox"]::before {
   content: "";
   width: 66px;
   height: 66px;

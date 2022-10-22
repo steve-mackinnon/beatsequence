@@ -9,6 +9,7 @@ import {
   stepStateForTrackAndStep,
   setCoarsePitch,
 } from "../features/steps/steps";
+import { selectTrackHasCoarsePitchParam } from "../features/tracks/tracks";
 
 import "../css/SequencerStep.css";
 
@@ -21,7 +22,9 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     stepStateForTrackAndStep(props.trackId, props.stepIndex, state.steps)
   );
   const trackState = useAppSelector((state) => state.tracks[props.trackId]);
-
+  const showCoarsePitchSlider = useAppSelector((state) =>
+    selectTrackHasCoarsePitchParam(state, props.trackId)
+  );
   const dispatch = useAppDispatch();
 
   const [isCurrentStep, setIsCurrentStep] = useState(false);
@@ -69,26 +72,32 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       })
     );
   };
-  const containerClassName = "SequencerStep" + (isCurrentStep ? "-active" : "");
+  const containerClassName = "SequencerStep";
   const checkboxClassName =
-    "SequencerStep" + (trackState.muted ? "-muted" : "");
-  return (
-    <div className={containerClassName}>
-      <input
-        type="checkbox"
-        className={checkboxClassName}
-        checked={stepState.enabled}
-        onChange={onStepEnableChange}
-        ref={inputRef}
-        onFocus={(event: React.FocusEvent<HTMLInputElement, Element>) => {
-          // Hack to fix bug where pressing spacebar for playback toggle
-          // would toggle a step if had focus.
-          if (inputRef.current != null) {
-            inputRef.current.blur();
-          }
-        }}
-      />
+    "SequencerStep" +
+    (trackState.muted ? "-muted" : "") +
+    (isCurrentStep ? "-playing" : "");
+  const components = [
+    <input
+      key="step-enabled-checkbox"
+      type="checkbox"
+      className={checkboxClassName}
+      checked={stepState.enabled}
+      onChange={onStepEnableChange}
+      ref={inputRef}
+      onFocus={(event: React.FocusEvent<HTMLInputElement, Element>) => {
+        // Hack to fix bug where pressing spacebar for playback toggle
+        // would toggle a step if had focus.
+        if (inputRef.current != null) {
+          inputRef.current.blur();
+        }
+      }}
+    />,
+  ];
+  if (showCoarsePitchSlider) {
+    components.push(
       <Slider
+        key="coarse-pitch-slider"
         name="Coarse Pitch"
         id={`Track ${props.trackId} Step ${props.stepIndex} Coarse Pitch`}
         min={-48}
@@ -96,11 +105,15 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />
+    );
+    components.push(
       <InputLabel
+        key="coarse-pitch-label"
         htmlFor={`Track ${props.trackId} Step ${props.stepIndex} Coarse Pitch`}
       >
         {stepState.coarsePitch}
       </InputLabel>
-    </div>
-  );
+    );
+  }
+  return <div className={containerClassName}>{components}</div>;
 }
