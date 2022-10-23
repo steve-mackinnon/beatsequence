@@ -5,6 +5,7 @@ import songReducer from "./features/song/song";
 import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
 import { songListenerMiddleware } from "./features/song/songMiddleware";
+import { persistenceMiddleware } from "./features/persistence/persistenceMiddleware";
 import { combineReducers } from "redux";
 import {
   persistStore,
@@ -44,7 +45,8 @@ export const store = configureStore({
     }).concat(
       stepsListenerMiddleware.middleware,
       tracksListenerMiddleware.middleware,
-      songListenerMiddleware.middleware
+      songListenerMiddleware.middleware,
+      persistenceMiddleware.middleware
     ),
 });
 

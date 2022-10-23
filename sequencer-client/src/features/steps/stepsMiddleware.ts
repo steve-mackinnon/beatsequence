@@ -61,7 +61,10 @@ stepsListenerMiddleware.startListening({
   actionCreator: enable,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(action.payload, state.persistedReducer.steps);
+    sendStepStateToSequencerEngine(
+      action.payload,
+      state.persistedReducer.steps
+    );
   },
 });
 
@@ -69,7 +72,10 @@ stepsListenerMiddleware.startListening({
   actionCreator: disable,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(action.payload, state.persistedReducer.steps);
+    sendStepStateToSequencerEngine(
+      action.payload,
+      state.persistedReducer.steps
+    );
   },
 });
 
@@ -77,7 +83,10 @@ stepsListenerMiddleware.startListening({
   actionCreator: setCoarsePitch,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(action.payload, state.persistedReducer.steps);
+    sendStepStateToSequencerEngine(
+      action.payload,
+      state.persistedReducer.steps
+    );
   },
 });
 
