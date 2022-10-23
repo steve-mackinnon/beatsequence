@@ -41,7 +41,7 @@ export function EditableLabel(props: EditableLabelProps): ReactElement {
       size="small"
     />
   ) : (
-    <span onDoubleClick={beginEditing}>{value}</span>
+    <label onDoubleClick={beginEditing}>{value}</label>
   );
   return nameElement;
 }
