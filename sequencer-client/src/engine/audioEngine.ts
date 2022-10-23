@@ -1,5 +1,13 @@
-import { Param } from "../parameters";
-import { makeKick, makeBleep, makeSnare, makeClosedHH } from "../generators";
+import {
+  makeKick,
+  makeBleep,
+  makeSnare,
+  makeClosedHH,
+  OscParams,
+  KickParams,
+  SnareParams,
+  ClosedHHParams,
+} from "../generators";
 import { SequencerEngine, sequencerEngine } from "./sequencerEngine";
 
 export class AudioEngine {
@@ -51,11 +59,7 @@ export class AudioEngine {
     }
   }
 
-  scheduleNote(
-    startTime: number,
-    frequency: number,
-    params: Map<string, Param>
-  ): void {
+  scheduleNote(startTime: number, frequency: number, params: OscParams): void {
     if (this._context === undefined) {
       return;
     }
@@ -68,21 +72,21 @@ export class AudioEngine {
     );
   }
 
-  scheduleKick(startTime: number, params: any): void {
+  scheduleKick(startTime: number, params: KickParams): void {
     if (this._context === undefined) {
       return;
     }
     makeKick(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleSnare(startTime: number, params: any): void {
+  scheduleSnare(startTime: number, params: SnareParams): void {
     if (this._context === undefined) {
       return;
     }
     makeSnare(this._context, this._context.destination, startTime, params);
   }
 
-  scheduleClosedHH(startTime: number, params: any): void {
+  scheduleClosedHH(startTime: number, params: ClosedHHParams): void {
     if (this._context === undefined) {
       return;
     }

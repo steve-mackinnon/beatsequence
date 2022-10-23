@@ -2,12 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sequencerEngine } from "../../engine";
 import { GeneratorType } from "./GeneratorType";
 import { RootState } from "../../store";
+import { AnyGeneratorParams } from "../../generators";
 
 export interface TrackState {
   id: number;
   muted: boolean;
   generatorType: GeneratorType;
-  generatorParams: any;
+  generatorParams: AnyGeneratorParams;
   displayName: string;
 }
 
@@ -54,6 +55,7 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
   const generatorType = generatorTypeForTrackIndex(index);
   const generatorParams = {
     decay_time: decayTimeForGeneratorType(generatorType),
+    gain: 1.0,
   };
 
   initialState.push({
@@ -75,7 +77,7 @@ export interface TrackInfo {
 export interface TrackParamPayload {
   trackId: number;
   paramId: string;
-  paramValue: string | number | boolean;
+  paramValue: number | boolean;
 }
 
 export interface SetDisplayNamePayload {
@@ -108,7 +110,8 @@ export const tracksSlice = createSlice({
       state.map((trackState: TrackState) => {
         if (trackState.id === action.payload.trackId) {
           const paramId = action.payload.paramId;
-          trackState.generatorParams[paramId] = action.payload.paramValue;
+          trackState.generatorParams[paramId as keyof AnyGeneratorParams] =
+            action.payload.paramValue as number;
         }
         return trackState;
       });

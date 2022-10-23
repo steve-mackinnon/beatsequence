@@ -1,27 +1,25 @@
-import {
-  Param,
-  getContinuousParamValue,
-  getDiscreteParamValue,
-} from "../../parameters";
-import { OscType, DecayTime } from "../sharedParams";
+export interface OscParams {
+  decay_time: number;
+  gain: number;
+  osc_type: OscillatorType;
+}
 
 export function makeBleep(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
   frequency: number,
-  parameters: Map<string, Param>
+  parameters: OscParams
 ): void {
-  const oscType = getDiscreteParamValue(OscType, parameters);
   const osc = new OscillatorNode(context, {
-    type: oscType as OscillatorType,
+    type: parameters.osc_type,
     frequency,
   });
 
-  const decayTime = getContinuousParamValue(DecayTime, parameters);
+  const decayTime = parameters.decay_time;
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.3, startTime);
+  ampEnvelope.gain.setValueAtTime(0.3 * parameters.gain, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
 
   osc.connect(ampEnvelope).connect(destination);

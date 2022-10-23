@@ -1,11 +1,13 @@
-import { Param, getContinuousParamValue } from "../../parameters";
-import { DecayTime } from "../sharedParams";
+export interface SnareParams {
+  decay_time: number;
+  gain: number;
+}
 
 export function makeSnare(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
-  parameters: Map<string, Param>
+  parameters: SnareParams
 ): void {
   const bufferSize = context.sampleRate * 0.2;
   const noiseBuffer = new AudioBuffer({
@@ -20,11 +22,13 @@ export function makeSnare(
     buffer: noiseBuffer,
   });
 
-  const decayTime = getContinuousParamValue(DecayTime, parameters);
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.7, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.00001, startTime + decayTime);
+  ampEnvelope.gain.setValueAtTime(0.7 * parameters.gain, startTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(
+    0.00001,
+    startTime + parameters.decay_time
+  );
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",

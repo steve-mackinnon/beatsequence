@@ -1,10 +1,13 @@
-import { Param, getContinuousParamValue } from "../../parameters";
-import { DecayTime } from "../sharedParams";
+export interface ClosedHHParams {
+  decay_time: number;
+  gain: number;
+}
+
 export function makeClosedHH(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
-  parameters: Map<string, Param>
+  parameters: ClosedHHParams
 ): void {
   const bufferSize = context.sampleRate * 0.07;
   const noiseBuffer = new AudioBuffer({
@@ -21,9 +24,11 @@ export function makeClosedHH(
 
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.5, startTime);
-  const decayTime = getContinuousParamValue(DecayTime, parameters);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.00001, startTime + decayTime);
+  ampEnvelope.gain.setValueAtTime(0.5 * parameters.gain, startTime);
+  ampEnvelope.gain.exponentialRampToValueAtTime(
+    0.00001,
+    startTime + parameters.decay_time
+  );
 
   const lowpass = new BiquadFilterNode(context, {
     type: "lowpass",

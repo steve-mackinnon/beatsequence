@@ -1,24 +1,25 @@
-import { getContinuousParamValue } from "../../parameters";
-import { DecayTime } from "../sharedParams";
+export interface KickParams {
+  decay_time: number;
+  gain: number;
+}
 
 export function makeKick(
   context: AudioContext,
   destination: AudioNode,
   startTime: number,
-  parameters: any
+  parameters: KickParams
 ): void {
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(1.2, startTime);
+  ampEnvelope.gain.setValueAtTime(1.2 * parameters.gain, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
 
   const osc = new OscillatorNode(context, {
     type: "sine",
     frequency: 60, // 60 Hz kick? sure
   });
-  const decayTime = getContinuousParamValue(DecayTime, parameters);
   // Amp envelope
   osc.connect(ampEnvelope).connect(destination);
   osc.start(startTime);
-  osc.stop(startTime + decayTime);
+  osc.stop(startTime + parameters.decay_time);
 }
