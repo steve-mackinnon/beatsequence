@@ -7,10 +7,8 @@ import { Stack, Box } from "@mui/system";
 
 export function TransportControls(): ReactElement {
   const dispatch = useAppDispatch();
-  const playing = useAppSelector(
-    (state) => state.persistedReducer.song.playing
-  );
-  const tempo = useAppSelector((state) => state.persistedReducer.song.tempo);
+  const playing = useAppSelector((state) => state.song.playing);
+  const tempo = useAppSelector((state) => state.song.tempo);
   const playRef = useRef<HTMLButtonElement>(null);
   const randRef = useRef<HTMLButtonElement>(null);
 

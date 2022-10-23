@@ -6,10 +6,8 @@ import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
 import { songListenerMiddleware } from "./features/song/songMiddleware";
 import { persistenceMiddleware } from "./features/persistence/persistenceMiddleware";
-import { combineReducers } from "redux";
 import {
   persistStore,
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -18,23 +16,21 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import persistCombineReducers from "redux-persist/es/persistCombineReducers";
 
-const rootReducer = combineReducers({
-  steps: stepsReducer,
-  tracks: tracksReducer,
-  song: songReducer,
-});
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
 };
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const rootReducer = persistCombineReducers(persistConfig, {
+  steps: stepsReducer,
+  tracks: tracksReducer,
+  song: songReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    persistedReducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

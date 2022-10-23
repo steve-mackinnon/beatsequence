@@ -25,9 +25,7 @@ const TrackButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 export function TrackControls(props: TrackControlsProps): ReactElement {
-  const muted = useAppSelector(
-    (state) => state.persistedReducer.tracks[props.trackIndex].muted
-  );
+  const muted = useAppSelector((state) => state.tracks[props.trackIndex].muted);
   const dispatch = useAppDispatch();
   const twoOnTheFloorRef = useRef<HTMLButtonElement>(null);
   const fourOnTheFloorRef = useRef<HTMLButtonElement>(null);

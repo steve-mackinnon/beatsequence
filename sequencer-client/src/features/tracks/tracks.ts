@@ -128,7 +128,7 @@ export function selectTrackHasCoarsePitchParam(
   state: RootState,
   trackId: number
 ): boolean {
-  const generatorType = state.persistedReducer.tracks[trackId].generatorType;
+  const generatorType = state.tracks[trackId].generatorType;
   switch (generatorType) {
     case GeneratorType.ClosedHH:
     case GeneratorType.Kick:

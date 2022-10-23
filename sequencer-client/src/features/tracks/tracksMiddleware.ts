@@ -22,7 +22,7 @@ tracksListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setTrackState(
       action.payload.trackId,
-      state.persistedReducer.tracks[action.payload.trackId]
+      state.tracks[action.payload.trackId]
     );
   },
 });
@@ -33,7 +33,7 @@ tracksListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setTrackState(
       action.payload.trackId,
-      state.persistedReducer.tracks[action.payload.trackId]
+      state.tracks[action.payload.trackId]
     );
   },
 });
@@ -44,7 +44,7 @@ tracksListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setTrackState(
       action.payload.trackId,
-      state.persistedReducer.tracks[action.payload.trackId]
+      state.tracks[action.payload.trackId]
     );
   },
 });

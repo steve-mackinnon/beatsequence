@@ -10,7 +10,7 @@ export interface TrackInfoProps {
 export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const dispatch = useAppDispatch();
   const trackName = useAppSelector(
-    (state) => state.persistedReducer.tracks[props.trackId].displayName
+    (state) => state.tracks[props.trackId].displayName
   );
 
   const updateTrackName = (name: string): string => {

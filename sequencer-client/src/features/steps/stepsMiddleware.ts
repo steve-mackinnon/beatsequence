@@ -61,10 +61,7 @@ stepsListenerMiddleware.startListening({
   actionCreator: enable,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(
-      action.payload,
-      state.persistedReducer.steps
-    );
+    sendStepStateToSequencerEngine(action.payload, state.steps);
   },
 });
 
@@ -72,10 +69,7 @@ stepsListenerMiddleware.startListening({
   actionCreator: disable,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(
-      action.payload,
-      state.persistedReducer.steps
-    );
+    sendStepStateToSequencerEngine(action.payload, state.steps);
   },
 });
 
@@ -83,10 +77,7 @@ stepsListenerMiddleware.startListening({
   actionCreator: setCoarsePitch,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sendStepStateToSequencerEngine(
-      action.payload,
-      state.persistedReducer.steps
-    );
+    sendStepStateToSequencerEngine(action.payload, state.steps);
   },
 });
 
@@ -96,7 +87,7 @@ stepsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     sendAllStepStatesToSequencerEngineForTrack(
       action.payload.trackId,
-      state.persistedReducer.steps
+      state.steps
     );
   },
 });
@@ -107,7 +98,7 @@ stepsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     sendAllStepStatesToSequencerEngineForTrack(
       action.payload.trackId,
-      state.persistedReducer.steps
+      state.steps
     );
   },
 });
@@ -118,13 +109,13 @@ stepsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     if (action.payload.trackId === undefined) {
       // Update all steps
-      state.persistedReducer.steps.forEach((step: StepState) => {
+      state.steps.forEach((step: StepState) => {
         sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
       });
     } else {
       sendAllStepStatesToSequencerEngineForTrack(
         action.payload.trackId,
-        state.persistedReducer.steps
+        state.steps
       );
     }
   },

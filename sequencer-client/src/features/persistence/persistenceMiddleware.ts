@@ -7,7 +7,7 @@ import {
 import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
 import { StepState } from "../steps/steps";
-import { defaultNameForGeneratorType, TrackState } from "../tracks/tracks";
+import { TrackState, defaultNameForGeneratorType } from "../tracks/tracks";
 
 export const persistenceMiddleware = createListenerMiddleware();
 
@@ -21,10 +21,10 @@ persistenceMiddleware.startListening({
   type: "persist/REHYDRATE",
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    state.persistedReducer.steps.forEach((step: StepState) => {
+    state.steps.forEach((step: StepState) => {
       sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
     });
-    state.persistedReducer.tracks.forEach((trackState: TrackState, index) => {
+    state.tracks.forEach((trackState: TrackState, index) => {
       if (trackState.displayName == null) {
         trackState.displayName = defaultNameForGeneratorType(
           trackState.generatorType
@@ -32,6 +32,6 @@ persistenceMiddleware.startListening({
       }
       sequencerEngine.setTrackState(index, trackState);
     });
-    sequencerEngine.tempo = state.persistedReducer.song.tempo;
+    sequencerEngine.tempo = state.song.tempo;
   },
 });

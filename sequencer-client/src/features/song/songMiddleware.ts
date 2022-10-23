@@ -9,7 +9,7 @@ songListenerMiddleware.startListening({
   actionCreator: togglePlayback,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    audioEngine.playing = state.persistedReducer.song.playing;
+    audioEngine.playing = state.song.playing;
   },
 });
 
@@ -17,6 +17,6 @@ songListenerMiddleware.startListening({
   actionCreator: adjustTempo,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sequencerEngine.tempo = state.persistedReducer.song.tempo;
+    sequencerEngine.tempo = state.song.tempo;
   },
 });

@@ -19,15 +19,9 @@ export interface SequencerStepProps {
 }
 export function SequencerStep(props: SequencerStepProps): ReactElement {
   const stepState = useAppSelector((state) =>
-    stepStateForTrackAndStep(
-      props.trackId,
-      props.stepIndex,
-      state.persistedReducer.steps
-    )
+    stepStateForTrackAndStep(props.trackId, props.stepIndex, state.steps)
   );
-  const trackState = useAppSelector(
-    (state) => state.persistedReducer.tracks[props.trackId]
-  );
+  const trackState = useAppSelector((state) => state.tracks[props.trackId]);
   const showCoarsePitchSlider = useAppSelector((state) =>
     selectTrackHasCoarsePitchParam(state, props.trackId)
   );
