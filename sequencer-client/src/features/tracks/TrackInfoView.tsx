@@ -43,6 +43,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
           updateTrackName(e);
         }
       }}
+      onFocus={(e: any) => e.target.select()}
       onAbort={(_: any) => setIsEditingName(false)}
       defaultValue={trackName}
       ref={trackNameEditRef}
@@ -52,7 +53,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     <p onDoubleClick={beginEditingTrackName}>{trackName}</p>
   );
   return (
-    <Grid container>
+    <Grid container minWidth={100} maxWidth={100}>
       <Grid xs={8}>{nameElement}</Grid>
     </Grid>
   );
