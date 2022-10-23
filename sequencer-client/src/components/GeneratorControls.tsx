@@ -1,78 +1,40 @@
 import React, { ReactElement } from "react";
-import { Slider, InputLabel, Grid } from "@mui/material";
-import { useAppSelector, useAppDispatch } from "../hooks";
 import { setGeneratorParam } from "../features/tracks/tracks";
-
-function logarithmicMap(value: number): number {
-  return Math.log(1.71828182845 * value + 1.0);
-}
-function calculateValue(value: number, min: number, max: number): number {
-  return min + logarithmicMap(value) * (max - min);
-}
-function formatLabel(value: number): string {
-  return value.toFixed(2);
-}
+import { ParamSlider } from "../common/ParamSlider";
 
 export interface GeneratorControlsProps {
   trackIndex: number;
 }
 
+const selectDecayTime = (state: any, trackIndex: number): number => {
+  const decayParam = state.tracks[trackIndex].generatorParams.decay_time;
+  if (decayParam != null && typeof decayParam === "number") {
+    return decayParam;
+  }
+  console.log(
+    `Couldn't find decay_time param for track ${trackIndex}... Using default value.`
+  );
+  return 0.15;
+};
+
 const MIN_DECAY_TIME = 0.01;
 const MAX_DECAY_TIME = 1.0;
 
 export function GeneratorControls(props: GeneratorControlsProps): ReactElement {
-  const decayTime = useAppSelector((state) => {
-    const decayParam =
-      state.tracks[props.trackIndex].generatorParams.decay_time;
-    if (decayParam != null && typeof decayParam === "number") {
-      return decayParam;
-    }
-    return 0.15;
-  });
-  const dispatch = useAppDispatch();
-
-  const onDecayTimeChange = (event: any): void => {
-    let newValue = event.target.value;
-    if (typeof newValue === "number") {
-      if (newValue < MIN_DECAY_TIME) {
-        newValue = MIN_DECAY_TIME;
-      } else if (newValue > MAX_DECAY_TIME) {
-        newValue = MAX_DECAY_TIME;
-      }
-      dispatch(
+  return (
+    <ParamSlider
+      valueSelector={(state) => selectDecayTime(state, props.trackIndex)}
+      valueDispatcher={(value) =>
         setGeneratorParam({
           trackId: props.trackIndex,
           paramId: "decay_time",
-          paramValue: newValue as number,
+          paramValue: value,
         })
-      );
-    }
-  };
-
-  const name = `Track ${props.trackIndex} Decay Time Slider`;
-
-  return (
-    <Grid container paddingLeft="12px" direction="row">
-      <Grid xs={3}>
-        <InputLabel htmlFor={`Track ${props.trackIndex} Decay Time Slider`}>
-          Decay
-        </InputLabel>
-      </Grid>
-      <Grid xs={8}>
-        <Slider
-          id={name}
-          step={0.0001}
-          min={0.0}
-          max={1.0}
-          scale={(value: number) =>
-            calculateValue(value, MIN_DECAY_TIME, MAX_DECAY_TIME)
-          }
-          onChange={onDecayTimeChange}
-          value={decayTime}
-          valueLabelDisplay="auto"
-          valueLabelFormat={formatLabel}
-        />
-      </Grid>
-    </Grid>
+      }
+      logScale={true}
+      label="Decay"
+      minValue={MIN_DECAY_TIME}
+      maxValue={MAX_DECAY_TIME}
+    />
   );
 }
