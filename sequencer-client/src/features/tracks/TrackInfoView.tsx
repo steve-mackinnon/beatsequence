@@ -38,8 +38,15 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     return name;
   };
   return (
-    <Grid container minWidth={100} maxWidth={100}>
-      <Grid xs={12}>
+    <Grid
+      container
+      minWidth={100}
+      maxWidth={100}
+      minHeight={54}
+      maxHeight={54}
+      marginRight={2}
+    >
+      <Grid xs={12} marginLeft={-2}>
         <EditableLabel
           onEditComplete={updateTrackName}
           getValue={() => trackName}

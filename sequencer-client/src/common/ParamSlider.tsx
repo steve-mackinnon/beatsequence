@@ -39,7 +39,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
     dispatch(props.valueDispatcher(newValue));
   };
   return (
-    <Grid container direction="row">
+    <Grid container direction="row" columnSpacing={2}>
       <Grid xs={4}>
         <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
       </Grid>

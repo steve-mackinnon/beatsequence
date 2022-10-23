@@ -1,5 +1,11 @@
 import React, { ReactElement, useState } from "react";
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
+import { styled } from "@mui/system";
+
+const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
+  minHeight: 15,
+  maxHeight: 15,
+}));
 
 export interface EditableLabelProps {
   onEditComplete: (value: string) => string;
@@ -23,7 +29,7 @@ export function EditableLabel(props: EditableLabelProps): ReactElement {
   };
 
   const nameElement = isEditing ? (
-    <TextField
+    <StyledTextField
       onBlur={updateValue}
       onKeyDown={(e: any) => {
         if (e.key === "Escape") {
@@ -41,7 +47,9 @@ export function EditableLabel(props: EditableLabelProps): ReactElement {
       size="small"
     />
   ) : (
-    <label onDoubleClick={beginEditing}>{value}</label>
+    <label onDoubleClick={beginEditing}>
+      <strong>{value}</strong>
+    </label>
   );
   return nameElement;
 }
