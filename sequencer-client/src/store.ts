@@ -29,10 +29,10 @@ const appReducer = persistCombineReducers(persistConfig, {
   song: songReducer,
 });
 
-// @ts-expect-error
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const rootReducer = (state, action) => {
+const rootReducer = (state: any, action: any) => {
   if (action.type === "song/resetState") {
+    localStorage.clear();
     return appReducer(undefined, action);
   }
   return appReducer(state, action);
