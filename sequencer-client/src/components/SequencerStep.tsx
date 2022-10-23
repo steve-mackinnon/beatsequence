@@ -108,6 +108,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         id={`Track ${props.trackId} Step ${props.stepIndex} Coarse Pitch`}
         min={-48}
         max={48}
+        size="small"
         onChange={onCoarsePitchChange}
         value={stepState.coarsePitch}
       />

@@ -10,7 +10,7 @@
 }
 
 input[type=range] {
-  width: 70px;
+  width: 56px;
 }
 
 input.SequencerStep[type=checkbox] {
@@ -25,8 +25,8 @@ input.SequencerStep[type=checkbox] {
   color: currentColor;
   border-style: solid;
   border-color: rgb(47, 47, 47);
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   transform: translateY(-0.075em);
   display: grid;
   place-content: center;
@@ -44,8 +44,8 @@ input.SequencerStep-playing[type=checkbox] {
   color: currentColor;
   border-style: solid;
   border-color: rgb(47, 47, 47);
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   transform: translateY(-0.075em);
   display: grid;
   place-content: center;
@@ -63,8 +63,8 @@ input.SequencerStep-muted-playing[type=checkbox] {
   color: currentColor;
   border-style: solid;
   border-color: rgb(30, 30, 30);
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   transform: translateY(-0.075em);
   display: grid;
   place-content: center;
@@ -81,8 +81,8 @@ input.SequencerStep-muted[type=checkbox] {
     color: currentColor;
     border-style: solid;
     border-color: rgb(30, 30, 30);
-    width: 70px;
-    height: 70px;
+    width: 56px;
+    height: 56px;
     transform: translateY(-0.075em);
     display: grid;
     place-content: center;
@@ -105,24 +105,24 @@ input.SequencerStep-muted-playing[type="checkbox"]:checked::before {
 }
 input.SequencerStep[type="checkbox"]::before {
   content: "";
-  width: 66px;
-  height: 66px;
+  width: 52px;
+  height: 52px;
 }
 
 input.SequencerStep-muted[type="checkbox"]::before {
   content: "";
-  width: 66px;
-  height: 66px;
+  width: 52px;
+  height: 52px;
 }
 
 input.SequencerStep-muted-playing[type="checkbox"]::before {
   content: "";
-  width: 66px;
-  height: 66px;
+  width: 52px;
+  height: 52px;
 }
 
 input.SequencerStep-playing[type="checkbox"]::before {
   content: "";
-  width: 66px;
-  height: 66px;
+  width: 52px;
+  height: 52px;
 }
