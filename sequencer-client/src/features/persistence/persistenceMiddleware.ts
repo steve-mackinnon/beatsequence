@@ -4,7 +4,7 @@ import {
   TypedStartListening,
   TypedAddListener,
 } from "@reduxjs/toolkit";
-import { sequencerEngine } from "../../engine";
+import { audioEngine, sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
 import { StepState } from "../steps/steps";
 import { TrackState, defaultNameForGeneratorType } from "../tracks/tracks";
@@ -17,21 +17,33 @@ export const addAppListener = addListener as TypedAddListener<
   AppDispatch
 >;
 
+const syncEntireState = (state: RootState): void => {
+  audioEngine.playing = state.song.playing;
+  state.steps.forEach((step: StepState) => {
+    sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+  });
+  state.tracks.forEach((trackState: TrackState, index) => {
+    if (trackState.displayName == null) {
+      trackState.displayName = defaultNameForGeneratorType(
+        trackState.generatorType
+      );
+    }
+    sequencerEngine.setTrackState(index, trackState);
+  });
+  sequencerEngine.tempo = state.song.tempo;
+};
 persistenceMiddleware.startListening({
   type: "persist/REHYDRATE",
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    state.steps.forEach((step: StepState) => {
-      sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
-    });
-    state.tracks.forEach((trackState: TrackState, index) => {
-      if (trackState.displayName == null) {
-        trackState.displayName = defaultNameForGeneratorType(
-          trackState.generatorType
-        );
-      }
-      sequencerEngine.setTrackState(index, trackState);
-    });
-    sequencerEngine.tempo = state.song.tempo;
+    syncEntireState(state);
+  },
+});
+
+persistenceMiddleware.startListening({
+  type: "song/resetState",
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    syncEntireState(state);
   },
 });

@@ -31,8 +31,9 @@ export const songSlice = createSlice({
       }
       state.tempo = tempo;
     },
+    resetState: (state, action) => {},
   },
 });
 
-export const { togglePlayback, adjustTempo } = songSlice.actions;
+export const { togglePlayback, adjustTempo, resetState } = songSlice.actions;
 export default songSlice.reducer;

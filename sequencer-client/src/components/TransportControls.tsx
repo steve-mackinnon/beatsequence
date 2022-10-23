@@ -1,7 +1,7 @@
 import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { randomize } from "../features/steps/steps";
-import { togglePlayback, adjustTempo } from "../features/song/song";
+import { togglePlayback, adjustTempo, resetState } from "../features/song/song";
 import { Button, Slider, Input, Typography } from "@mui/material";
 import { Stack, Box } from "@mui/system";
 
@@ -11,6 +11,7 @@ export function TransportControls(): ReactElement {
   const tempo = useAppSelector((state) => state.song.tempo);
   const playRef = useRef<HTMLButtonElement>(null);
   const randRef = useRef<HTMLButtonElement>(null);
+  const resetRef = useRef<HTMLButtonElement>(null);
 
   const onPlayStopClick = (event: any): void => {
     dispatch(togglePlayback({}));
@@ -22,6 +23,9 @@ export function TransportControls(): ReactElement {
         seed: Date.now().toString(),
       })
     );
+  };
+  const onInitClick = (event: any): void => {
+    dispatch(resetState({}));
   };
   const onTempoSliderChange = (event: any): void => {
     if (typeof event.target.value === "number") {
@@ -94,6 +98,13 @@ export function TransportControls(): ReactElement {
           ref={randRef}
         >
           Rand
+        </Button>
+        <Button
+          onClick={onInitClick}
+          ref={resetRef}
+          onFocus={(_) => blurOnFocus(resetRef)}
+        >
+          Reset
         </Button>
       </Stack>
     </Box>

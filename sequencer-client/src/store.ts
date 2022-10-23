@@ -23,11 +23,20 @@ const persistConfig = {
   version: 1,
   storage,
 };
-const rootReducer = persistCombineReducers(persistConfig, {
+const appReducer = persistCombineReducers(persistConfig, {
   steps: stepsReducer,
   tracks: tracksReducer,
   song: songReducer,
 });
+
+// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const rootReducer = (state, action) => {
+  if (action.type === "song/resetState") {
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
 
 export const store = configureStore({
   reducer: rootReducer,
