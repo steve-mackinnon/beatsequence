@@ -23,7 +23,8 @@ const MAX_DECAY_TIME = 1.0;
 export function GeneratorControls(props: GeneratorControlsProps): ReactElement {
   const decayTime = useAppSelector((state) => {
     const decayParam =
-      state.tracks[props.trackIndex].generatorParams.decay_time;
+      state.persistedReducer.tracks[props.trackIndex].generatorParams
+        .decay_time;
     if (decayParam != null && typeof decayParam === "number") {
       return decayParam;
     }
