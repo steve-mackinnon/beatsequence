@@ -15,7 +15,9 @@ function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
   return trackIndex;
 }
 
-function defaultNameForGeneratorType(generatorType: GeneratorType): string {
+export function defaultNameForGeneratorType(
+  generatorType: GeneratorType
+): string {
   switch (generatorType) {
     case GeneratorType.Kick:
       return "Kick";
