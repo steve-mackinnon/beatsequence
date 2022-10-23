@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useRef } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { Grid, TextField } from "@mui/material";
 import { setDisplayName } from "./tracks";
@@ -11,30 +11,42 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const trackName = useAppSelector(
     (state) => state.persistedReducer.tracks[props.trackId].displayName
   );
-  const updateTrackName = (_: any): void => {
-    if (nameEditFieldRef.current == null) {
+  const [isEditingName, setIsEditingName] = useState(false);
+  const trackNameEditRef = useRef<HTMLInputElement>(null);
+
+  const updateTrackName = (e: any): void => {
+    setIsEditingName(false);
+    const name = e.target.value;
+    if (name == null || name === "") {
       return;
     }
     dispatch(
       setDisplayName({
         trackId: props.trackId,
-        name: nameEditFieldRef.current.value,
+        name,
       })
     );
-    setIsEditingName(false);
   };
   const beginEditingTrackName = (_: any): void => {
     setIsEditingName(true);
   };
 
-  const nameEditFieldRef = useRef<HTMLInputElement>(null);
-  const [isEditingName, setIsEditingName] = useState(false);
-
   const nameElement = isEditingName ? (
     <TextField
-      ref={nameEditFieldRef}
       onBlur={updateTrackName}
-      value={trackName}
+      onKeyDown={(e: any) => {
+        if (e.key === "Escape") {
+          setIsEditingName(false);
+          return;
+        }
+        if (e.key === "Enter" || e.keyCode === 13) {
+          updateTrackName(e);
+        }
+      }}
+      onAbort={(_: any) => setIsEditingName(false)}
+      defaultValue={trackName}
+      ref={trackNameEditRef}
+      autoFocus
     />
   ) : (
     <p onDoubleClick={beginEditingTrackName}>{trackName}</p>
