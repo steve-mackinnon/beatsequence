@@ -62,6 +62,7 @@ export class SequencerEngine {
         muted: false,
         generatorType: GeneratorType.SineBleep,
         generatorParams: {},
+        displayName: "default",
       };
 
       this._stepChangedCallbacks[trackIndex] =

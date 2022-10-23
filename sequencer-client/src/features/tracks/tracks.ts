@@ -8,10 +8,26 @@ export interface TrackState {
   muted: boolean;
   generatorType: GeneratorType;
   generatorParams: any;
+  displayName: string;
 }
 
 function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
   return trackIndex;
+}
+
+function defaultNameForGeneratorType(generatorType: GeneratorType): string {
+  switch (generatorType) {
+    case GeneratorType.Kick:
+      return "Kick";
+    case GeneratorType.Snare:
+      return "Snare";
+    case GeneratorType.ClosedHH:
+      return "CH";
+    case GeneratorType.SineBleep:
+      return "Sine Pluck";
+    case GeneratorType.SquareBleep:
+      return "Square Pluck";
+  }
 }
 
 function decayTimeForGeneratorType(generatorType: GeneratorType): number {
@@ -43,6 +59,7 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
     muted: false,
     generatorType,
     generatorParams,
+    displayName: defaultNameForGeneratorType(generatorType),
   });
 }
 
@@ -57,6 +74,11 @@ export interface TrackParamPayload {
   trackId: number;
   paramId: string;
   paramValue: string | number | boolean;
+}
+
+export interface SetDisplayNamePayload {
+  trackId: number;
+  name: string;
 }
 
 export const tracksSlice = createSlice({
@@ -89,6 +111,14 @@ export const tracksSlice = createSlice({
         return trackState;
       });
     },
+    setDisplayName: (state, action: PayloadAction<SetDisplayNamePayload>) => {
+      state.map((trackState: TrackState) => {
+        if (trackState.id === action.payload.trackId) {
+          trackState.displayName = action.payload.name;
+        }
+        return trackState;
+      });
+    },
   },
 });
 
@@ -108,5 +138,6 @@ export function selectTrackHasCoarsePitchParam(
   }
 }
 
-export const { mute, unmute, setGeneratorParam } = tracksSlice.actions;
+export const { mute, unmute, setGeneratorParam, setDisplayName } =
+  tracksSlice.actions;
 export default tracksSlice.reducer;

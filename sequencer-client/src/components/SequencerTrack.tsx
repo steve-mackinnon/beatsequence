@@ -2,6 +2,7 @@ import { SequencerStep } from "./SequencerStep";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
+import { TrackInfoView } from "../features/tracks/TrackInfoView";
 export interface TrackInfo {
   trackIndex: number;
 }
@@ -24,6 +25,12 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
       trackIndex={props.trackIndex}
+    />
+  );
+  elements.unshift(
+    <TrackInfoView
+      key={`trackinfo${props.trackIndex}`}
+      trackId={props.trackIndex}
     />
   );
   return <div className="SequencerTrack">{elements}</div>;

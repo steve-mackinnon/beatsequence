@@ -25,6 +25,9 @@ persistenceMiddleware.startListening({
       sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
     });
     state.persistedReducer.tracks.forEach((trackState: TrackState, index) => {
+      if (trackState.displayName == null) {
+        trackState.displayName = "Default";
+      }
       sequencerEngine.setTrackState(index, trackState);
     });
     sequencerEngine.tempo = state.persistedReducer.song.tempo;
