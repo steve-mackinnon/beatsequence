@@ -39,12 +39,13 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
     dispatch(props.valueDispatcher(newValue));
   };
   return (
-    <Grid container paddingLeft="12px" direction="row">
-      <Grid xs={3}>
+    <Grid container direction="row">
+      <Grid xs={4}>
         <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
       </Grid>
       <Grid xs={8}>
         <Slider
+          size="small"
           step={0.0001}
           min={props.logScale != null && props.logScale ? 0.0 : props.minValue}
           max={props.logScale != null && props.logScale ? 1.0 : props.maxValue}

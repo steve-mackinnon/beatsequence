@@ -94,7 +94,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
           Rand
         </TrackButton>
       </Grid>
-      <Grid xs={12}>
+      <Grid paddingLeft={2} xs={12}>
         <GeneratorControls
           key={`gencontrols${props.trackIndex}`}
           trackIndex={props.trackIndex}
