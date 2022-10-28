@@ -46,13 +46,13 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       maxHeight={54}
       marginRight={2}
     >
-      <Grid xs={12} marginLeft={-2}>
+      <Grid mobile={12}>
         <EditableLabel
           onEditComplete={updateTrackName}
           getValue={() => trackName}
         />
       </Grid>
-      <Grid xs={12}>
+      <Grid mobile={12}>
         <ParamSlider
           minValue={MIN_GAIN}
           maxValue={MAX_GAIN}

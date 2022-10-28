@@ -3,6 +3,8 @@ import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
 import { TrackControls } from "./TrackControls";
 import { TrackInfoView } from "../features/tracks/TrackInfoView";
+import { Box } from "@mui/system";
+import { Grid } from "@mui/material";
 export interface TrackInfo {
   trackIndex: number;
 }
@@ -10,28 +12,49 @@ export interface TrackInfo {
 const NUM_STEPS = 16;
 
 export function SequencerTrack(props: TrackInfo): ReactElement {
-  const elements: ReactNode[] = Array(NUM_STEPS)
+  const steps: ReactNode[] = Array(NUM_STEPS)
     .fill(0)
     .map((_, index: number) => {
       return (
-        <SequencerStep
-          key={`step${index}`}
-          stepIndex={index}
-          trackId={props.trackIndex}
-        />
+        <Grid item key={index}>
+          <SequencerStep
+            key={`step${index}`}
+            stepIndex={index}
+            trackId={props.trackIndex}
+          />
+        </Grid>
       );
     });
-  elements.push(
+  const trackControls = (
     <TrackControls
       key={`trackcontrols${props.trackIndex}`}
       trackIndex={props.trackIndex}
     />
   );
-  elements.unshift(
+  const trackInfo = (
     <TrackInfoView
       key={`trackinfo${props.trackIndex}`}
       trackId={props.trackIndex}
     />
   );
-  return <div className="SequencerTrack">{elements}</div>;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexFlow: "row",
+      }}
+    >
+      {trackInfo}
+      <Grid
+        container
+        rowSpacing={0}
+        maxWidth={{ mobile: 290, tablet: 500, laptop: 900 }}
+        columns={{ xs: 8, sm: 8, md: 16, lg: 16, xl: 16 }}
+      >
+        {steps}
+      </Grid>
+      {trackControls}
+    </Box>
+  );
 }

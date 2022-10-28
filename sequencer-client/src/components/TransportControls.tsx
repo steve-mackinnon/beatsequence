@@ -54,7 +54,7 @@ export function TransportControls(): ReactElement {
   return (
     <Box
       sx={{
-        width: "1183px",
+        width: "100%",
         flexDirection: "row",
         display: "flex",
       }}

@@ -40,10 +40,10 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   };
   return (
     <Grid container direction="row" columnSpacing={2}>
-      <Grid xs={4}>
+      <Grid mobile={4}>
         <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
       </Grid>
-      <Grid xs={8}>
+      <Grid mobile={8}>
         <Slider
           size="small"
           step={0.0001}
