@@ -4,7 +4,7 @@
 }
 
 input[type=range] {
-  width: 56px;
+  width: 30px;
 }
 
 input.SequencerStep[type=checkbox] {
@@ -19,7 +19,7 @@ input.SequencerStep[type=checkbox] {
   color: currentColor;
   border-style: solid;
   border-color: rgb(47, 47, 47);
-  width: 56px;
+  width: 30px;
   height: 56px;
   transform: translateY(-0.075em);
   display: grid;
@@ -56,6 +56,6 @@ input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
 }
 input.SequencerStep[type="checkbox"]::before {
   content: "";
-  width: 52px;
+  width: 28px;
   height: 52px;
 }
