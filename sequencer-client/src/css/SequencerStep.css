@@ -21,8 +21,8 @@ input.SequencerStep[type=checkbox] {
   border-radius: 0;
   border-width: 0.5px;
   border-color: rgb(30, 30, 30);
-  width: 50px;
-  height: 50px;
+  width: 69px;
+  height: 54px;
   transform: translateY(-0.075em);
   display: flex;
   flex-grow: 1;
@@ -58,6 +58,6 @@ input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
 
 input.SequencerStep[type="checkbox"]::before {
   content: "";
-  width: 49px;
-  height: 49px;
+  width: 68px;
+  height: 53px;
 }

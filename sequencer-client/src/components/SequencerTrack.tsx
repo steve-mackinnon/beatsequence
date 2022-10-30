@@ -42,7 +42,6 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       <Grid
         container
         rowSpacing={0}
-        maxWidth={{ mobile: 245, tablet: 500, laptop: 900 }}
         columns={{ xs: 8, sm: 8, md: 16, lg: 16, xl: 16 }}
       >
         {steps}
