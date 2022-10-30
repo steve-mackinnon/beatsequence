@@ -57,6 +57,8 @@ export function TransportControls(): ReactElement {
         width: "100%",
         flexDirection: "row",
         display: "flex",
+        paddingLeft: "10px",
+        paddingRight: "10px",
       }}
     >
       <Stack direction="row" spacing={2} flex={1} alignItems="center">

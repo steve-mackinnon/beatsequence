@@ -1,7 +1,6 @@
 import { SequencerStep } from "./SequencerStep";
 import React, { ReactElement, ReactNode } from "react";
 import "../css/SequencerTrack.css";
-import { TrackControls } from "./TrackControls";
 import { TrackInfoView } from "../features/tracks/TrackInfoView";
 import { Box } from "@mui/system";
 import { Grid } from "@mui/material";
@@ -25,12 +24,6 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
         </Grid>
       );
     });
-  const trackControls = (
-    <TrackControls
-      key={`trackcontrols${props.trackIndex}`}
-      trackIndex={props.trackIndex}
-    />
-  );
   const trackInfo = (
     <TrackInfoView
       key={`trackinfo${props.trackIndex}`}
@@ -41,7 +34,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         flexFlow: "row",
       }}
     >
@@ -49,12 +42,11 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       <Grid
         container
         rowSpacing={0}
-        maxWidth={{ mobile: 290, tablet: 500, laptop: 900 }}
+        maxWidth={{ mobile: 245, tablet: 500, laptop: 900 }}
         columns={{ xs: 8, sm: 8, md: 16, lg: 16, xl: 16 }}
       >
         {steps}
       </Grid>
-      {trackControls}
     </Box>
   );
 }
