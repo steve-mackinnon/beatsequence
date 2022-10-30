@@ -2,6 +2,7 @@ import { SequencerTrack } from "./SequencerTrack";
 import React, { ReactElement } from "react";
 import { useAppSelector } from "../hooks";
 import "../css/SequencerTrack.css";
+import { Box } from "@mui/system";
 
 export function TrackList(): ReactElement {
   const numTracks = useAppSelector((state) => state.tracks.length);
@@ -10,5 +11,13 @@ export function TrackList(): ReactElement {
   const tracks = trackIndices.map((index: number) => (
     <SequencerTrack key={`track${index}`} trackIndex={index} />
   ));
-  return <div className="TrackList">{tracks}</div>;
+  return (
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      {tracks}
+    </Box>
+  );
 }
