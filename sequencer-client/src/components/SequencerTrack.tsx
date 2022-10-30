@@ -36,12 +36,14 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
         display: "flex",
         justifyContent: "flex-start",
         flexFlow: "row",
+        paddingBottom: "10px",
       }}
     >
       {trackInfo}
       <Grid
         container
         rowSpacing={0}
+        spacing={1}
         columns={{ xs: 8, sm: 8, md: 16, lg: 16, xl: 16 }}
       >
         {steps}
