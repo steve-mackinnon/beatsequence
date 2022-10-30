@@ -70,7 +70,7 @@ export function TransportControls(): ReactElement {
           max={200}
           onChange={onTempoSliderChange}
           sx={{
-            width: 100,
+            maxWidth: 100,
           }}
           value={tempo}
           size="small"
@@ -82,11 +82,12 @@ export function TransportControls(): ReactElement {
           size="small"
           aria-labelledby="tempo-slider"
           sx={{
-            width: 30,
+            minWidth: 28,
+            maxWidth: 28,
           }}
         />
       </Stack>
-      <Stack direction="row" spacing={2} alignItems="center" flex={2}>
+      <Stack direction="row" alignItems="center" flex={1}>
         <Button
           onClick={onPlayStopClick}
           onFocus={(_) => blurOnFocus(playRef)}

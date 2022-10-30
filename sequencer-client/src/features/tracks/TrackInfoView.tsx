@@ -56,7 +56,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       flexDirection="column"
       justifyContent="left"
       paddingRight={2}
-      width={100}
+      width={60}
     >
       <EditableLabel
         onEditComplete={updateTrackName}
