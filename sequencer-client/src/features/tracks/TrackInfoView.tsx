@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { Box, Button } from "@mui/material";
 import { SxProps } from "@mui/system";
@@ -42,12 +42,24 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const trackName = useAppSelector(
     (state) => state.tracks[props.trackId].displayName
   );
-  const onEnableTrackButtonPress = (e: any): void => {
+  const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
+
+  const dispatchMute = (): void => {
     if (muted) {
       dispatch(unmute({ trackId: props.trackId }));
       return;
     }
     dispatch(mute({ trackId: props.trackId }));
+  };
+  const onEnableTrackButtonTouchStart = (e: any): void => {
+    setReceivedTouchEvent(true);
+    dispatchMute();
+  };
+  const onEnableTrackButtonClick = (e: any): void => {
+    if (receivedTouchEvent) {
+      return;
+    }
+    dispatchMute();
   };
 
   const buttonStyle: SxProps = muted
@@ -68,7 +80,11 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       minWidth={60}
       maxWidth={60}
     >
-      <Button sx={buttonStyle} onClick={onEnableTrackButtonPress}>
+      <Button
+        sx={buttonStyle}
+        onTouchStart={onEnableTrackButtonTouchStart}
+        onClick={onEnableTrackButtonClick}
+      >
         {trackName}
       </Button>
 
