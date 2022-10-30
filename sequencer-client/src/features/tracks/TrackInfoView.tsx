@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { Box } from "@mui/material";
-import { setDisplayName } from "./tracks";
-import { EditableLabel } from "../../common/EditableLabel";
+import { Box, Button } from "@mui/material";
+import { SxProps } from "@mui/system";
+import { mute, unmute } from "./tracks";
 // import { ParamSlider } from "../../common/ParamSlider";
 
 // const MIN_GAIN = 0.0;
@@ -38,31 +38,40 @@ export interface TrackInfoProps {
 }
 export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const dispatch = useAppDispatch();
+  const muted = useAppSelector((state) => state.tracks[props.trackId].muted);
   const trackName = useAppSelector(
     (state) => state.tracks[props.trackId].displayName
   );
-
-  const updateTrackName = (name: string): string => {
-    dispatch(
-      setDisplayName({
-        trackId: props.trackId,
-        name,
-      })
-    );
-    return name;
+  const onEnableTrackButtonPress = (e: any): void => {
+    if (muted) {
+      dispatch(unmute({ trackId: props.trackId }));
+      return;
+    }
+    dispatch(mute({ trackId: props.trackId }));
   };
+
+  const buttonStyle: SxProps = muted
+    ? {
+        color: "rgb(153, 134, 100)",
+        maxWidth: "56px",
+        minWidth: "56px",
+      }
+    : {
+        color: "rgb(219, 218, 174)",
+        maxWidth: "56px",
+        minWidth: "56px",
+      };
   return (
     <Box
       flexDirection="column"
       justifyContent="left"
-      paddingRight={2}
       minWidth={60}
       maxWidth={60}
     >
-      <EditableLabel
-        onEditComplete={updateTrackName}
-        getValue={() => trackName}
-      />
+      <Button sx={buttonStyle} onClick={onEnableTrackButtonPress}>
+        {trackName}
+      </Button>
+
       {/* <ParamSlider
         minValue={MIN_GAIN}
         maxValue={MAX_GAIN}
