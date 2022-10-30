@@ -1,9 +1,10 @@
 import React, { ReactElement, useEffect } from "react";
-import { TransportControls } from "./TransportControls";
+import { FooterControls } from "./FooterControls";
 import "../css/MainInterface.css";
 import { TrackList } from "./TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
+import { HeaderControls } from "./HeaderControls";
 
 export default function MainInterface(): ReactElement {
   const dispatch = useAppDispatch();
@@ -21,8 +22,9 @@ export default function MainInterface(): ReactElement {
   });
   return (
     <div className="MainInterface">
-      <TransportControls />
+      <HeaderControls />
       <TrackList />
+      <FooterControls />
     </div>
   );
 }
