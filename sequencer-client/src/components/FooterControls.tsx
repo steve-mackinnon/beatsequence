@@ -34,7 +34,14 @@ export function FooterControls(): ReactElement {
   };
 
   return (
-    <Stack direction="row" justifyContent="center">
+    <Stack
+      direction="row"
+      justifyContent="center"
+      width="100%"
+      sx={{
+        backgroundColor: "#373738",
+      }}
+    >
       <Button
         onClick={onPlayStopClick}
         onFocus={(_) => blurOnFocus(playRef)}
