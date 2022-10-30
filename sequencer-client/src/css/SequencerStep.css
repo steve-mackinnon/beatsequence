@@ -4,7 +4,7 @@
 }
 
 input[type=range] {
-  width: 30px;
+  width: 45px;
 }
 
 input.SequencerStep[type=checkbox] {
@@ -27,13 +27,6 @@ input.SequencerStep[type=checkbox] {
   display: flex;
   flex-grow: 1;
   place-content: center;
-}
-
-@media (max-width: 660px) {
-  input.SequencerStep[type=checkbox] {
-    width: 30px;
-    height: 30px;  
-  }
 }
 
 input.SequencerStep.playing[type=checkbox] {
@@ -67,11 +60,4 @@ input.SequencerStep[type="checkbox"]::before {
   content: "";
   width: 49px;
   height: 49px;
-}
-
-@media (max-width: 660px) {
-  input.SequencerStep[type="checkbox"]::before {
-    width: 29px;
-    height: 29px;  
-  }
 }
