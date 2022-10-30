@@ -21,12 +21,19 @@ input.SequencerStep[type=checkbox] {
   border-radius: 0;
   border-width: 0.5px;
   border-color: rgb(30, 30, 30);
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   transform: translateY(-0.075em);
   display: flex;
   flex-grow: 1;
   place-content: center;
+}
+
+@media (max-width: 660px) {
+  input.SequencerStep[type=checkbox] {
+    width: 30px;
+    height: 30px;  
+  }
 }
 
 input.SequencerStep.playing[type=checkbox] {
@@ -55,8 +62,16 @@ input.SequencerStep.playing[type="checkbox"]:checked::before {
 input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
   background-color: rgb(121, 128, 18);
 }
+
 input.SequencerStep[type="checkbox"]::before {
   content: "";
-  width: 29px;
-  height: 29px;
+  width: 49px;
+  height: 49px;
+}
+
+@media (max-width: 660px) {
+  input.SequencerStep[type="checkbox"]::before {
+    width: 29px;
+    height: 29px;  
+  }
 }
