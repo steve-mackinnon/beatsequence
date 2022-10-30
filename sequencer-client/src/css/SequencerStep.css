@@ -37,7 +37,7 @@ input.SequencerStep[type=checkbox] {
 }
 
 input.SequencerStep.playing[type=checkbox] {
-  background-color: rgb(127, 135, 35);
+  background-color: rgb(166, 38, 115);
 }
 
 input.SequencerStep.muted.playing[type=checkbox] {
@@ -56,11 +56,11 @@ input.SequencerStep[type="checkbox"]:checked::before {
 }
 
 input.SequencerStep.playing[type="checkbox"]:checked::before {
-  background-color: rgb(211, 224, 31);
+  background-color: rgb(245, 50, 167);
 }
 
 input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
-  background-color: rgb(121, 128, 18);
+  background-color: rgb(110, 19, 74);
 }
 
 input.SequencerStep[type="checkbox"]::before {
