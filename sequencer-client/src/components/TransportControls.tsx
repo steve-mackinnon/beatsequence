@@ -54,9 +54,11 @@ export function TransportControls(): ReactElement {
   return (
     <Box
       sx={{
-        width: "1183px",
+        width: "100%",
         flexDirection: "row",
         display: "flex",
+        paddingLeft: "10px",
+        paddingRight: "10px",
       }}
     >
       <Stack direction="row" spacing={2} flex={1} alignItems="center">

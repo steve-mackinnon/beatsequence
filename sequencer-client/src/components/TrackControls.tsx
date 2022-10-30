@@ -57,8 +57,8 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
     );
   };
   return (
-    <Grid container rowSpacing={1} maxHeight={80}>
-      <Grid xs={3}>
+    <Grid container rowSpacing={1} maxHeight={80} maxWidth={200}>
+      <Grid mobile={3}>
         <TrackButton
           onClick={onMuteStateChanged}
           ref={muteRef}
@@ -67,7 +67,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
           {muted ? "Unmute" : "Mute"}
         </TrackButton>
       </Grid>
-      <Grid xs={3}>
+      <Grid mobile={3}>
         <TrackButton
           ref={fourOnTheFloorRef}
           onFocus={(_) => blurOnFocus(fourOnTheFloorRef)}
@@ -76,7 +76,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
           4x4
         </TrackButton>
       </Grid>
-      <Grid xs={3}>
+      <Grid mobile={3}>
         <TrackButton
           ref={twoOnTheFloorRef}
           onFocus={(_) => blurOnFocus(twoOnTheFloorRef)}
@@ -85,7 +85,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
           2x4
         </TrackButton>
       </Grid>
-      <Grid xs={3}>
+      <Grid mobile={3}>
         <TrackButton
           ref={randomizeRef}
           onFocus={(_) => blurOnFocus(randomizeRef)}
@@ -94,7 +94,7 @@ export function TrackControls(props: TrackControlsProps): ReactElement {
           Rand
         </TrackButton>
       </Grid>
-      <Grid paddingLeft={2} xs={12}>
+      <Grid paddingLeft={2} mobile={12}>
         <GeneratorControls
           key={`gencontrols${props.trackIndex}`}
           trackIndex={props.trackIndex}
