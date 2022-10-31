@@ -15,7 +15,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
     .fill(0)
     .map((_, index: number) => {
       return (
-        <Grid item key={index}>
+        <Grid item key={index} mobile={1} tablet={1} desktop={1}>
           <SequencerStep
             key={`step${index}`}
             stepIndex={index}
@@ -44,7 +44,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
         container
         rowSpacing={0}
         spacing={1}
-        columns={{ xs: 8, sm: 8, md: 16, lg: 16, xl: 16 }}
+        columns={{ mobile: 4, tablet: 8, desktop: 16 }}
       >
         {steps}
       </Grid>
