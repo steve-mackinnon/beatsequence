@@ -1,7 +1,7 @@
-import { SequencerTrack } from "./SequencerTrack";
 import React, { ReactElement } from "react";
-import { useAppSelector } from "../hooks";
-import "../css/SequencerTrack.css";
+import { TrackContainer } from "./TrackContainer";
+import { useAppSelector } from "../../hooks";
+import "../../css/SequencerTrack.css";
 import { Box } from "@mui/system";
 
 export function TrackList(): ReactElement {
@@ -9,7 +9,7 @@ export function TrackList(): ReactElement {
 
   const trackIndices = Array.from(Array(numTracks).keys());
   const tracks = trackIndices.map((index: number) => (
-    <SequencerTrack key={`track${index}`} trackIndex={index} />
+    <TrackContainer key={`track${index}`} trackIndex={index} />
   ));
   return (
     <Box

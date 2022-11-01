@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from "react";
 import { FooterControls } from "./FooterControls";
 import "../css/MainInterface.css";
-import { TrackList } from "./TrackList";
+import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";

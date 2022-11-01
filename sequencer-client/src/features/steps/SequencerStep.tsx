@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { sequencerEngine } from "../engine/sequencerEngine";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import { sequencerEngine } from "../../engine/sequencerEngine";
 import Slider from "@mui/material/Slider";
 import InputLabel from "@mui/material/InputLabel";
 import {
@@ -8,10 +8,9 @@ import {
   disable,
   stepStateForTrackAndStep,
   setCoarsePitch,
-} from "../features/steps/steps";
-import { selectTrackHasCoarsePitchParam } from "../features/tracks/tracks";
-
-import "../css/SequencerStep.css";
+} from "./steps";
+import { selectTrackHasCoarsePitchParam } from "../tracks/tracks";
+import "../../css/SequencerStep.css";
 
 export interface SequencerStepProps {
   stepIndex: number;
