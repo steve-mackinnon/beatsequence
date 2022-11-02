@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import stepsReducer from "./features/steps/steps";
 import tracksReducer from "./features/tracks/tracks";
 import songReducer from "./features/song/song";
@@ -16,26 +16,35 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import persistCombineReducers from "redux-persist/es/persistCombineReducers";
+import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+import persistReducer from "redux-persist/es/persistReducer";
 
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
-const appReducer = persistCombineReducers(persistConfig, {
+const reducers = combineReducers({
   steps: stepsReducer,
   tracks: tracksReducer,
   song: songReducer,
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const rootReducer = (state: any, action: any) => {
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
+const persistedReducer = persistReducer<ReturnType<typeof reducers>>(
+  persistConfig,
+  reducers
+);
+
+const rootReducer = (
+  state: any,
+  action: any
+): ReturnType<typeof persistedReducer> => {
   if (action.type === "song/resetState") {
     localStorage.clear();
-    return appReducer(undefined, action);
+    return persistedReducer(undefined, action);
   }
-  return appReducer(state, action);
+  return persistedReducer(state, action);
 };
 
 export const store = configureStore({
@@ -55,9 +64,10 @@ export const store = configureStore({
     ),
 });
 
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+
 export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
