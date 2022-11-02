@@ -39,8 +39,10 @@ export function TrackContainer(props: TrackInfo): ReactElement {
           desktop: "row",
         },
         paddingBottom: "10px",
+        paddingLeft: "15px",
+        paddingTop: "10px",
         height: {
-          mobile: showCoarsePitchSlider ? 444 : 250,
+          mobile: showCoarsePitchSlider ? 500 : 250,
           tablet: showCoarsePitchSlider ? 218 : 126,
           desktop: showCoarsePitchSlider ? 115 : 64,
         },
