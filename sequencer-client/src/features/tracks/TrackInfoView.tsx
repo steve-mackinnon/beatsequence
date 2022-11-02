@@ -45,12 +45,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         minWidth: "56px",
       };
   return (
-    <Box
-      flexDirection="column"
-      justifyContent="left"
-      minWidth={60}
-      maxWidth={60}
-    >
+    <Box flexDirection="column" justifyContent="right">
       <Button
         sx={buttonStyle}
         onTouchStart={onEnableTrackButtonTouchStart}

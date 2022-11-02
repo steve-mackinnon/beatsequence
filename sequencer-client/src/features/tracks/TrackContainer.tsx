@@ -28,7 +28,7 @@ export function TrackContainer(props: TrackInfo): ReactElement {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "flex-start",
+        justifyContent: "space-evenly",
         flexFlow: "row",
         paddingBottom: "10px",
       }}
