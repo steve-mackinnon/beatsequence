@@ -2,7 +2,7 @@ import { TrackState } from "../features/tracks/tracks";
 import { GeneratorType } from "../features/tracks/GeneratorType";
 import { AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
-import { OscParams } from "../generators";
+import { KickParams, OscParams } from "../generators";
 
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
@@ -62,7 +62,7 @@ export class SequencerEngine {
         id: trackIndex,
         muted: false,
         generatorType: GeneratorType.SineBleep,
-        generatorParams: { decay_time: 0.1, gain: 1.0 },
+        generatorParams: { decayTime: 0.1, gain: 1.0 },
         displayName: "default",
       };
 
@@ -160,7 +160,10 @@ export class SequencerEngine {
       }
       switch (trackState.generatorType) {
         case GeneratorType.Kick:
-          this._audioEngine.scheduleKick(time, trackState.generatorParams);
+          this._audioEngine.scheduleKick(
+            time,
+            trackState.generatorParams as KickParams
+          );
           break;
         case GeneratorType.Snare:
           this._audioEngine.scheduleSnare(time, trackState.generatorParams);

@@ -1,5 +1,5 @@
 export interface OscParams {
-  decay_time: number;
+  decayTime: number;
   gain: number;
   osc_type: OscillatorType;
 }
@@ -16,7 +16,7 @@ export function makeBleep(
     frequency,
   });
 
-  const decayTime = parameters.decay_time;
+  const decayTime = parameters.decayTime;
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(0.3 * parameters.gain, startTime);

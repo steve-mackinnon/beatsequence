@@ -1,5 +1,5 @@
 export interface SnareParams {
-  decay_time: number;
+  decayTime: number;
   gain: number;
 }
 
@@ -27,7 +27,7 @@ export function makeSnare(
   ampEnvelope.gain.setValueAtTime(0.7 * parameters.gain, startTime);
   ampEnvelope.gain.exponentialRampToValueAtTime(
     0.00001,
-    startTime + parameters.decay_time
+    startTime + parameters.decayTime
   );
 
   const lowpass = new BiquadFilterNode(context, {

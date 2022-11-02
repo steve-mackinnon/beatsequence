@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sequencerEngine } from "../../engine";
 import { GeneratorType } from "./GeneratorType";
 import { RootState } from "../../store";
-import { AnyGeneratorParams } from "../../generators";
+import { AnyGeneratorParams, KickParams } from "../../generators";
 
 export interface TrackState {
   id: number;
@@ -10,6 +10,71 @@ export interface TrackState {
   generatorType: GeneratorType;
   generatorParams: AnyGeneratorParams;
   displayName: string;
+}
+
+export interface ParamInfo {
+  name: string;
+  displayName: string;
+  min: number;
+  max: number;
+  logScale: boolean;
+  valueSelector: (state: RootState, trackId: number) => number;
+}
+
+function getDecayTimeParamInfo(trackId: number): ParamInfo {
+  return {
+    name: "decayTime",
+    displayName: "Decay",
+    min: 0.0001,
+    max: 2.0,
+    logScale: true,
+    valueSelector: (state: RootState, trackId: number) =>
+      state.tracks[trackId].generatorParams.decayTime,
+  };
+}
+
+function getGainParamInfo(trackId: number): ParamInfo {
+  return {
+    name: "gain",
+    displayName: "Gain",
+    min: 0.0,
+    max: 2.0,
+    logScale: false,
+    valueSelector: (state: RootState, trackId: number) =>
+      state.tracks[trackId].generatorParams.gain,
+  };
+}
+
+function getCommonParamsForTrack(trackId: number): ParamInfo[] {
+  return [getGainParamInfo(trackId), getDecayTimeParamInfo(trackId)];
+}
+
+export function paramInfoForGeneratorType(
+  generatorType: GeneratorType
+): ParamInfo[] {
+  switch (generatorType) {
+    case GeneratorType.Kick:
+      return getCommonParamsForTrack(GeneratorType.Kick).concat({
+        name: "transientTime",
+        displayName: "Punch",
+        min: 0.01,
+        max: 0.4,
+        logScale: false,
+        valueSelector: (state: RootState, trackId: number) => {
+          const kickParams = state.tracks[trackId]
+            .generatorParams as KickParams;
+          return kickParams.transientTime;
+        },
+      });
+    case GeneratorType.Snare:
+      return getCommonParamsForTrack(GeneratorType.Snare);
+    case GeneratorType.ClosedHH:
+      return getCommonParamsForTrack(GeneratorType.ClosedHH);
+    case GeneratorType.SineBleep:
+      return getCommonParamsForTrack(GeneratorType.SineBleep);
+    case GeneratorType.SquareBleep:
+      return getCommonParamsForTrack(GeneratorType.SquareBleep);
+  }
 }
 
 function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
@@ -54,8 +119,9 @@ const initialState: TrackState[] = new Array<TrackState>();
 for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
   const generatorType = generatorTypeForTrackIndex(index);
   const generatorParams = {
-    decay_time: decayTimeForGeneratorType(generatorType),
+    decayTime: decayTimeForGeneratorType(generatorType),
     gain: 1.0,
+    transientTime: 0.2,
   };
 
   initialState.push({

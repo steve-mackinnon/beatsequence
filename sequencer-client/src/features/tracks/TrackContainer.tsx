@@ -4,7 +4,10 @@ import { TrackParamsView } from "./TrackParamsView";
 import { TrackInfoView } from "./TrackInfoView";
 import { Box } from "@mui/system";
 import { useAppSelector } from "../../hooks";
-import { selectTrackHasCoarsePitchParam } from "./tracks";
+import {
+  selectTrackHasCoarsePitchParam,
+  paramInfoForGeneratorType,
+} from "./tracks";
 
 export interface TrackInfo {
   trackIndex: number;
@@ -25,7 +28,10 @@ export function TrackContainer(props: TrackInfo): ReactElement {
     selectedView === "sequencer" ? (
       <SequencerTrack trackIndex={props.trackIndex} />
     ) : (
-      <TrackParamsView trackId={props.trackIndex} />
+      <TrackParamsView
+        trackId={props.trackIndex}
+        params={paramInfoForGeneratorType(props.trackIndex)}
+      />
     );
   return (
     <Box

@@ -1,5 +1,6 @@
 export interface KickParams {
-  decay_time: number;
+  decayTime: number;
+  transientTime: number;
   gain: number;
 }
 
@@ -12,7 +13,10 @@ export function makeKick(
   const ampEnvelope = new GainNode(context);
   ampEnvelope.gain.cancelScheduledValues(startTime);
   ampEnvelope.gain.setValueAtTime(1.2 * parameters.gain, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
+  ampEnvelope.gain.exponentialRampToValueAtTime(
+    0.01,
+    startTime + parameters.transientTime
+  );
 
   const osc = new OscillatorNode(context, {
     type: "sine",
@@ -21,5 +25,5 @@ export function makeKick(
   // Amp envelope
   osc.connect(ampEnvelope).connect(destination);
   osc.start(startTime);
-  osc.stop(startTime + parameters.decay_time);
+  osc.stop(startTime + parameters.decayTime);
 }
