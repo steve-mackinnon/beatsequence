@@ -59,10 +59,6 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
             value: number | number[],
             _activeThumb: number
           ) => onChange(value as number)}
-          onChangeCommitted={(
-            _event: React.SyntheticEvent | Event,
-            value_: number | number[]
-          ) => {}}
           value={value}
           valueLabelDisplay="auto"
           valueLabelFormat={formatValueLabel}
