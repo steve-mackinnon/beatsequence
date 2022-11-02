@@ -29,13 +29,18 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   const onChange = (event: any): void => {
     let newValue = event.target.value;
     if (typeof newValue !== "number") {
+      console.log("onChange failed - NaN");
       return;
     }
     if (newValue < props.minValue) {
+      console.log(`onChange < min: ${newValue}`);
       newValue = props.minValue;
     } else if (newValue > props.maxValue) {
+      console.log(`onChange > max: ${newValue}`);
       newValue = props.maxValue;
     }
+    const nv = newValue as number;
+    console.log(`onChange: ${nv}`);
     dispatch(props.valueDispatcher(newValue));
   };
   return (
