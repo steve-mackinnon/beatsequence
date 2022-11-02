@@ -4,15 +4,12 @@ import { GeneratorType } from "./GeneratorType";
 import { RootState } from "../../store";
 import { AnyGeneratorParams } from "../../generators";
 
-export type TrackView = "sequencer" | "params";
-
 export interface TrackState {
   id: number;
   muted: boolean;
   generatorType: GeneratorType;
   generatorParams: AnyGeneratorParams;
   displayName: string;
-  selectedView: TrackView;
 }
 
 function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
@@ -67,7 +64,6 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
     generatorType,
     generatorParams,
     displayName: defaultNameForGeneratorType(generatorType),
-    selectedView: "sequencer",
   });
 }
 
@@ -87,11 +83,6 @@ export interface TrackParamPayload {
 export interface SetDisplayNamePayload {
   trackId: number;
   name: string;
-}
-
-export interface TrackViewInfo {
-  trackId: number;
-  currentView: TrackView;
 }
 
 export const tracksSlice = createSlice({
@@ -133,14 +124,6 @@ export const tracksSlice = createSlice({
         return trackState;
       });
     },
-    setCurrentView: (state, action: PayloadAction<TrackViewInfo>) => {
-      state.map((trackState: TrackState) => {
-        if (trackState.id === action.payload.trackId) {
-          trackState.selectedView = action.payload.currentView;
-        }
-        return trackState;
-      });
-    },
   },
 });
 
@@ -160,11 +143,6 @@ export function selectTrackHasCoarsePitchParam(
   }
 }
 
-export const {
-  mute,
-  unmute,
-  setGeneratorParam,
-  setDisplayName,
-  setCurrentView,
-} = tracksSlice.actions;
+export const { mute, unmute, setGeneratorParam, setDisplayName } =
+  tracksSlice.actions;
 export default tracksSlice.reducer;

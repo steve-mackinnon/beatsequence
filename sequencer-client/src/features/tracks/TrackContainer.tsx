@@ -10,9 +10,7 @@ export interface TrackInfo {
 }
 
 export function TrackContainer(props: TrackInfo): ReactElement {
-  const selectedView = useAppSelector(
-    (state) => state.tracks[props.trackIndex].selectedView
-  );
+  const selectedView = useAppSelector((state) => state.song.selectedView);
 
   const trackInfo = (
     <TrackInfoView

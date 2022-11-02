@@ -5,6 +5,7 @@ import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";
+import { ViewSelector } from "./ViewSelector";
 
 export default function MainInterface(): ReactElement {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ export default function MainInterface(): ReactElement {
       <HeaderControls />
       <TrackList />
       <GlobalControls />
+      <ViewSelector />
     </div>
   );
 }

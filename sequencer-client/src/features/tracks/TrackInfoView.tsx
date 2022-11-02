@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { Box, Button } from "@mui/material";
 import { SxProps } from "@mui/system";
-import { mute, unmute, setCurrentView } from "./tracks";
+import { mute, unmute } from "./tracks";
 
 export interface TrackInfoProps {
   trackId: number;
@@ -12,9 +12,6 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const muted = useAppSelector((state) => state.tracks[props.trackId].muted);
   const trackName = useAppSelector(
     (state) => state.tracks[props.trackId].displayName
-  );
-  const selectedView = useAppSelector(
-    (state) => state.tracks[props.trackId].selectedView
   );
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
@@ -34,18 +31,6 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       return;
     }
     dispatchMute();
-  };
-
-  const onViewToggleButtonClick = (e: any): void => {
-    if (selectedView === "sequencer") {
-      dispatch(
-        setCurrentView({ trackId: props.trackId, currentView: "params" })
-      );
-    } else {
-      dispatch(
-        setCurrentView({ trackId: props.trackId, currentView: "sequencer" })
-      );
-    }
   };
 
   const buttonStyle: SxProps = muted
@@ -72,9 +57,6 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         onClick={onEnableTrackButtonClick}
       >
         {trackName}
-      </Button>
-      <Button onClick={onViewToggleButtonClick}>
-        {selectedView === "sequencer" ? "Params" : "Seq"}
       </Button>
     </Box>
   );
