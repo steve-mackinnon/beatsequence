@@ -18,7 +18,7 @@ export const addAppListener = addListener as TypedAddListener<
 >;
 
 const syncEntireState = (state: RootState): void => {
-  audioEngine.playing = state.song.playing;
+  audioEngine.playing = false;
   state.steps.forEach((step: StepState) => {
     sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
   });
