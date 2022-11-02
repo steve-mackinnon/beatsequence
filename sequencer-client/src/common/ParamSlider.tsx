@@ -27,6 +27,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   const dispatch = useAppDispatch();
 
   const onChange = (event: any): void => {
+    console.log(event);
     let newValue = event.target.value;
     if (typeof newValue !== "number") {
       console.log("onChange failed - NaN");
