@@ -15,7 +15,6 @@ export function TrackContainer(props: TrackInfo): ReactElement {
   const showCoarsePitchSlider = useAppSelector((state) =>
     selectTrackHasCoarsePitchParam(state, props.trackIndex)
   );
-  console.log(showCoarsePitchSlider);
   const trackInfo = (
     <TrackInfoView
       key={`trackinfo${props.trackIndex}`}
