@@ -48,14 +48,14 @@ export function GlobalControls(): ReactElement {
         onFocus={(_) => blurOnFocus(randRef)}
         ref={randRef}
       >
-        <Casino />
+        <Casino color="action" />
       </IconButton>
       <Button
         onClick={onInitClick}
         ref={resetRef}
         onFocus={(_) => blurOnFocus(resetRef)}
       >
-        <RestartAlt />
+        <RestartAlt color="action" />
       </Button>
       <IconButton
         onClick={onPlayStopClick}
