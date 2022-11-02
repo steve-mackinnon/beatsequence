@@ -2,7 +2,13 @@ import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { randomize } from "../features/steps/steps";
 import { togglePlayback, resetState } from "../features/song/song";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import {
+  PlayArrow,
+  Pause,
+  Casino,
+  RestartAltTwoTone,
+} from "@mui/icons-material";
 import { Stack } from "@mui/system";
 
 export function FooterControls(): ReactElement {
@@ -42,27 +48,27 @@ export function FooterControls(): ReactElement {
         backgroundColor: "#373738",
       }}
     >
-      <Button
-        onClick={onPlayStopClick}
-        onFocus={(_) => blurOnFocus(playRef)}
-        ref={playRef}
-      >
-        {playing ? "Stop" : "Play"}
-      </Button>
-      <Button
+      <IconButton
         onClick={onRandomizeClick}
         onFocus={(_) => blurOnFocus(randRef)}
         ref={randRef}
       >
-        Rand
-      </Button>
+        <Casino />
+      </IconButton>
       <Button
         onClick={onInitClick}
         ref={resetRef}
         onFocus={(_) => blurOnFocus(resetRef)}
       >
-        Reset
+        <RestartAltTwoTone />
       </Button>
+      <IconButton
+        onClick={onPlayStopClick}
+        onFocus={(_) => blurOnFocus(playRef)}
+        ref={playRef}
+      >
+        {playing ? <Pause /> : <PlayArrow />}
+      </IconButton>
     </Stack>
   );
 }
