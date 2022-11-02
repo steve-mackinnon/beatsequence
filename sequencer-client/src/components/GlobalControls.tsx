@@ -3,15 +3,10 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { randomize } from "../features/steps/steps";
 import { togglePlayback, resetState } from "../features/song/song";
 import { Button, IconButton } from "@mui/material";
-import {
-  PlayArrow,
-  Pause,
-  Casino,
-  RestartAltTwoTone,
-} from "@mui/icons-material";
+import { PlayArrow, Pause, Casino, RestartAlt } from "@mui/icons-material";
 import { Stack } from "@mui/system";
 
-export function FooterControls(): ReactElement {
+export function GlobalControls(): ReactElement {
   const dispatch = useAppDispatch();
   const playing = useAppSelector((state) => state.song.playing);
   const playRef = useRef<HTMLButtonElement>(null);
@@ -60,7 +55,7 @@ export function FooterControls(): ReactElement {
         ref={resetRef}
         onFocus={(_) => blurOnFocus(resetRef)}
       >
-        <RestartAltTwoTone />
+        <RestartAlt />
       </Button>
       <IconButton
         onClick={onPlayStopClick}

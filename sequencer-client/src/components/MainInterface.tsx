@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import { FooterControls } from "./FooterControls";
+import { GlobalControls } from "./GlobalControls";
 import "../css/MainInterface.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
@@ -24,7 +24,7 @@ export default function MainInterface(): ReactElement {
     <div className="MainInterface">
       <HeaderControls />
       <TrackList />
-      <FooterControls />
+      <GlobalControls />
     </div>
   );
 }
