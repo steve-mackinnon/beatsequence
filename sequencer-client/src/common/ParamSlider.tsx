@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Slider, InputLabel, Grid } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { RootState } from "../store";
@@ -25,8 +25,17 @@ export interface ParamSliderProps {
 export function ParamSlider(props: ParamSliderProps): ReactElement {
   const value = useAppSelector(props.valueSelector);
   const dispatch = useAppDispatch();
+  const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
   const onChange = (event: any): void => {
+    if (event instanceof TouchEvent) {
+      setReceivedTouchEvent(true);
+    } else if (event instanceof MouseEvent && receivedTouchEvent) {
+      // Hack to work around a MUI Slider bug in some mobile browsers where a
+      // mouse event is received after touch moved events that resets the
+      // slider to the initial value before the interaction began.
+      return;
+    }
     console.log(event);
     let newValue = event.target.value;
     if (typeof newValue !== "number") {
