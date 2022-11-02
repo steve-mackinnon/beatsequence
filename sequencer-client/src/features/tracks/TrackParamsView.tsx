@@ -39,12 +39,15 @@ export function TrackParamsView(props: TrackParamsViewProps): ReactElement {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexFlow: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-end",
+        flexFlow: {
+          mobile: "column",
+          tablet: "column",
+          desktop: "row",
+        },
         paddingBottom: "10px",
-        flexGrow: 1,
-        paddingRight: 10,
+        flex: 1,
       }}
     >
       <ParamSlider

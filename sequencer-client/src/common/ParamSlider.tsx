@@ -40,7 +40,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   };
   return (
     <Grid container direction="row" columnSpacing={2} width={200}>
-      <Grid mobile={4} tablet={4} desktop={4}>
+      <Grid mobile={3} tablet={3} desktop={3}>
         <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
       </Grid>
       <Grid mobile={8} tablet={8} desktop={8}>
@@ -59,6 +59,9 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
           value={value}
           valueLabelDisplay="auto"
           valueLabelFormat={formatValueLabel}
+          sx={{
+            maxWidth: "120px",
+          }}
         />
       </Grid>
     </Grid>

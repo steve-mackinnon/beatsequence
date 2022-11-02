@@ -25,7 +25,7 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
     });
   return (
     <Grid
-      width="82%"
+      flex={1}
       container
       rowSpacing={0}
       spacing={1}
