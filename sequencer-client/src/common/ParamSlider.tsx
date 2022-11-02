@@ -26,22 +26,16 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   const value = useAppSelector(props.valueSelector);
   const dispatch = useAppDispatch();
 
-  const onChange = (event: any): void => {
-    let newValue = event.target.value;
-    if (typeof newValue !== "number") {
-      console.log("onChange failed - NaN");
-      return;
+  const onChange = (value: number): void => {
+    if (value < props.minValue) {
+      console.log(`onChange < min: ${value}`);
+      value = props.minValue;
+    } else if (value > props.maxValue) {
+      console.log(`onChange > max: ${value}`);
+      value = props.maxValue;
     }
-    if (newValue < props.minValue) {
-      console.log(`onChange < min: ${newValue}`);
-      newValue = props.minValue;
-    } else if (newValue > props.maxValue) {
-      console.log(`onChange > max: ${newValue}`);
-      newValue = props.maxValue;
-    }
-    const nv = newValue as number;
-    console.log(`onChange: ${nv}`);
-    dispatch(props.valueDispatcher(newValue));
+    console.log(`onChange: ${value}`);
+    dispatch(props.valueDispatcher(value));
   };
   return (
     <Grid container direction="row" columnSpacing={2} width={200}>
@@ -60,7 +54,11 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
             }
             return value;
           }}
-          onChange={onChange}
+          onChange={(
+            _e: Event,
+            value: number | number[],
+            _activeThumb: number
+          ) => onChange(value as number)}
           value={value}
           valueLabelDisplay="auto"
           valueLabelFormat={formatValueLabel}
