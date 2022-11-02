@@ -35,8 +35,8 @@ export function TrackContainer(props: TrackInfo): ReactElement {
         paddingBottom: "10px",
       }}
     >
-      {trackInfo}
       {trackContent}
+      {trackInfo}
     </Box>
   );
 }
