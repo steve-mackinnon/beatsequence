@@ -1,8 +1,9 @@
 import React, { ReactElement, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { Box, Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { SxProps } from "@mui/system";
 import { mute, unmute } from "./tracks";
+import { TrackMenu } from "./TrackMenu";
 
 export interface TrackInfoProps {
   trackId: number;
@@ -45,7 +46,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         minWidth: "56px",
       };
   return (
-    <Box flexDirection="column" justifyContent="right">
+    <Stack flexDirection="column">
       <Button
         sx={buttonStyle}
         onTouchStart={onEnableTrackButtonTouchStart}
@@ -53,6 +54,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       >
         {trackName}
       </Button>
-    </Box>
+      <TrackMenu trackId={props.trackId} />
+    </Stack>
   );
 }
