@@ -82,12 +82,7 @@ stepsListenerMiddleware.startListening({
   },
 });
 
-const actionsToUpdateAllSteps = [
-  twoOnTheFloor,
-  fourOnTheFloor,
-  randomize,
-  fillAllSteps,
-];
+const actionsToUpdateAllSteps = [twoOnTheFloor, fourOnTheFloor, fillAllSteps];
 actionsToUpdateAllSteps.forEach((action: any) => {
   stepsListenerMiddleware.startListening({
     actionCreator: action,
@@ -99,4 +94,22 @@ actionsToUpdateAllSteps.forEach((action: any) => {
       );
     },
   });
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: randomize,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    if (action.payload.trackId === undefined) {
+      // Update all steps
+      state.steps.forEach((step: StepState) => {
+        sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+      });
+    } else {
+      sendAllStepStatesToSequencerEngineForTrack(
+        action.payload.trackId,
+        state.steps
+      );
+    }
+  },
 });
