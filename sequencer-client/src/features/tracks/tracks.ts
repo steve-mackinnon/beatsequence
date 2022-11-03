@@ -10,6 +10,7 @@ export interface TrackState {
   generatorType: GeneratorType;
   generatorParams: AnyGeneratorParams;
   displayName: string;
+  paramViewVisible: boolean;
 }
 
 export interface ParamInfo {
@@ -130,6 +131,7 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
     generatorType,
     generatorParams,
     displayName: defaultNameForGeneratorType(generatorType),
+    paramViewVisible: false,
   });
 }
 
@@ -190,6 +192,14 @@ export const tracksSlice = createSlice({
         return trackState;
       });
     },
+    toggleParamViewVisibility: (state, action: PayloadAction<TrackInfo>) => {
+      state.map((trackState: TrackState) => {
+        if (trackState.id === action.payload.trackId) {
+          trackState.paramViewVisible = !trackState.paramViewVisible;
+        }
+        return trackState;
+      });
+    },
   },
 });
 
@@ -209,6 +219,11 @@ export function selectTrackHasCoarsePitchParam(
   }
 }
 
-export const { mute, unmute, setGeneratorParam, setDisplayName } =
-  tracksSlice.actions;
+export const {
+  mute,
+  unmute,
+  setGeneratorParam,
+  setDisplayName,
+  toggleParamViewVisibility,
+} = tracksSlice.actions;
 export default tracksSlice.reducer;

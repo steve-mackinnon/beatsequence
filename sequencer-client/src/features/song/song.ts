@@ -1,27 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type SelectedView = "sequencer" | "params";
-
 export interface SongState {
   playing: boolean;
   tempo: number;
-  selectedView: SelectedView;
 }
 
 const initialState = {
   playing: false,
   tempo: 127.0,
-  selectedView: "sequencer",
 };
 
 const TEMPO_RANGE = {
   min: 10.0,
   max: 999.0,
 };
-
-export interface SelectedViewInfo {
-  currentView: SelectedView;
-}
 
 export const songSlice = createSlice({
   name: "song",
@@ -40,12 +32,8 @@ export const songSlice = createSlice({
       state.tempo = tempo;
     },
     resetState: (state, action) => {},
-    setCurrentView: (state, action: PayloadAction<SelectedViewInfo>) => {
-      state.selectedView = action.payload.currentView;
-    },
   },
 });
 
-export const { togglePlayback, adjustTempo, resetState, setCurrentView } =
-  songSlice.actions;
+export const { togglePlayback, adjustTempo, resetState } = songSlice.actions;
 export default songSlice.reducer;

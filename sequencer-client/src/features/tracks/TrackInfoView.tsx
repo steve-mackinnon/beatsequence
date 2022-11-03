@@ -1,8 +1,9 @@
 import React, { ReactElement, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, IconButton } from "@mui/material";
+import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { SxProps } from "@mui/system";
-import { mute, unmute } from "./tracks";
+import { mute, unmute, toggleParamViewVisibility } from "./tracks";
 import { TrackMenu } from "./TrackMenu";
 
 export interface TrackInfoProps {
@@ -13,6 +14,9 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const muted = useAppSelector((state) => state.tracks[props.trackId].muted);
   const trackName = useAppSelector(
     (state) => state.tracks[props.trackId].displayName
+  );
+  const showParamView = useAppSelector(
+    (state) => state.tracks[props.trackId].paramViewVisible
   );
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
@@ -32,6 +36,9 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       return;
     }
     dispatchMute();
+  };
+  const onParamViewToggleClick = (e_: any): void => {
+    dispatch(toggleParamViewVisibility({ trackId: props.trackId }));
   };
 
   const buttonStyle: SxProps = muted
@@ -55,6 +62,9 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         {trackName}
       </Button>
       <TrackMenu trackId={props.trackId} />
+      <IconButton onClick={onParamViewToggleClick}>
+        {showParamView ? <ExpandLess /> : <ExpandMore />}
+      </IconButton>
     </Stack>
   );
 }

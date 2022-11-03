@@ -30,14 +30,14 @@ export function TrackParamsView(props: TrackParamsViewProps): ReactElement {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "flex-end",
+        justifyContent: "center",
+        alignItems: "center",
         flexFlow: {
           mobile: "column",
           tablet: "column",
           desktop: "row",
         },
-        paddingBottom: "10px",
+        paddingTop: 1,
         flex: 1,
       }}
     >
