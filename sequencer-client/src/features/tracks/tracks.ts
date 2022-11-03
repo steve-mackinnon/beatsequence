@@ -121,7 +121,7 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
   const generatorParams = {
     decayTime: decayTimeForGeneratorType(generatorType),
     gain: 1.0,
-    transientTime: 0.2,
+    transientTime: 0.1,
   };
 
   initialState.push({
