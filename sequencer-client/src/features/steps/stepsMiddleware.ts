@@ -14,6 +14,7 @@ import {
   fourOnTheFloor,
   randomize,
   StepInfo,
+  fillAllSteps,
 } from "./steps";
 import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
@@ -81,42 +82,21 @@ stepsListenerMiddleware.startListening({
   },
 });
 
-stepsListenerMiddleware.startListening({
-  actionCreator: twoOnTheFloor,
-  effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    sendAllStepStatesToSequencerEngineForTrack(
-      action.payload.trackId,
-      state.steps
-    );
-  },
-});
-
-stepsListenerMiddleware.startListening({
-  actionCreator: fourOnTheFloor,
-  effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    sendAllStepStatesToSequencerEngineForTrack(
-      action.payload.trackId,
-      state.steps
-    );
-  },
-});
-
-stepsListenerMiddleware.startListening({
-  actionCreator: randomize,
-  effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    if (action.payload.trackId === undefined) {
-      // Update all steps
-      state.steps.forEach((step: StepState) => {
-        sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
-      });
-    } else {
+const actionsToUpdateAllSteps = [
+  twoOnTheFloor,
+  fourOnTheFloor,
+  randomize,
+  fillAllSteps,
+];
+actionsToUpdateAllSteps.forEach((action: any) => {
+  stepsListenerMiddleware.startListening({
+    actionCreator: action,
+    effect: (action, listenerApi) => {
+      const state = listenerApi.getState() as RootState;
       sendAllStepStatesToSequencerEngineForTrack(
         action.payload.trackId,
         state.steps
       );
-    }
-  },
+    },
+  });
 });

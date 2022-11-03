@@ -116,6 +116,14 @@ export const stepsSlice = createSlice({
         return step;
       });
     },
+    fillAllSteps: (state, action: PayloadAction<SequencerMacroPayload>) => {
+      state.map((step: StepState) => {
+        if (step.trackId === action.payload.trackId) {
+          step.enabled = true;
+        }
+        return step;
+      });
+    },
   },
 });
 
@@ -143,6 +151,7 @@ export const {
   twoOnTheFloor,
   fourOnTheFloor,
   randomize,
+  fillAllSteps,
 } = stepsSlice.actions;
 
 export default stepsSlice.reducer;

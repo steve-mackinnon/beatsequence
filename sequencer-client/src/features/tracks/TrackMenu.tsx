@@ -6,7 +6,12 @@ import {
   bindTrigger,
   bindMenu,
 } from "material-ui-popup-state/hooks";
-import { fourOnTheFloor, twoOnTheFloor, randomize } from "../steps/steps";
+import {
+  fourOnTheFloor,
+  twoOnTheFloor,
+  randomize,
+  fillAllSteps,
+} from "../steps/steps";
 import { useAppDispatch } from "../../hooks";
 
 export interface TrackMenuProps {
@@ -33,6 +38,11 @@ export function TrackMenu(props: TrackMenuProps): ReactElement {
       randomize({ trackId: props.trackId, seed: Date.now().toString() })
     );
   };
+  const onAllStepsClick = (): void => {
+    popupState.close();
+    dispatch(fillAllSteps({ trackId: props.trackId }));
+  };
+
   return (
     <>
       <IconButton {...bindTrigger(popupState)}>
@@ -41,6 +51,7 @@ export function TrackMenu(props: TrackMenuProps): ReactElement {
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={onFourOnTheFloorClick}>4x4</MenuItem>
         <MenuItem onClick={onTwoOnTheFloorClick}>2x4</MenuItem>
+        <MenuItem onClick={onAllStepsClick}>All steps</MenuItem>
         <MenuItem onClick={onRandomizeClick}>Randomize</MenuItem>
       </Menu>
     </>
