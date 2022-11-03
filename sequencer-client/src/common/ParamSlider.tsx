@@ -27,7 +27,11 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   const dispatch = useAppDispatch();
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
-  const onChange = (event: any): void => {
+  const onChange = (
+    event: Event,
+    value: number | number[],
+    _thumbIndex: number
+  ): void => {
     if (event instanceof TouchEvent) {
       setReceivedTouchEvent(true);
     } else if (event instanceof MouseEvent && receivedTouchEvent) {
@@ -36,22 +40,12 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
       // slider to the initial value before the interaction began.
       return;
     }
-    console.log(event);
-    let newValue = event.target.value;
-    if (typeof newValue !== "number") {
-      console.log("onChange failed - NaN");
-      return;
+    if (value < props.minValue) {
+      value = props.minValue;
+    } else if (value > props.maxValue) {
+      value = props.maxValue;
     }
-    if (newValue < props.minValue) {
-      console.log(`onChange < min: ${newValue}`);
-      newValue = props.minValue;
-    } else if (newValue > props.maxValue) {
-      console.log(`onChange > max: ${newValue}`);
-      newValue = props.maxValue;
-    }
-    const nv = newValue as number;
-    console.log(`onChange: ${nv}`);
-    dispatch(props.valueDispatcher(newValue));
+    dispatch(props.valueDispatcher(value as number));
   };
   return (
     <Grid container direction="row" columnSpacing={2} width={200}>
