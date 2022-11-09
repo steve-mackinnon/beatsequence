@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { adjustTempo } from "../features/song/song";
 import { Slider, Input, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
+import { GlobalMenu } from "./GlobalMenu";
 
 export function HeaderControls(): ReactElement {
   const dispatch = useAppDispatch();
@@ -32,32 +33,38 @@ export function HeaderControls(): ReactElement {
       spacing={2}
       width="100%"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-start"
+      paddingX="15px"
+      paddingY={1}
     >
-      <Typography id="tempo-slider">Tempo</Typography>
-      <Slider
-        name="Tempo"
-        id={`Tempo Slider`}
-        min={10}
-        max={200}
-        onChange={onTempoSliderChange}
-        sx={{
-          maxWidth: 100,
-        }}
-        value={tempo}
-        size="small"
-        aria-labelledby="tempo-slider"
-      />
-      <Input
-        value={tempo}
-        onChange={onTempoInputChange}
-        size="small"
-        aria-labelledby="tempo-slider"
-        sx={{
-          minWidth: 28,
-          maxWidth: 28,
-        }}
-      />
+      <GlobalMenu />
+      <Stack direction="row" alignItems="center" width={200} spacing={2}>
+        <Typography id="tempo-slider">Tempo</Typography>
+        <Slider
+          name="Tempo"
+          id={`Tempo Slider`}
+          min={10}
+          max={200}
+          onChange={onTempoSliderChange}
+          sx={{
+            maxWidth: 100,
+          }}
+          value={tempo}
+          size="small"
+          aria-labelledby="tempo-slider"
+        />
+        <Input
+          value={tempo}
+          onChange={onTempoInputChange}
+          size="small"
+          aria-labelledby="tempo-slider"
+          sx={{
+            minWidth: 28,
+            maxWidth: 28,
+          }}
+        />
+      </Stack>
+      <div />
     </Stack>
   );
 }
