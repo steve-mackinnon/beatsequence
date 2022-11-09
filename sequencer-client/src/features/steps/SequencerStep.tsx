@@ -93,7 +93,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       key="step-enabled-checkbox"
       type="checkbox"
       className={checkboxClassName}
-      defaultChecked={stepState.enabled}
+      checked={stepState.enabled}
       onMouseDown={onStepEnableChange}
       onTouchStart={onTouchStart}
       ref={inputRef}
