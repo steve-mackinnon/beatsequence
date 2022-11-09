@@ -52,8 +52,20 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         maxWidth: "56px",
         minWidth: "56px",
       };
+  const containerStyle: SxProps = {
+    flexDirection: {
+      mobile: "column",
+      tablet: "column",
+      desktop: "row",
+    },
+    alignItems: {
+      mobile: "center",
+      tablet: "center",
+      desktop: "flex-start",
+    },
+  };
   return (
-    <Stack flexDirection="column">
+    <Stack sx={containerStyle}>
       <Button
         sx={buttonStyle}
         onTouchStart={onEnableTrackButtonTouchStart}
