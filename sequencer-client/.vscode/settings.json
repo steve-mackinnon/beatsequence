@@ -11,6 +11,10 @@
     "typescriptreact"
   ],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
+    "source.fixAll.eslint": true
   },
+  "editor.formatOnType": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
