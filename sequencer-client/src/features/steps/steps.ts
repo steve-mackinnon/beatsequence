@@ -32,7 +32,7 @@ interface RandomizePayload {
 
 // Define the initial state using that type
 const INITIAL_NUM_STEPS = 16;
-const initialState: StepState[] = new Array<StepState>();
+export const initialState: StepState[] = new Array<StepState>();
 for (let index = 0; index < INITIAL_NUM_TRACKS * INITIAL_NUM_STEPS; ++index) {
   initialState.push({
     coarsePitch: 0,

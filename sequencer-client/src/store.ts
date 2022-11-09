@@ -1,7 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import stepsReducer from "./features/steps/steps";
-import tracksReducer from "./features/tracks/tracks";
-import songReducer from "./features/song/song";
+import stepsReducer, {
+  initialState as stepsInitialState,
+} from "./features/steps/steps";
+import tracksReducer, {
+  initialState as tracksInitialState,
+} from "./features/tracks/tracks";
+import songReducer, {
+  initialState as songInitialState,
+} from "./features/song/song";
 import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
 import { songListenerMiddleware } from "./features/song/songMiddleware";
@@ -30,6 +36,17 @@ const persistConfig = {
   version: 1,
   storage,
   stateReconciler: autoMergeLevel1,
+  migrate: async (state: any) => {
+    // Merge the initial state with the user's persisted state to ensure
+    // that any new properties are migrated over and not set to undefined
+    // during rehydration.
+    const initialState = {
+      steps: stepsInitialState,
+      tracks: tracksInitialState,
+      song: songInitialState,
+    };
+    return await Promise.resolve({ ...initialState, ...state });
+  },
 };
 const persistedReducer = persistReducer<ReturnType<typeof reducers>>(
   persistConfig,

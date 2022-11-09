@@ -5,7 +5,7 @@ export interface SongState {
   tempo: number;
 }
 
-const initialState = {
+export const initialState = {
   playing: false,
   tempo: 127.0,
 };

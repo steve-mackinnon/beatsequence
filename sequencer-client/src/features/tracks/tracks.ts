@@ -116,7 +116,7 @@ function decayTimeForGeneratorType(generatorType: GeneratorType): number {
 
 export const INITIAL_NUM_TRACKS = 5;
 
-const initialState: TrackState[] = new Array<TrackState>();
+export const initialState: TrackState[] = new Array<TrackState>();
 for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
   const generatorType = generatorTypeForTrackIndex(index);
   const generatorParams = {
