@@ -16,7 +16,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
+import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 import persistReducer from "redux-persist/es/persistReducer";
 
 const reducers = combineReducers({
@@ -29,7 +29,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  stateReconciler: autoMergeLevel2,
+  stateReconciler: autoMergeLevel1,
 };
 const persistedReducer = persistReducer<ReturnType<typeof reducers>>(
   persistConfig,
