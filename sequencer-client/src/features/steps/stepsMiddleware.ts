@@ -8,7 +8,7 @@ import {
   StepState,
   enable,
   disable,
-  setCoarsePitch,
+  setParam,
   stepStateForTrackAndStep,
   twoOnTheFloor,
   fourOnTheFloor,
@@ -75,7 +75,7 @@ stepsListenerMiddleware.startListening({
 });
 
 stepsListenerMiddleware.startListening({
-  actionCreator: setCoarsePitch,
+  actionCreator: setParam,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sendStepStateToSequencerEngine(action.payload, state.steps);

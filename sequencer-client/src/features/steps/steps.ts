@@ -8,17 +8,21 @@ export interface StepInfo {
   stepIndex: number;
 }
 
+export interface AnyStepParams {
+  coarsePitch: number;
+}
 export interface StepState {
   trackId: number;
   stepIndex: number;
-  coarsePitch: number;
+  params: AnyStepParams;
   enabled: boolean;
 }
 
-interface SetPitchPayload {
+interface SetParamPayload {
+  paramId: string;
   trackId: number;
   stepIndex: number;
-  coarsePitch: number;
+  value: number;
 }
 
 interface SequencerMacroPayload {
@@ -35,7 +39,9 @@ const INITIAL_NUM_STEPS = 16;
 export const initialState: StepState[] = new Array<StepState>();
 for (let index = 0; index < INITIAL_NUM_TRACKS * INITIAL_NUM_STEPS; ++index) {
   initialState.push({
-    coarsePitch: 0,
+    params: {
+      coarsePitch: 0,
+    },
     enabled: false,
     stepIndex: index % INITIAL_NUM_STEPS,
     trackId: Math.floor(index / INITIAL_NUM_STEPS),
@@ -74,13 +80,15 @@ export const stepsSlice = createSlice({
         return step;
       });
     },
-    setCoarsePitch: (state, action: PayloadAction<SetPitchPayload>) => {
+    setParam: (state, action: PayloadAction<SetParamPayload>) => {
       state.map((step: StepState) => {
         if (
           step.trackId === action.payload.trackId &&
-          step.stepIndex === action.payload.stepIndex
+          step.stepIndex === action.payload.stepIndex &&
+          action.payload.paramId in step.params
         ) {
-          step.coarsePitch = action.payload.coarsePitch;
+          step.params[action.payload.paramId as keyof AnyStepParams] =
+            action.payload.value;
         }
         return step;
       });
@@ -111,7 +119,7 @@ export const stepsSlice = createSlice({
           step.trackId === action.payload.trackId
         ) {
           step.enabled = rng.quick() > 0.5;
-          step.coarsePitch = Math.floor(rng.quick() * (36 * 2) - 36);
+          step.params.coarsePitch = Math.floor(rng.quick() * (36 * 2) - 36);
         }
         return step;
       });
@@ -147,7 +155,7 @@ export function stepStateForTrackAndStep(
 export const {
   enable,
   disable,
-  setCoarsePitch,
+  setParam,
   twoOnTheFloor,
   fourOnTheFloor,
   randomize,

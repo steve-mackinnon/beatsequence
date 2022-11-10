@@ -1,14 +1,8 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { sequencerEngine } from "../../engine/sequencerEngine";
-import Slider from "@mui/material/Slider";
-import InputLabel from "@mui/material/InputLabel";
-import {
-  enable,
-  disable,
-  stepStateForTrackAndStep,
-  setCoarsePitch,
-} from "./steps";
+import { ParamScrubText } from "../../common/ParamScrubText";
+import { enable, disable, stepStateForTrackAndStep } from "./steps";
 import { selectTrackHasCoarsePitchParam } from "../tracks/tracks";
 import "../../css/SequencerStep.css";
 
@@ -21,7 +15,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     stepStateForTrackAndStep(props.trackId, props.stepIndex, state.steps)
   );
   const trackState = useAppSelector((state) => state.tracks[props.trackId]);
-  const showCoarsePitchSlider = useAppSelector((state) =>
+  const showCoarsePitchControl = useAppSelector((state) =>
     selectTrackHasCoarsePitchParam(state, props.trackId)
   );
   const dispatch = useAppDispatch();
@@ -74,15 +68,6 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     dispatchStepToggleEvent();
   };
 
-  const onCoarsePitchChange = (event: any): void => {
-    dispatch(
-      setCoarsePitch({
-        coarsePitch: event.target.value as number,
-        trackId: props.trackId,
-        stepIndex: props.stepIndex,
-      })
-    );
-  };
   const containerClassName = "SequencerStep";
   const checkboxClassName =
     "SequencerStep" +
@@ -106,26 +91,16 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       }}
     />,
   ];
-  if (showCoarsePitchSlider) {
+  if (showCoarsePitchControl) {
     components.push(
-      <Slider
-        key="coarse-pitch-slider"
-        name="Coarse Pitch"
-        id={`Track ${props.trackId} Step ${props.stepIndex} Coarse Pitch`}
-        min={-48}
-        max={48}
-        size="small"
-        onChange={onCoarsePitchChange}
-        value={stepState.coarsePitch}
+      <ParamScrubText
+        key={`coarsePitchInput`}
+        trackId={props.trackId}
+        stepIndex={props.stepIndex}
+        name="coarsePitch"
+        min={-64}
+        max={64}
       />
-    );
-    components.push(
-      <InputLabel
-        key="coarse-pitch-label"
-        htmlFor={`Track ${props.trackId} Step ${props.stepIndex} Coarse Pitch`}
-      >
-        {stepState.coarsePitch}
-      </InputLabel>
     );
   }
   return <div className={containerClassName}>{components}</div>;

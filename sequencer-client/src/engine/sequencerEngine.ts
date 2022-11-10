@@ -3,6 +3,7 @@ import { GeneratorType } from "../features/tracks/GeneratorType";
 import { AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { KickParams, OscParams } from "../generators";
+import { StepState } from "../features/steps/steps";
 
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
@@ -11,21 +12,20 @@ function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
 }
 
-function makeStepsForTrack(numSteps: number): StepState[] {
+function makeStepsForTrack(numSteps: number, trackId: number): StepState[] {
   const steps = new Array<StepState>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
     const enabled = Math.random() > 0.5;
     steps[stepIndex] = {
       enabled,
-      coarsePitch: randomPitch(),
+      params: {
+        coarsePitch: randomPitch(),
+      },
+      stepIndex,
+      trackId,
     };
   }
   return steps;
-}
-
-export interface StepState {
-  enabled: boolean;
-  coarsePitch: number;
 }
 
 export type StepChangedCallback = () => void;
@@ -57,7 +57,7 @@ export class SequencerEngine {
     );
 
     for (const trackIndex of Array(this.numTracks).keys()) {
-      this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
+      this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
       this._trackStates[trackIndex] = {
         id: trackIndex,
         muted: false,
@@ -129,7 +129,7 @@ export class SequencerEngine {
     this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
       const newStep = { ...step };
       newStep.enabled = Math.random() > 0.5;
-      newStep.coarsePitch = randomPitch();
+      newStep.params.coarsePitch = randomPitch();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
     });
@@ -175,14 +175,14 @@ export class SequencerEngine {
         case GeneratorType.SineBleep:
           this._audioEngine.scheduleNote(
             time,
-            semitoneToHz(step.coarsePitch),
+            semitoneToHz(step.params.coarsePitch),
             trackState.generatorParams as OscParams
           );
           break;
         case GeneratorType.SquareBleep:
           this._audioEngine.scheduleNote(
             time,
-            semitoneToHz(step.coarsePitch),
+            semitoneToHz(step.params.coarsePitch),
             trackState.generatorParams as OscParams
           );
           break;
