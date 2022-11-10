@@ -1,4 +1,10 @@
-import React, { ReactElement, useState, MouseEvent, useEffect } from "react";
+import React, {
+  ReactElement,
+  useState,
+  MouseEvent,
+  TouchEvent,
+  useEffect,
+} from "react";
 import { styled } from "@mui/system";
 import { useParameter, ParamInfo } from "../hooks";
 
@@ -11,22 +17,41 @@ const StyledInput = styled("input")(
   outline: none;
   caret-color: transparent;
   font-size: 16px;
+  touch-action: none;
   `
 );
 export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
   const [value, setValue] = useParameter(paramInfo);
+  const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
   const [dragStartValue, setDragStartValue] = useState<null | number>(null);
   const [startY, setStartY] = useState<null | number>(null);
 
   const onMouseDown = (e: MouseEvent<HTMLInputElement>): void => {
+    if (receivedTouchEvent) {
+      return;
+    }
     setDragStartValue(value);
     setStartY(e.screenY);
+  };
+  const onTouchStart = (e: TouchEvent): void => {
+    console.log(e);
+    setReceivedTouchEvent(true);
+    setDragStartValue(value);
+
+    const touch = e.touches.item(0);
+    setStartY(touch.screenY);
   };
   const onMouseMove = (e: any): void => {
     if (startY == null || dragStartValue == null) {
       return;
     }
-    const increment = startY - e.screenY;
+    console.log(e);
+    let increment = startY;
+    if (receivedTouchEvent) {
+      increment -= e.touches.item(0).screenY as number;
+    } else {
+      increment -= e.screenY as number;
+    }
     setValue(dragStartValue + increment);
   };
 
@@ -37,9 +62,13 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
   useEffect(() => {
     addEventListener("mouseup", onMouseUp);
     addEventListener("mousemove", onMouseMove);
+    addEventListener("touchmove", onMouseMove);
+    addEventListener("touchend", onMouseUp);
     return () => {
       removeEventListener("mouseup", onMouseUp);
       removeEventListener("mousemove", onMouseMove);
+      removeEventListener("touchmove", onMouseMove);
+      removeEventListener("touchend", onMouseUp);
     };
   });
 
@@ -50,6 +79,7 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
       }}
       value={value}
       onMouseDown={onMouseDown}
+      onTouchStartCapture={onTouchStart}
     />
   );
 }
