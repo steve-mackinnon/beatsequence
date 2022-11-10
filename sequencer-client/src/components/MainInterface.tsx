@@ -10,14 +10,15 @@ export default function MainInterface(): ReactElement {
   const dispatch = useAppDispatch();
 
   const keydownListener = (event: KeyboardEvent): void => {
+    event.preventDefault();
     if (event.code.toLowerCase() === "space") {
       dispatch(togglePlayback({}));
     }
   };
   useEffect(() => {
-    addEventListener("keydown", keydownListener);
+    addEventListener("keydown", keydownListener, true);
     return () => {
-      removeEventListener("keydown", keydownListener);
+      removeEventListener("keydown", keydownListener, true);
     };
   });
   return (
