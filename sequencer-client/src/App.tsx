@@ -1,4 +1,3 @@
-import "./App.css";
 import MainInterface from "./components/MainInterface";
 import React, { ReactElement } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";

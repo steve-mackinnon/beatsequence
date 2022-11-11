@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
 import { GlobalControls } from "./GlobalControls";
-import "../css/MainInterface.css";
+import styles from "./MainInterface.module.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
@@ -22,7 +22,7 @@ export default function MainInterface(): ReactElement {
     };
   });
   return (
-    <div className="MainInterface">
+    <div className={styles.MainInterface}>
       <HeaderControls />
       <TrackList />
       <GlobalControls />

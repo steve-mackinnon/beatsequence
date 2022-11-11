@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import { TrackContainer } from "./TrackContainer";
 import { useAppSelector } from "../../hooks";
-import "../../css/SequencerTrack.css";
 import { Box } from "@mui/system";
 
 export function TrackList(): ReactElement {

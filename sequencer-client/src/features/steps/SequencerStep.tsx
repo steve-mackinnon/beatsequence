@@ -4,7 +4,7 @@ import { sequencerEngine } from "../../engine/sequencerEngine";
 import { ParamScrubText } from "../../common/ParamScrubText";
 import { enable, disable, stepStateForTrackAndStep } from "./steps";
 import { selectTrackHasCoarsePitchParam } from "../tracks/tracks";
-import "../../css/SequencerStep.css";
+import styles from "./SequencerStep.module.css";
 
 export interface SequencerStepProps {
   stepIndex: number;
@@ -68,16 +68,18 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     dispatchStepToggleEvent();
   };
 
-  const containerClassName = "SequencerStep";
-  const checkboxClassName =
-    "SequencerStep" +
-    (trackState.muted ? " muted" : "") +
-    (isCurrentStep ? " playing" : "");
+  const inputClassNames: String[] = [styles.SequencerStep];
+  if (trackState.muted) {
+    inputClassNames.push(styles.muted);
+  }
+  if (isCurrentStep) {
+    inputClassNames.push(styles.playing);
+  }
   const components = [
     <input
       key="step-enabled-checkbox"
       type="checkbox"
-      className={checkboxClassName}
+      className={inputClassNames.join(" ")}
       checked={stepState.enabled}
       onMouseDown={onStepEnableChange}
       onTouchStart={onTouchStart}
@@ -103,5 +105,5 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       />
     );
   }
-  return <div className={containerClassName}>{components}</div>;
+  return <div className={styles.SequencerStep}>{components}</div>;
 }
