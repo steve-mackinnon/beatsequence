@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Box } from "@mui/material";
-import { setGeneratorParam, ParamInfo } from "./tracks";
 import { ParamSlider } from "../../common/ParamSlider";
+import { ParamInfo } from "./tracks";
 
 export interface TrackParamsViewProps {
   trackId: number;
@@ -12,16 +12,13 @@ export function TrackParamsView(props: TrackParamsViewProps): ReactElement {
   const sliders = props.params.map((paramInfo) => (
     <ParamSlider
       key={paramInfo.name}
-      minValue={paramInfo.min}
-      maxValue={paramInfo.max}
-      valueDispatcher={(value) =>
-        setGeneratorParam({
-          trackId: props.trackId,
-          paramId: paramInfo.name,
-          paramValue: value,
-        })
-      }
-      valueSelector={(state) => paramInfo.valueSelector(state, props.trackId)}
+      paramInfo={{
+        trackId: props.trackId,
+        stepIndex: undefined,
+        name: paramInfo.name,
+        min: paramInfo.min,
+        max: paramInfo.max,
+      }}
       label={paramInfo.displayName}
     />
   ));

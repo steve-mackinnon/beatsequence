@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import { Slider, InputLabel, Grid } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { RootState } from "../store";
+import { ParamInfo, useParameter } from "../hooks";
 
 function logarithmicMap(value: number): number {
   return Math.log(1.71828182845 * value + 1.0);
@@ -14,17 +13,13 @@ function formatValueLabel(value: number): string {
 }
 
 export interface ParamSliderProps {
-  valueSelector: (state: RootState) => number;
-  valueDispatcher: (newValue: number) => void;
-  minValue: number;
-  maxValue: number;
-  logScale?: boolean;
+  paramInfo: ParamInfo;
   label: string;
+  logScale?: boolean;
 }
 
 export function ParamSlider(props: ParamSliderProps): ReactElement {
-  const value = useAppSelector(props.valueSelector);
-  const dispatch = useAppDispatch();
+  const [value, setValue] = useParameter(props.paramInfo);
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
   const onChange = (
@@ -40,12 +35,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
       // slider to the initial value before the interaction began.
       return;
     }
-    if (value < props.minValue) {
-      value = props.minValue;
-    } else if (value > props.maxValue) {
-      value = props.maxValue;
-    }
-    dispatch(props.valueDispatcher(value as number));
+    setValue(value as number);
   };
   return (
     <Grid container direction="row" columnSpacing={2} width={200}>
@@ -56,11 +46,19 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
         <Slider
           size="small"
           step={0.0001}
-          min={props.logScale != null && props.logScale ? 0.0 : props.minValue}
-          max={props.logScale != null && props.logScale ? 1.0 : props.maxValue}
+          min={
+            props.logScale != null && props.logScale ? 0.0 : props.paramInfo.min
+          }
+          max={
+            props.logScale != null && props.logScale ? 1.0 : props.paramInfo.max
+          }
           scale={(value: number) => {
             if (props.logScale != null && props.logScale) {
-              return calculateValue(value, props.minValue, props.maxValue);
+              return calculateValue(
+                value,
+                props.paramInfo.min,
+                props.paramInfo.max
+              );
             }
             return value;
           }}

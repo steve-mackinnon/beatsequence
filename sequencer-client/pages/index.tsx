@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import Head from "next/head";
 import App from "../src/App";
 
-export default function Home() {
+export default function Home(): ReactElement {
   return (
     <div>
       <Head>
