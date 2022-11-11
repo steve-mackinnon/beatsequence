@@ -1,6 +1,5 @@
 import { SequencerStep } from "../steps/SequencerStep";
 import React, { ReactElement, ReactNode } from "react";
-import "../../css/SequencerTrack.css";
 import { Grid } from "@mui/material";
 
 export interface TrackInfo {

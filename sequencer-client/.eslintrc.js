@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "standard-with-typescript", "prettier"],
+  extends: ["standard-with-typescript", "prettier", "next/core-web-vitals"],
   overrides: [],
   parserOptions: {
     ecmaVersion: "latest",
