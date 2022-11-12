@@ -1,12 +1,12 @@
 import { TextField, Button } from "@mui/material";
 import { ReactElement, useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../src/firebase";
 import { Stack } from "@mui/system";
 
-export default function CreateAccount(): ReactElement {
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+export default function Login(): ReactElement {
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,14 +14,7 @@ export default function CreateAccount(): ReactElement {
     return email.length > 0 && password.length > 0;
   };
   const onSubmitClick = (_e: any): void => {
-    createUserWithEmailAndPassword(email, password).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === "auth/weak-password") {
-        alert("The password is too weak.");
-      } else {
-        alert(errorMessage);
-      }
+    signInWithEmailAndPassword(email, password).catch((error) => {
       console.log(error);
     });
   };
@@ -31,7 +24,7 @@ export default function CreateAccount(): ReactElement {
     return (
       <Stack spacing={3} alignItems="center">
         <h1>Beatsequence</h1>
-        <h3>Create your free account</h3>
+        <h3>Log into your account</h3>
         <TextField
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setEmail(e.target.value);
@@ -41,6 +34,9 @@ export default function CreateAccount(): ReactElement {
           name="Email"
           type="text"
           label="Email"
+          sx={{
+            minWidth: "300px",
+          }}
         />
         <TextField
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,15 +47,21 @@ export default function CreateAccount(): ReactElement {
           name="Password"
           type="password"
           label="Password"
+          sx={{
+            minWidth: "300px",
+          }}
         />
         <Button
           variant="contained"
           disabled={!isSubmitButtonEnabled()}
           onClick={onSubmitClick}
+          sx={{
+            minWidth: "300px",
+          }}
         >
-          Create Account
+          Log In
         </Button>
-        {error != null && <span>Account creation failed: {error.message}</span>}
+        {error != null && <span>Login failed: {error.message}</span>}
       </Stack>
     );
   } else {
