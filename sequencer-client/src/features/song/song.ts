@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { stat } from "fs";
 
 export interface SongState {
   playing: boolean;
@@ -22,6 +23,9 @@ export const songSlice = createSlice({
     togglePlayback: (state, _) => {
       state.playing = !state.playing;
     },
+    stopPlayback: (state, _) => {
+      state.playing = false;
+    },
     adjustTempo: (state, action: PayloadAction<number>) => {
       let tempo = action.payload;
       if (tempo < TEMPO_RANGE.min) {
@@ -35,5 +39,6 @@ export const songSlice = createSlice({
   },
 });
 
-export const { togglePlayback, adjustTempo, resetState } = songSlice.actions;
+export const { togglePlayback, stopPlayback, adjustTempo, resetState } =
+  songSlice.actions;
 export default songSlice.reducer;

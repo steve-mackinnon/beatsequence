@@ -1,68 +1,75 @@
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Typography } from "@mui/material";
 import { ReactElement, useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../src/firebase";
 import { Stack } from "@mui/system";
+import Link from "next/link";
 
 export default function CreateAccount(): ReactElement {
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const isSubmitButtonEnabled = (): boolean => {
-    return email.length > 0 && password.length > 0;
+    return email.length > 0 && password.length > 0 && user == null && !loading;
   };
   const onSubmitClick = (_e: any): void => {
     createUserWithEmailAndPassword(email, password).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode === "auth/weak-password") {
-        alert("The password is too weak.");
-      } else {
-        alert(errorMessage);
-      }
       console.log(error);
     });
   };
-  if (loading) {
-    return <h1>Loading...</h1>;
-  } else if (user == null) {
-    return (
-      <Stack spacing={3} alignItems="center">
-        <h1>Beatsequence</h1>
-        <h3>Create your free account</h3>
-        <TextField
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setEmail(e.target.value);
-          }}
-          variant="outlined"
-          value={email}
-          name="Email"
-          type="text"
-          label="Email"
-        />
-        <TextField
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setPassword(e.target.value);
-          }}
-          variant="outlined"
-          value={password}
-          name="Password"
-          type="password"
-          label="Password"
-        />
-        <Button
-          variant="contained"
-          disabled={!isSubmitButtonEnabled()}
-          onClick={onSubmitClick}
-        >
-          Create Account
-        </Button>
-        {error != null && <span>Account creation failed: {error.message}</span>}
-      </Stack>
-    );
-  } else {
-    return <h1>User {user.user.uid} logged in</h1>;
-  }
+  return (
+    <Stack spacing={3} alignItems="center">
+      <Typography variant="overline">Beatsequence</Typography>
+      <Typography variant="subtitle1">Create your free account</Typography>
+      <TextField
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setEmail(e.target.value);
+        }}
+        variant="outlined"
+        value={email}
+        name="Email"
+        type="text"
+        label="Email"
+        sx={{
+          minWidth: "320px",
+        }}
+      />
+      <TextField
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setPassword(e.target.value);
+        }}
+        variant="outlined"
+        value={password}
+        name="Password"
+        type="password"
+        label="Password"
+        sx={{
+          minWidth: "320px",
+        }}
+      />
+      <Button
+        variant="contained"
+        disabled={!isSubmitButtonEnabled()}
+        onClick={onSubmitClick}
+        sx={{
+          minWidth: "320px",
+        }}
+      >
+        Create Account
+      </Button>
+      <Typography>
+        Already have an account? <Link href="/account/login">Login here</Link>
+      </Typography>
+      {loading && <Typography>Creating account...</Typography>}
+      {user != null && !user.user.emailVerified && (
+        <Typography>Account created successfully.</Typography>
+      )}
+      {error != null && (
+        <Typography>Account creation failed: {error.message}</Typography>
+      )}
+    </Stack>
+  );
 }
