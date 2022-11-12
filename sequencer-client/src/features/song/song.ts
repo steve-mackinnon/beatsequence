@@ -23,7 +23,7 @@ export const songSlice = createSlice({
     togglePlayback: (state, _) => {
       state.playing = !state.playing;
     },
-    stopPlayback: (state, _) => {
+    shutDownAudioEngine: (state, _) => {
       state.playing = false;
     },
     adjustTempo: (state, action: PayloadAction<number>) => {
@@ -39,6 +39,6 @@ export const songSlice = createSlice({
   },
 });
 
-export const { togglePlayback, stopPlayback, adjustTempo, resetState } =
+export const { togglePlayback, shutDownAudioEngine, adjustTempo, resetState } =
   songSlice.actions;
 export default songSlice.reducer;

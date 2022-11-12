@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { togglePlayback, adjustTempo, stopPlayback } from "./song";
+import { togglePlayback, adjustTempo, shutDownAudioEngine } from "./song";
 import { RootState } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
 
@@ -14,9 +14,10 @@ songListenerMiddleware.startListening({
 });
 
 songListenerMiddleware.startListening({
-  actionCreator: stopPlayback,
+  actionCreator: shutDownAudioEngine,
   effect: (action, listenerApi) => {
     audioEngine.playing = false;
+    void audioEngine.shutDown();
   },
 });
 

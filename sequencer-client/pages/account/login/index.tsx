@@ -23,7 +23,7 @@ export default function Login(): ReactElement {
   };
 
   useEffect(() => {
-    if (user != null) {
+    if (user != null && router.pathname !== "/") {
       void router.push("/");
     }
   });

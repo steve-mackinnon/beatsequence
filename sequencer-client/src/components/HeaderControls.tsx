@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { adjustTempo, stopPlayback } from "../features/song/song";
+import { adjustTempo, shutDownAudioEngine } from "../features/song/song";
 import { Slider, Input, Typography, Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import { GlobalMenu } from "./GlobalMenu";
@@ -32,7 +32,7 @@ export function HeaderControls(): ReactElement {
   };
 
   const onSignOutClick = (_e: any): void => {
-    dispatch(stopPlayback({}));
+    dispatch(shutDownAudioEngine({}));
     signOut().catch((error) => {
       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       console.log("Error on sign out: " + error);

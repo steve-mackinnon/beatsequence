@@ -17,9 +17,12 @@ export default function MainInterface(): ReactElement {
   const [user, loading, authError] = useAuthState(auth);
 
   useEffect(() => {
-    if (user == null || authError != null) {
+    if (
+      (user == null || authError != null) &&
+      router.pathname !== "/account/login"
+    ) {
       void router.push("/account/login");
-    } else {
+    } else if (router.pathname !== "/") {
       void router.push("/");
     }
   });
