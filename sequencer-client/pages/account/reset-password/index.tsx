@@ -81,6 +81,7 @@ export default function ResetPassword(): ReactElement {
         Continue
       </Button>
       <Link href="/account/login">Back to login page</Link>
+      {sending && <Typography>Sending email to {email}...</Typography>}
       {error != null && (
         <Typography>Password reset failed: {error.message}</Typography>
       )}
