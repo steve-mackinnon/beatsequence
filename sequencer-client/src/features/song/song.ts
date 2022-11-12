@@ -22,6 +22,9 @@ export const songSlice = createSlice({
     togglePlayback: (state, _) => {
       state.playing = !state.playing;
     },
+    shutDownAudioEngine: (state, _) => {
+      state.playing = false;
+    },
     adjustTempo: (state, action: PayloadAction<number>) => {
       let tempo = action.payload;
       if (tempo < TEMPO_RANGE.min) {
@@ -35,5 +38,6 @@ export const songSlice = createSlice({
   },
 });
 
-export const { togglePlayback, adjustTempo, resetState } = songSlice.actions;
+export const { togglePlayback, shutDownAudioEngine, adjustTempo, resetState } =
+  songSlice.actions;
 export default songSlice.reducer;

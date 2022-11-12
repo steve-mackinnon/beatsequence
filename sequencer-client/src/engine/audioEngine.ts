@@ -59,6 +59,15 @@ export class AudioEngine {
     }
   }
 
+  async shutDown(): Promise<void> {
+    if (this._context == null) {
+      return;
+    }
+    if (this._context.state === "running") {
+      return await this._context.suspend();
+    }
+  }
+
   scheduleNote(startTime: number, frequency: number, params: OscParams): void {
     if (this._context === undefined) {
       return;
