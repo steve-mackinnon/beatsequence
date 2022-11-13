@@ -1,10 +1,11 @@
-import { TextField, Button, Typography, FormGroup } from "@mui/material";
-import { ReactElement } from "react";
+import { TextField, Button, Typography } from "@mui/material";
+import { ReactElement, useEffect } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../src/firebase";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 
 const Spacer = styled("div")(
@@ -14,8 +15,16 @@ const Spacer = styled("div")(
 );
 
 export default function CreateAccount(): ReactElement {
+  const router = useRouter();
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+
+  // Route user to homepage after account creation succeeds
+  useEffect(() => {
+    if (user != null && router.pathname !== "/") {
+      void router.push("/");
+    }
+  });
 
   return (
     <Formik
