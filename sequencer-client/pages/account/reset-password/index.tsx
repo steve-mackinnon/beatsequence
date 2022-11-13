@@ -2,8 +2,16 @@ import { TextField, Button, Typography } from "@mui/material";
 import { ReactElement, useContext, useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { AuthContext } from "../../../src/context/authContext";
-import { Stack } from "@mui/system";
+import { Stack, styled } from "@mui/system";
 import Link from "next/link";
+import * as Yup from "yup";
+import { Formik } from "formik";
+
+const Spacer = styled("div")(
+  ({ theme }) => `
+  height: 1.5rem
+  `
+);
 
 export default function ResetPassword(): ReactElement {
   const auth = useContext(AuthContext);
@@ -12,9 +20,6 @@ export default function ResetPassword(): ReactElement {
   const [sentEmail, setSentEmail] = useState(false);
   const [email, setEmail] = useState("");
 
-  const isSubmitButtonEnabled = (): boolean => {
-    return email.length > 0;
-  };
   const onSubmitClick = (_e: any): void => {
     sendPasswordResetEmail(email)
       .then((success: boolean) => {
@@ -39,7 +44,6 @@ export default function ResetPassword(): ReactElement {
         </Typography>
         <Button
           variant="contained"
-          disabled={!isSubmitButtonEnabled()}
           onClick={onSubmitClick}
           sx={{
             minWidth: "320px",
@@ -51,40 +55,83 @@ export default function ResetPassword(): ReactElement {
     );
   }
   return (
-    <Stack spacing={3} alignItems="center">
-      <Typography variant="overline">Beatsequence</Typography>
-      <Typography variant="subtitle1" align="center" maxWidth="320px">
-        Enter your email address and we will send you instructions to reset your
-        password.
-      </Typography>
-      <TextField
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setEmail(e.target.value);
-        }}
-        variant="outlined"
-        value={email}
-        name="Email"
-        type="text"
-        label="Email"
-        sx={{
-          minWidth: "320px",
-        }}
-      />
-      <Button
-        variant="contained"
-        disabled={!isSubmitButtonEnabled()}
-        onClick={onSubmitClick}
-        sx={{
-          minWidth: "320px",
-        }}
-      >
-        Continue
-      </Button>
-      <Link href="/account/login">Back to login page</Link>
-      {sending && <Typography>Sending email to {email}...</Typography>}
-      {error != null && (
-        <Typography>Password reset failed: {error.message}</Typography>
+    <Formik
+      initialValues={{
+        email: "",
+      }}
+      validationSchema={Yup.object({
+        email: Yup.string()
+          .email("Invalid email address")
+          .required("Email required"),
+      })}
+      onSubmit={(values) => {
+        setEmail(values.email);
+        sendPasswordResetEmail(values.email)
+          .then((success: boolean) => {
+            if (success) {
+              setSentEmail(true);
+            }
+            if (!success && error != null) {
+              console.log("Password reset failed with error " + error.message);
+            }
+          })
+          .catch((_error) => {
+            console.log("Password reset failed.");
+          });
+      }}
+    >
+      {(formik) => (
+        <form onSubmit={formik.handleSubmit}>
+          <Stack spacing={3} alignItems="center">
+            <Typography variant="overline">Beatsequence</Typography>
+            <Typography variant="subtitle1">Forgot your password?</Typography>
+            <Typography variant="subtitle1" align="center" maxWidth="320px">
+              Enter your email address and we will send you instructions to
+              reset your password.
+            </Typography>
+            <Stack alignItems="left">
+              <TextField
+                variant="outlined"
+                type="text"
+                label="Email"
+                sx={{
+                  minWidth: "320px",
+                }}
+                {...formik.getFieldProps("email")}
+              />
+              {(formik.touched.email ?? false) &&
+              formik.errors.email != null ? (
+                <Typography variant="subtitle2" color="red">
+                  {formik.errors.email}
+                </Typography>
+              ) : (
+                <Spacer />
+              )}
+            </Stack>
+            <Button
+              variant="contained"
+              disabled={!formik.isValid}
+              type="submit"
+              sx={{
+                minWidth: "320px",
+              }}
+            >
+              Continue
+            </Button>
+            <Link href="/account/login">Back to login page</Link>
+            {sending && (
+              <Typography variant="subtitle2">
+                Sending email to {email}...
+              </Typography>
+            )}
+            {error != null && (
+              <Typography variant="subtitle2">
+                Password reset failed: {error.message}
+              </Typography>
+            )}
+          </Stack>
+        </form>
       )}
-    </Stack>
+    </Formik>
   );
 }
