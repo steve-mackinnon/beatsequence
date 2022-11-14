@@ -13,7 +13,14 @@ import * as Yup from "yup";
 
 const Spacer = styled("div")(
   ({ theme }) => `
-  height: 1.5rem
+  height: 1.5rem;
+  `
+);
+const ContainerForm = styled("form")(
+  ({ theme }) => `
+  width: 100%;
+  justify-content: center;
+  display: flex;
   `
 );
 
@@ -31,14 +38,9 @@ export default function EmailPasswordForm(
     props.hook(auth);
 
   const subtitleText =
-    props.action === "create"
-      ? "Create your free account"
-      : "Log into your account";
+    props.action === "create" ? "Create an account" : "Sign in";
 
-  const gotoOtherPageText =
-    props.action === "create"
-      ? "Already have an account? "
-      : "First time here? ";
+  const gotoOtherPageText = props.action === "create" ? "or " : "or ";
   const otherPagePath =
     props.action === "create" ? "/account/login" : "/account/create";
   const otherPageAction = props.action === "create" ? "Sign in" : "Sign up";
@@ -69,10 +71,21 @@ export default function EmailPasswordForm(
       }}
     >
       {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <Stack spacing={2} alignItems="center">
-            <Typography variant="overline">Beatsequence</Typography>
-            <Typography variant="subtitle1">{subtitleText}</Typography>
+        <ContainerForm onSubmit={formik.handleSubmit}>
+          <Stack spacing={2} justifyContent="center" maxWidth="346px">
+            <Stack
+              sx={{
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <Typography fontSize={"24px"}>{subtitleText}</Typography>
+              <Typography fontSize="14px">
+                {gotoOtherPageText}
+                <Link href={otherPagePath}>{otherPageAction}</Link>
+              </Typography>
+            </Stack>
             <Stack spacing={1} alignItems="left">
               <TextField
                 variant="outlined"
@@ -123,10 +136,6 @@ export default function EmailPasswordForm(
             >
               {props.action === "create" ? "Create Account" : "Sign in"}
             </Button>
-            <Typography variant="subtitle2">
-              {gotoOtherPageText}
-              <Link href={otherPagePath}>{otherPageAction}</Link>
-            </Typography>
             {loading && (
               <Typography>
                 {props.action === "create"
@@ -144,7 +153,7 @@ export default function EmailPasswordForm(
               </Typography>
             )}
           </Stack>
-        </form>
+        </ContainerForm>
       )}
     </Formik>
   );
