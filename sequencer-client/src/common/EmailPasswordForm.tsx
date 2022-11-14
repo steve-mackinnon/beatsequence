@@ -1,4 +1,4 @@
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
 import { ReactElement, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
@@ -83,7 +83,9 @@ export default function EmailPasswordForm(
               <Typography fontSize={"24px"}>{subtitleText}</Typography>
               <Typography fontSize="14px">
                 {gotoOtherPageText}
-                <Link href={otherPagePath}>{otherPageAction}</Link>
+                <Link href={otherPagePath} passHref>
+                  <MUILink>{otherPageAction}</MUILink>
+                </Link>
               </Typography>
             </Stack>
             <Stack spacing={1} alignItems="left">
@@ -115,7 +117,9 @@ export default function EmailPasswordForm(
                 {...formik.getFieldProps("password")}
               />
               {props.action === "signin" && (
-                <Link href="/account/reset-password">Forgot password?</Link>
+                <Link href="/account/reset-password" passHref>
+                  <MUILink>Forgot password?</MUILink>
+                </Link>
               )}
               {(formik.touched.password ?? false) &&
               formik.errors.password != null ? (
