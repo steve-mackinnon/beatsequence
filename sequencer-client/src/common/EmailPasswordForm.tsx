@@ -5,17 +5,18 @@ import {
   Link as MUILink,
   Alert,
 } from "@mui/material";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useContext, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { browserLocalPersistence, setPersistence } from "firebase/auth";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
+import { AuthContext } from "../context/authContext";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
@@ -34,6 +35,7 @@ export interface EmailPasswordFormProps {
 export default function EmailPasswordForm(
   props: EmailPasswordFormProps
 ): ReactElement {
+  const auth = useContext(AuthContext);
   const router = useRouter();
   const [createOrLoginWithEmailAndPassword, user, loading, error] =
     props.hook(auth);
@@ -67,8 +69,10 @@ export default function EmailPasswordForm(
           .required("Password required")
           .min(6, "Password must be at least 6 characters long."),
       })}
-      onSubmit={(values) => {
-        void createOrLoginWithEmailAndPassword(values.email, values.password);
+      onSubmit={async (values) => {
+        void setPersistence(auth, browserLocalPersistence).then(() => {
+          void createOrLoginWithEmailAndPassword(values.email, values.password);
+        });
       }}
     >
       {(formik) => (
