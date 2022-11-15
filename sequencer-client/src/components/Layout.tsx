@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import Navbar from "./Navbar";
 
 interface LayoutProps {
-  children: ReactElement[];
+  children: ReactElement[] | ReactElement;
 }
 
 export default function Layout(props: LayoutProps): ReactElement {

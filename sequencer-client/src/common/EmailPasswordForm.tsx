@@ -17,11 +17,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 
-const Spacer = styled("div")(
-  ({ theme }) => `
-  height: 1rem;
-  `
-);
 const ContainerForm = styled("form")(
   ({ theme }) => `
   width: 100%;
