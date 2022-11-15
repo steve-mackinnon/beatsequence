@@ -10,7 +10,6 @@ import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import { browserLocalPersistence, setPersistence } from "firebase/auth";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import Link from "next/link";
@@ -70,12 +69,9 @@ export default function EmailPasswordForm(
           .min(6, "Password must be at least 6 characters long."),
       })}
       onSubmit={async (values) => {
-        await setPersistence(auth, browserLocalPersistence).then(async () => {
-          await createOrLoginWithEmailAndPassword(
-            values.email,
-            values.password
-          );
-        });
+        await createOrLoginWithEmailAndPassword(values.email, values.password);
+        console.log("Logged in. Auth: ");
+        console.log(auth);
       }}
     >
       {(formik) => (

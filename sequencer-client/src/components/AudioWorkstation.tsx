@@ -21,6 +21,9 @@ export default function AudioWorkstation(): ReactElement {
       (user == null || authError != null) &&
       router.pathname !== "/account/login"
     ) {
+      console.log("Pushing login");
+      console.log(user);
+      console.log(authError);
       void router.push("/account/login");
     } else if (router.pathname !== "/") {
       void router.push("/");
