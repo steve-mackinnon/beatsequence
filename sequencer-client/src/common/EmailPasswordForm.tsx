@@ -9,6 +9,7 @@ import { ReactElement, useContext, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
+  useAuthState,
 } from "react-firebase-hooks/auth";
 import { browserLocalPersistence, setPersistence } from "firebase/auth";
 import { Stack, styled } from "@mui/system";
@@ -39,6 +40,7 @@ export default function EmailPasswordForm(
   const router = useRouter();
   const [createOrLoginWithEmailAndPassword, user, loading, error] =
     props.hook(auth);
+  const [authUser] = useAuthState(auth);
 
   const subtitleText =
     props.action === "create" ? "Create an account" : "Sign in";
@@ -50,10 +52,10 @@ export default function EmailPasswordForm(
 
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
-    if (user != null && router.pathname !== "/") {
+    if (authUser != null) {
       void router.push("/");
     }
-  });
+  }, [authUser, router]);
 
   return (
     <Formik

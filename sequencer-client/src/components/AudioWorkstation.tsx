@@ -14,21 +14,17 @@ export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const auth = useContext(AuthContext);
-  const [user, loading, authError] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (
-      (user == null || authError != null) &&
-      router.pathname !== "/account/login"
-    ) {
+    if (user == null && router.pathname !== "/account/login") {
       void router.push("/account/login");
-    } else if (router.pathname !== "/") {
-      void router.push("/");
     }
-  });
+  }, [user, loading, router]);
+
   const keydownListener = (event: KeyboardEvent): void => {
-    event.preventDefault();
     if (event.code.toLowerCase() === "space") {
+      event.preventDefault();
       dispatch(togglePlayback({}));
     }
   };
