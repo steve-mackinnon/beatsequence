@@ -1,4 +1,10 @@
-import { TextField, Button, Typography } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Link as MUILink,
+  Alert,
+} from "@mui/material";
 import { ReactElement, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
@@ -11,9 +17,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 
-const Spacer = styled("div")(
+const ContainerForm = styled("form")(
   ({ theme }) => `
-  height: 1.5rem
+  width: 100%;
+  justify-content: center;
+  display: flex;
   `
 );
 
@@ -31,14 +39,9 @@ export default function EmailPasswordForm(
     props.hook(auth);
 
   const subtitleText =
-    props.action === "create"
-      ? "Create your free account"
-      : "Log into your account";
+    props.action === "create" ? "Create an account" : "Sign in";
 
-  const gotoOtherPageText =
-    props.action === "create"
-      ? "Already have an account? "
-      : "First time here? ";
+  const gotoOtherPageText = props.action === "create" ? "or " : "or ";
   const otherPagePath =
     props.action === "create" ? "/account/login" : "/account/create";
   const otherPageAction = props.action === "create" ? "Sign in" : "Sign up";
@@ -69,11 +72,24 @@ export default function EmailPasswordForm(
       }}
     >
       {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <Stack spacing={2} alignItems="center">
-            <Typography variant="overline">Beatsequence</Typography>
-            <Typography variant="subtitle1">{subtitleText}</Typography>
-            <Stack spacing={1} alignItems="left">
+        <ContainerForm onSubmit={formik.handleSubmit}>
+          <Stack spacing={2} justifyContent="center" maxWidth="346px">
+            <Stack
+              sx={{
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <Typography fontSize={"24px"}>{subtitleText}</Typography>
+              <Typography fontSize="14px">
+                {gotoOtherPageText}
+                <Link href={otherPagePath} passHref>
+                  <MUILink>{otherPageAction}</MUILink>
+                </Link>
+              </Typography>
+            </Stack>
+            <Stack spacing={3} alignItems="left">
               <TextField
                 variant="outlined"
                 id="email"
@@ -85,13 +101,9 @@ export default function EmailPasswordForm(
                 {...formik.getFieldProps("email")}
               />
               {(formik.touched.email ?? false) &&
-              formik.errors.email != null ? (
-                <Typography variant="subtitle2" color="red">
-                  {formik.errors.email}
-                </Typography>
-              ) : (
-                <Spacer />
-              )}
+                formik.errors.email != null && (
+                  <Alert severity="error">{formik.errors.email}</Alert>
+                )}
               <TextField
                 variant="outlined"
                 type="password"
@@ -102,49 +114,44 @@ export default function EmailPasswordForm(
                 {...formik.getFieldProps("password")}
               />
               {props.action === "signin" && (
-                <Link href="/account/reset-password">Forgot password?</Link>
+                <Link href="/account/reset-password" passHref>
+                  <MUILink>Forgot password?</MUILink>
+                </Link>
               )}
-              {(formik.touched.password ?? false) &&
-              formik.errors.password != null ? (
-                <Typography variant="subtitle2" color="red">
-                  {formik.errors.password}
+              {props.action === "create" &&
+                (formik.touched.password ?? false) &&
+                formik.errors.password != null && (
+                  <Alert severity="error">{formik.errors.password}</Alert>
+                )}
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={!formik.isValid}
+                sx={{
+                  minWidth: "320px",
+                }}
+              >
+                {props.action === "create" ? "Create Account" : "Sign in"}
+              </Button>
+              {loading && (
+                <Typography>
+                  {props.action === "create"
+                    ? "Creating account..."
+                    : "Signing in..."}
                 </Typography>
-              ) : (
-                <Spacer />
+              )}
+              {user != null && !user.user.emailVerified && (
+                <Typography color="green">Success.</Typography>
+              )}
+              {error != null && (
+                <Typography variant="subtitle2" color="red">
+                  {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
+                  failed: {error.message}
+                </Typography>
               )}
             </Stack>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={!formik.isValid}
-              sx={{
-                minWidth: "320px",
-              }}
-            >
-              {props.action === "create" ? "Create Account" : "Sign in"}
-            </Button>
-            <Typography variant="subtitle2">
-              {gotoOtherPageText}
-              <Link href={otherPagePath}>{otherPageAction}</Link>
-            </Typography>
-            {loading && (
-              <Typography>
-                {props.action === "create"
-                  ? "Creating account..."
-                  : "Signing in..."}
-              </Typography>
-            )}
-            {user != null && !user.user.emailVerified && (
-              <Typography color="green">Success.</Typography>
-            )}
-            {error != null && (
-              <Typography variant="subtitle2" color="red">
-                {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
-                failed: {error.message}
-              </Typography>
-            )}
           </Stack>
-        </form>
+        </ContainerForm>
       )}
     </Formik>
   );

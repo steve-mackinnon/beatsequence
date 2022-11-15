@@ -11,7 +11,7 @@ import { useParameter, ParamInfo } from "../hooks";
 const StyledInput = styled("input")(
   ({ theme }) => `
   border: none;
-  background-color: rgb(30, 30, 30);
+  background-color: rgb(0,0,0);
   color: rgb(229,229,229);
   cursor: default;
   outline: none;

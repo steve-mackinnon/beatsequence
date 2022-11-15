@@ -1,4 +1,4 @@
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
 import { ReactElement, useContext, useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { AuthContext } from "../../../src/context/authContext";
@@ -118,7 +118,9 @@ export default function ResetPassword(): ReactElement {
             >
               Continue
             </Button>
-            <Link href="/account/login">Back to login page</Link>
+            <Link href="/account/login" passHref>
+              <MUILink>Back to login page</MUILink>
+            </Link>
             {sending && (
               <Typography variant="subtitle2">
                 Sending email to {email}...
