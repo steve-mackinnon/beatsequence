@@ -2,6 +2,8 @@ import Layout from "../src/components/Layout";
 import { ReactElement } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { AuthContext } from "../src/context/authContext";
+import { auth } from "../src/firebase";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -38,11 +40,13 @@ const darkTheme = createTheme({
 
 export default function App({ Component, pageProps }: any): ReactElement {
   return (
-    <Layout>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </Layout>
+    <AuthContext.Provider value={auth}>
+      <Layout>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </Layout>
+    </AuthContext.Provider>
   );
 }
