@@ -5,16 +5,17 @@ import {
   Link as MUILink,
   Alert,
 } from "@mui/material";
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
+  useAuthState,
 } from "react-firebase-hooks/auth";
 import { browserLocalPersistence, setPersistence } from "firebase/auth";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import Link from "next/link";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { AuthContext } from "../context/authContext";
 
@@ -36,9 +37,10 @@ export default function EmailPasswordForm(
   props: EmailPasswordFormProps
 ): ReactElement {
   const auth = useContext(AuthContext);
-  // const router = useRouter();
+  const router = useRouter();
   const [createOrLoginWithEmailAndPassword, user, loading, error] =
     props.hook(auth);
+  const [authUser] = useAuthState(auth);
 
   const subtitleText =
     props.action === "create" ? "Create an account" : "Sign in";
@@ -49,11 +51,11 @@ export default function EmailPasswordForm(
   const otherPageAction = props.action === "create" ? "Sign in" : "Sign up";
 
   // Route user to homepage after account creation or login succeed
-  // useEffect(() => {
-  //   if (user != null && router.pathname !== "/") {
-  //     void router.push("/");
-  //   }
-  // });
+  useEffect(() => {
+    if (authUser != null) {
+      void router.push("/");
+    }
+  }, [authUser, router]);
 
   return (
     <Formik
