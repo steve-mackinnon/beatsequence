@@ -1,4 +1,4 @@
-.MainInterface {
+.AudioWorkstation {
   display: flex;
   position: absolute;
   flex-direction: column;
@@ -8,4 +8,5 @@
   min-width: 100%;
   min-width: 100%;
   color: rgb(203, 203, 203);
+  background-color: rgb(18,18,18);
 }

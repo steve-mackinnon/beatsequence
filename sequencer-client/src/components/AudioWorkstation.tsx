@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect } from "react";
 import { GlobalControls } from "./GlobalControls";
-import styles from "./MainInterface.module.css";
+import styles from "./AudioWorkstation.module.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
@@ -10,7 +10,7 @@ import { AuthContext } from "../context/authContext";
 import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
 
-export default function MainInterface(): ReactElement {
+export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const auth = useContext(AuthContext);
@@ -42,7 +42,7 @@ export default function MainInterface(): ReactElement {
     return <Typography>Loading...</Typography>;
   }
   return (
-    <div className={styles.MainInterface}>
+    <div className={styles.AudioWorkstation}>
       <HeaderControls />
       <TrackList />
       <GlobalControls />
