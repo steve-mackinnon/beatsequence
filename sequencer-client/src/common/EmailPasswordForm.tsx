@@ -70,8 +70,11 @@ export default function EmailPasswordForm(
           .min(6, "Password must be at least 6 characters long."),
       })}
       onSubmit={async (values) => {
-        void setPersistence(auth, browserLocalPersistence).then(() => {
-          void createOrLoginWithEmailAndPassword(values.email, values.password);
+        await setPersistence(auth, browserLocalPersistence).then(async () => {
+          await createOrLoginWithEmailAndPassword(
+            values.email,
+            values.password
+          );
         });
       }}
     >
