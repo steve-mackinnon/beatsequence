@@ -7,28 +7,27 @@ import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  // const router = useRouter();
   const auth = useContext(AuthContext);
   const [user, loading, authError] = useAuthState(auth);
-
-  useEffect(() => {
-    if (
-      (user == null || authError != null) &&
-      router.pathname !== "/account/login"
-    ) {
-      void router.push("/account/login");
-    } else if (router.pathname !== "/") {
-      void router.push("/");
-    }
-  });
+  // useEffect(() => {
+  //   if (
+  //     (user == null || authError != null) &&
+  //     router.pathname !== "/account/login"
+  //   ) {
+  //     void router.push("/account/login");
+  //   } else if (router.pathname !== "/") {
+  //     void router.push("/");
+  //   }
+  // });
   const keydownListener = (event: KeyboardEvent): void => {
-    event.preventDefault();
     if (event.code.toLowerCase() === "space") {
+      event.preventDefault();
       dispatch(togglePlayback({}));
     }
   };
@@ -38,6 +37,10 @@ export default function AudioWorkstation(): ReactElement {
       removeEventListener("keydown", keydownListener, true);
     };
   });
+  if (user == null || authError != null) {
+    return <div>Not logged in</div>;
+  }
+
   if (loading) {
     return <Typography>Loading...</Typography>;
   }
