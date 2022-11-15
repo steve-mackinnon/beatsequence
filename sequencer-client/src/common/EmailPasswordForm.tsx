@@ -1,4 +1,10 @@
-import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Link as MUILink,
+  Alert,
+} from "@mui/material";
 import { ReactElement, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
@@ -13,7 +19,7 @@ import * as Yup from "yup";
 
 const Spacer = styled("div")(
   ({ theme }) => `
-  height: 1.5rem;
+  height: 1rem;
   `
 );
 const ContainerForm = styled("form")(
@@ -88,7 +94,7 @@ export default function EmailPasswordForm(
                 </Link>
               </Typography>
             </Stack>
-            <Stack spacing={1} alignItems="left">
+            <Stack spacing={3} alignItems="left">
               <TextField
                 variant="outlined"
                 id="email"
@@ -100,13 +106,9 @@ export default function EmailPasswordForm(
                 {...formik.getFieldProps("email")}
               />
               {(formik.touched.email ?? false) &&
-              formik.errors.email != null ? (
-                <Typography variant="subtitle2" color="red">
-                  {formik.errors.email}
-                </Typography>
-              ) : (
-                <Spacer />
-              )}
+                formik.errors.email != null && (
+                  <Alert severity="error">{formik.errors.email}</Alert>
+                )}
               <TextField
                 variant="outlined"
                 type="password"
@@ -121,41 +123,38 @@ export default function EmailPasswordForm(
                   <MUILink>Forgot password?</MUILink>
                 </Link>
               )}
-              {(formik.touched.password ?? false) &&
-              formik.errors.password != null ? (
-                <Typography variant="subtitle2" color="red">
-                  {formik.errors.password}
+              {props.action === "create" &&
+                (formik.touched.password ?? false) &&
+                formik.errors.password != null && (
+                  <Alert severity="error">{formik.errors.password}</Alert>
+                )}
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={!formik.isValid}
+                sx={{
+                  minWidth: "320px",
+                }}
+              >
+                {props.action === "create" ? "Create Account" : "Sign in"}
+              </Button>
+              {loading && (
+                <Typography>
+                  {props.action === "create"
+                    ? "Creating account..."
+                    : "Signing in..."}
                 </Typography>
-              ) : (
-                <Spacer />
+              )}
+              {user != null && !user.user.emailVerified && (
+                <Typography color="green">Success.</Typography>
+              )}
+              {error != null && (
+                <Typography variant="subtitle2" color="red">
+                  {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
+                  failed: {error.message}
+                </Typography>
               )}
             </Stack>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={!formik.isValid}
-              sx={{
-                minWidth: "320px",
-              }}
-            >
-              {props.action === "create" ? "Create Account" : "Sign in"}
-            </Button>
-            {loading && (
-              <Typography>
-                {props.action === "create"
-                  ? "Creating account..."
-                  : "Signing in..."}
-              </Typography>
-            )}
-            {user != null && !user.user.emailVerified && (
-              <Typography color="green">Success.</Typography>
-            )}
-            {error != null && (
-              <Typography variant="subtitle2" color="red">
-                {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
-                failed: {error.message}
-              </Typography>
-            )}
           </Stack>
         </ContainerForm>
       )}
