@@ -18,6 +18,7 @@ export function TrackList(): ReactElement {
         left: "0px",
         bottom: "46px",
         overflowY: "scroll",
+        right: "0px",
       }}
     >
       {tracks}

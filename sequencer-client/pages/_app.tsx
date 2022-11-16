@@ -33,7 +33,7 @@ const darkTheme = createTheme({
       mobile: 0,
       tablet: 650,
       laptop: 1024,
-      desktop: 1200,
+      desktop: 1256,
     },
   },
 });

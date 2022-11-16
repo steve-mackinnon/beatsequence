@@ -28,6 +28,11 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       container
       rowSpacing={0}
       spacing={1}
+      width={{
+        mobile: "300px",
+        tablet: "600px",
+        desktop: "1140px",
+      }}
       columns={{ mobile: 4, tablet: 8, desktop: 16 }}
     >
       {steps}
