@@ -29,7 +29,7 @@ export function HeaderControls(): ReactElement {
       alignItems="center"
       justifyContent="space-between"
       paddingX="15px"
-      paddingY={1}
+      height="40px"
     >
       <GlobalMenu />
       <Stack
