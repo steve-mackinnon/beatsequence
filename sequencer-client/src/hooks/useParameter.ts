@@ -7,7 +7,7 @@ import {
 import { setGeneratorParam } from "../features/tracks/tracks";
 import { AnyGeneratorParams } from "../generators";
 export interface ParamInfo {
-  trackId: number;
+  trackId: number | undefined;
   stepIndex: number | undefined;
   name: string;
   min: number;
@@ -18,7 +18,7 @@ export function useParameter(
   paramInfo: ParamInfo
 ): [number, (newValue: number) => void] {
   const paramValue = useAppSelector((state) => {
-    if (paramInfo.stepIndex != null) {
+    if (paramInfo.stepIndex != null && paramInfo.trackId != null) {
       const step = stepStateForTrackAndStep(
         paramInfo.trackId,
         paramInfo.stepIndex,
@@ -31,9 +31,10 @@ export function useParameter(
         `Attempting to set ${paramInfo.name} param, which does not exist...`
       );
       return 0;
+    } else if (paramInfo.trackId != null) {
+      const track = state.tracks[paramInfo.trackId];
+      return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
     }
-    const track = state.tracks[paramInfo.trackId];
-    return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
   });
   const dispatch = useAppDispatch();
 

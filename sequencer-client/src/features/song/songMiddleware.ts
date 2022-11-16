@@ -25,6 +25,6 @@ songListenerMiddleware.startListening({
   actionCreator: adjustTempo,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sequencerEngine.tempo = state.song.tempo;
+    sequencerEngine.tempo = state.song.params.tempo;
   },
 });

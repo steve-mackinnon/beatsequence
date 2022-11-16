@@ -16,6 +16,7 @@ export interface ParamSliderProps {
   paramInfo: ParamInfo;
   label: string;
   logScale?: boolean;
+  sliderWidth?: number;
 }
 
 export function ParamSlider(props: ParamSliderProps): ReactElement {
@@ -67,7 +68,8 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
           valueLabelDisplay="auto"
           valueLabelFormat={formatValueLabel}
           sx={{
-            maxWidth: "120px",
+            maxWidth:
+              props.sliderWidth != null ? `${props.sliderWidth}px` : "120px",
           }}
         />
       </Grid>

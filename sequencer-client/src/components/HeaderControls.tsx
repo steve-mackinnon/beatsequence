@@ -6,6 +6,7 @@ import { Stack } from "@mui/system";
 import { GlobalMenu } from "./GlobalMenu";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
+import { ParamSlider } from "../common/ParamSlider";
 
 export function HeaderControls(): ReactElement {
   const auth = useContext(AuthContext);
@@ -57,29 +58,15 @@ export function HeaderControls(): ReactElement {
         width={200}
         spacing={2}
       >
-        <Typography id="tempo-slider">Tempo</Typography>
-        <Slider
-          name="Tempo"
-          id={`Tempo Slider`}
-          min={10}
-          max={200}
-          onChange={onTempoSliderChange}
-          sx={{
-            maxWidth: 100,
+        <ParamSlider
+          paramInfo={{
+            trackId: undefined,
+            stepIndex: undefined,
+            name: "tempo",
+            min: 1,
+            max: 200,
           }}
-          value={tempo}
-          size="small"
-          aria-labelledby="tempo-slider"
-        />
-        <Input
-          value={tempo}
-          onChange={onTempoInputChange}
-          size="small"
-          aria-labelledby="tempo-slider"
-          sx={{
-            minWidth: 28,
-            maxWidth: 28,
-          }}
+          label="Tempo"
         />
       </Stack>
       <Button onClick={onSignOutClick}>Sign out</Button>

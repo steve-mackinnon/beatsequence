@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface SongParams {
+  tempo: number;
+}
+
 export interface SongState {
   playing: boolean;
-  tempo: number;
+  params: SongParams;
 }
 
 export const initialState = {
   playing: false,
-  tempo: 127.0,
+  params: {
+    tempo: 127.0,
+  },
 };
 
 const TEMPO_RANGE = {
@@ -32,7 +38,7 @@ export const songSlice = createSlice({
       } else if (tempo > TEMPO_RANGE.max) {
         tempo = TEMPO_RANGE.max;
       }
-      state.tempo = tempo;
+      state.params.tempo = tempo;
     },
     resetState: (state, action) => {},
   },
