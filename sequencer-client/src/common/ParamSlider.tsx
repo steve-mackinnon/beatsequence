@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react";
-import { Slider, InputLabel, Grid } from "@mui/material";
+import { Slider, InputLabel } from "@mui/material";
 import { ParamInfo, useParameter } from "../hooks";
+import { styled } from "@mui/system";
 
 function logarithmicMap(value: number): number {
   return Math.log(1.71828182845 * value + 1.0);
@@ -16,8 +17,19 @@ export interface ParamSliderProps {
   paramInfo: ParamInfo;
   label: string;
   logScale?: boolean;
-  sliderWidth?: number;
+  width?: number;
 }
+
+const Container = styled("div")(
+  ({ theme }) => `
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+`
+);
 
 export function ParamSlider(props: ParamSliderProps): ReactElement {
   const [value, setValue] = useParameter(props.paramInfo);
@@ -39,40 +51,44 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
     setValue(value as number);
   };
   return (
-    <Grid container direction="row" columnSpacing={2} width={200}>
-      <Grid mobile={3} tablet={3} desktop={3}>
-        <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
-      </Grid>
-      <Grid mobile={8} tablet={8} desktop={8}>
-        <Slider
-          size="small"
-          step={0.0001}
-          min={
-            props.logScale != null && props.logScale ? 0.0 : props.paramInfo.min
+    <Container>
+      <InputLabel
+        sx={{
+          display: "flex",
+          flexShrink: 0,
+        }}
+        htmlFor={props.label}
+      >
+        {props.label}
+      </InputLabel>
+      <Slider
+        sx={{
+          display: "flex",
+          flexGrow: 1,
+        }}
+        size="small"
+        step={0.0001}
+        min={
+          props.logScale != null && props.logScale ? 0.0 : props.paramInfo.min
+        }
+        max={
+          props.logScale != null && props.logScale ? 1.0 : props.paramInfo.max
+        }
+        scale={(value: number) => {
+          if (props.logScale != null && props.logScale) {
+            return calculateValue(
+              value,
+              props.paramInfo.min,
+              props.paramInfo.max
+            );
           }
-          max={
-            props.logScale != null && props.logScale ? 1.0 : props.paramInfo.max
-          }
-          scale={(value: number) => {
-            if (props.logScale != null && props.logScale) {
-              return calculateValue(
-                value,
-                props.paramInfo.min,
-                props.paramInfo.max
-              );
-            }
-            return value;
-          }}
-          onChange={onChange}
-          value={value}
-          valueLabelDisplay="auto"
-          valueLabelFormat={formatValueLabel}
-          sx={{
-            maxWidth:
-              props.sliderWidth != null ? `${props.sliderWidth}px` : "120px",
-          }}
-        />
-      </Grid>
-    </Grid>
+          return value;
+        }}
+        onChange={onChange}
+        value={value}
+        valueLabelDisplay="auto"
+        valueLabelFormat={formatValueLabel}
+      />
+    </Container>
   );
 }
