@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { adjustTempo, shutDownAudioEngine } from "../features/song/song";
-import { Slider, Input, Typography, Button } from "@mui/material";
+import { useAppDispatch } from "../hooks";
+import { shutDownAudioEngine } from "../features/song/song";
+import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import { GlobalMenu } from "./GlobalMenu";
 import { useSignOut } from "react-firebase-hooks/auth";
@@ -12,25 +12,6 @@ export function HeaderControls(): ReactElement {
   const auth = useContext(AuthContext);
   const [signOut] = useSignOut(auth);
   const dispatch = useAppDispatch();
-  const tempo = useAppSelector((state) => state.song.tempo);
-
-  const onTempoSliderChange = (event: any): void => {
-    if (typeof event.target.value === "number") {
-      dispatch(adjustTempo(event.target.value as number));
-    }
-  };
-  const onTempoInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    if (event.target.value === "") {
-      return;
-    }
-    const tempo = Number(event.target.value);
-    if (tempo < 10) {
-      return;
-    }
-    dispatch(adjustTempo(Number(event.target.value)));
-  };
 
   const onSignOutClick = (_e: any): void => {
     dispatch(shutDownAudioEngine({}));

@@ -1,4 +1,5 @@
 import { useAppSelector, useAppDispatch } from ".";
+import { SongParams, setParam as setSongParam } from "../features/song/song";
 import {
   stepStateForTrackAndStep,
   AnyStepParams,
@@ -34,6 +35,8 @@ export function useParameter(
     } else if (paramInfo.trackId != null) {
       const track = state.tracks[paramInfo.trackId];
       return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
+    } else {
+      return state.song.params[paramInfo.name as keyof SongParams];
     }
   });
   const dispatch = useAppDispatch();
@@ -47,7 +50,14 @@ export function useParameter(
       } else if (value < paramInfo.min) {
         value = paramInfo.min;
       }
-      if (paramInfo.stepIndex != null) {
+      if (paramInfo.trackId == null) {
+        dispatch(
+          setSongParam({
+            paramId: paramInfo.name,
+            value,
+          })
+        );
+      } else if (paramInfo.stepIndex != null) {
         dispatch(
           setParam({
             paramId: paramInfo.name,
@@ -56,15 +66,15 @@ export function useParameter(
             value,
           })
         );
-        return;
+      } else {
+        dispatch(
+          setGeneratorParam({
+            paramId: paramInfo.name,
+            trackId: paramInfo.trackId,
+            paramValue: value,
+          })
+        );
       }
-      dispatch(
-        setGeneratorParam({
-          trackId: paramInfo.trackId,
-          paramId: paramInfo.name,
-          paramValue: value,
-        })
-      );
     },
   ];
 }
