@@ -21,9 +21,13 @@ export function FooterControls(): ReactElement {
 
   return (
     <Stack
+      position="absolute"
+      bottom={0}
+      left={0}
+      right={0}
       direction="row"
       justifyContent="center"
-      width="100%"
+      overflow="hidden"
       sx={{
         backgroundColor: "#373738",
       }}
