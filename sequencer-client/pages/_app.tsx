@@ -1,5 +1,5 @@
+import React, { ReactElement } from "react";
 import Layout from "../src/components/Layout";
-import { ReactElement } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AuthContext } from "../src/context/authContext";
@@ -38,15 +38,23 @@ const darkTheme = createTheme({
   },
 });
 
-export default function App({ Component, pageProps }: any): ReactElement {
+export default function App({
+  Component,
+  pageProps,
+  ...appProps
+}: any): ReactElement {
+  const layoutNotNeeded = [`/`].includes(appProps.router.pathname);
+
+  const LayoutComponent = layoutNotNeeded ? React.Fragment : Layout;
+
   return (
     <AuthContext.Provider value={auth}>
-      <Layout>
+      <LayoutComponent>
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </Layout>
+      </LayoutComponent>
     </AuthContext.Provider>
   );
 }

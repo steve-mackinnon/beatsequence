@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect } from "react";
-import { GlobalControls } from "./GlobalControls";
+import { FooterControls } from "./FooterControls";
 import styles from "./AudioWorkstation.module.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
@@ -41,7 +41,7 @@ export default function AudioWorkstation(): ReactElement {
     <div className={styles.AudioWorkstation}>
       <HeaderControls />
       <TrackList />
-      <GlobalControls />
+      <FooterControls />
     </div>
   );
 }

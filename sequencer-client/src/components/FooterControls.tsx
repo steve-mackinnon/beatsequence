@@ -5,7 +5,7 @@ import { IconButton } from "@mui/material";
 import { PlayArrow, Pause } from "@mui/icons-material";
 import { Stack } from "@mui/system";
 
-export function GlobalControls(): ReactElement {
+export function FooterControls(): ReactElement {
   const dispatch = useAppDispatch();
   const playing = useAppSelector((state) => state.song.playing);
   const playRef = useRef<HTMLButtonElement>(null);
