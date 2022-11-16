@@ -1,4 +1,5 @@
 import { useAppSelector, useAppDispatch } from ".";
+import { SongParams, setParam as setSongParam } from "../features/song/song";
 import {
   stepStateForTrackAndStep,
   AnyStepParams,
@@ -7,7 +8,7 @@ import {
 import { setGeneratorParam } from "../features/tracks/tracks";
 import { AnyGeneratorParams } from "../generators";
 export interface ParamInfo {
-  trackId: number;
+  trackId: number | undefined;
   stepIndex: number | undefined;
   name: string;
   min: number;
@@ -18,7 +19,7 @@ export function useParameter(
   paramInfo: ParamInfo
 ): [number, (newValue: number) => void] {
   const paramValue = useAppSelector((state) => {
-    if (paramInfo.stepIndex != null) {
+    if (paramInfo.stepIndex != null && paramInfo.trackId != null) {
       const step = stepStateForTrackAndStep(
         paramInfo.trackId,
         paramInfo.stepIndex,
@@ -31,9 +32,12 @@ export function useParameter(
         `Attempting to set ${paramInfo.name} param, which does not exist...`
       );
       return 0;
+    } else if (paramInfo.trackId != null) {
+      const track = state.tracks[paramInfo.trackId];
+      return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
+    } else {
+      return state.song.params[paramInfo.name as keyof SongParams];
     }
-    const track = state.tracks[paramInfo.trackId];
-    return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
   });
   const dispatch = useAppDispatch();
 
@@ -46,7 +50,14 @@ export function useParameter(
       } else if (value < paramInfo.min) {
         value = paramInfo.min;
       }
-      if (paramInfo.stepIndex != null) {
+      if (paramInfo.trackId == null) {
+        dispatch(
+          setSongParam({
+            paramId: paramInfo.name,
+            value,
+          })
+        );
+      } else if (paramInfo.stepIndex != null) {
         dispatch(
           setParam({
             paramId: paramInfo.name,
@@ -55,15 +66,15 @@ export function useParameter(
             value,
           })
         );
-        return;
+      } else {
+        dispatch(
+          setGeneratorParam({
+            paramId: paramInfo.name,
+            trackId: paramInfo.trackId,
+            paramValue: value,
+          })
+        );
       }
-      dispatch(
-        setGeneratorParam({
-          trackId: paramInfo.trackId,
-          paramId: paramInfo.name,
-          paramValue: value,
-        })
-      );
     },
   ];
 }
