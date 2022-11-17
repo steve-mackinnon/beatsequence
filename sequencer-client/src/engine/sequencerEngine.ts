@@ -4,6 +4,7 @@ import { AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { KickParams, OscParams } from "../generators";
 import { StepState } from "../features/steps/steps";
+import { SongParams } from "../features/song/song";
 
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
@@ -36,7 +37,10 @@ export class SequencerEngine {
   private _timerID: any = undefined;
   private _currentStep: number = 0;
   private _nextNoteTime: number = 0.0; // when the next note is due.
-  public tempo: number = 127.0;
+  public params: SongParams = {
+    tempo: 127.0,
+  };
+
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
   private _trackStates: TrackState[];
@@ -191,7 +195,7 @@ export class SequencerEngine {
   }
 
   private _advanceStep(): void {
-    const secondsPerStep = 60.0 / this.tempo / 4.0;
+    const secondsPerStep = 60.0 / this.params.tempo / 4.0;
 
     this._nextNoteTime += secondsPerStep; // Add step length to last step time
 

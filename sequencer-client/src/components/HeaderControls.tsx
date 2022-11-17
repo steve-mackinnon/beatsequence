@@ -44,7 +44,7 @@ export function HeaderControls(): ReactElement {
             trackId: undefined,
             stepIndex: undefined,
             name: "tempo",
-            min: 1,
+            min: 10,
             max: 200,
           }}
           label="Tempo"

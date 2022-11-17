@@ -16,11 +16,6 @@ export const initialState = {
   },
 };
 
-const TEMPO_RANGE = {
-  min: 10.0,
-  max: 999.0,
-};
-
 export interface SongParamPayload {
   paramId: string;
   value: number;
@@ -34,15 +29,6 @@ export const songSlice = createSlice({
     },
     shutDownAudioEngine: (state, _) => {
       state.playing = false;
-    },
-    adjustTempo: (state, action: PayloadAction<number>) => {
-      let tempo = action.payload;
-      if (tempo < TEMPO_RANGE.min) {
-        tempo = TEMPO_RANGE.min;
-      } else if (tempo > TEMPO_RANGE.max) {
-        tempo = TEMPO_RANGE.max;
-      }
-      state.params.tempo = tempo;
     },
     setParam: (state, action: PayloadAction<SongParamPayload>) => {
       if (state.params[action.payload.paramId as keyof SongParams] == null) {
@@ -58,11 +44,6 @@ export const songSlice = createSlice({
   },
 });
 
-export const {
-  togglePlayback,
-  shutDownAudioEngine,
-  adjustTempo,
-  resetState,
-  setParam,
-} = songSlice.actions;
+export const { togglePlayback, shutDownAudioEngine, resetState, setParam } =
+  songSlice.actions;
 export default songSlice.reducer;

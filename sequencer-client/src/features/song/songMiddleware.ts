@@ -1,5 +1,10 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { togglePlayback, adjustTempo, shutDownAudioEngine } from "./song";
+import {
+  togglePlayback,
+  setParam,
+  shutDownAudioEngine,
+  SongParams,
+} from "./song";
 import { RootState } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
 
@@ -22,9 +27,9 @@ songListenerMiddleware.startListening({
 });
 
 songListenerMiddleware.startListening({
-  actionCreator: adjustTempo,
+  actionCreator: setParam,
   effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    sequencerEngine.tempo = state.song.params.tempo;
+    sequencerEngine.params[action.payload.paramId as keyof SongParams] =
+      action.payload.value;
   },
 });
