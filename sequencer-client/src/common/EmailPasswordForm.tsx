@@ -21,6 +21,7 @@ import { AuthContext } from "../context/authContext";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
+  padding: 1rem;
   width: 100%;
   justify-content: center;
   display: flex;
@@ -53,7 +54,7 @@ export default function EmailPasswordForm(
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
     if (authUser != null) {
-      void router.push("/");
+      void router.push("/makebeats");
     }
   }, [authUser, router]);
 

@@ -43,18 +43,19 @@ export default function App({
   pageProps,
   ...appProps
 }: any): ReactElement {
-  const layoutNotNeeded = [`/`].includes(appProps.router.pathname);
-
+  // Don't apply the shared layout to the /makebeats subpage, which creates it's
+  // own bespoke "Layout"/header.
+  const layoutNotNeeded = [`/makebeats`].includes(appProps.router.pathname);
   const LayoutComponent = layoutNotNeeded ? React.Fragment : Layout;
 
   return (
     <AuthContext.Provider value={auth}>
-      <LayoutComponent>
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <LayoutComponent>
           <Component {...pageProps} />
-        </ThemeProvider>
-      </LayoutComponent>
+        </LayoutComponent>
+      </ThemeProvider>
     </AuthContext.Provider>
   );
 }

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../public/beatsequence-logo-white.svg";
+import logo from "../../public/beatsequence-logo-white.png";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export default function AudioWorkstation(): ReactElement {
   const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (user == null && router.pathname !== "/account/login") {
+    if (!loading && user == null && router.pathname !== "/account/login") {
       void router.push("/account/login");
     }
   }, [user, loading, router]);
