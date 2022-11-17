@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import Head from "next/head";
-import App from "../src/App";
+import { Link } from "@mui/material";
 
 export default function Home(): ReactElement {
   return (
@@ -17,7 +17,9 @@ export default function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <App />
+        <Link href="/makebeats">Make some beats</Link>
+        <Link href="/account/login">Log in</Link>
+        <Link href="/account/create">Create account</Link>
       </main>
     </div>
   );

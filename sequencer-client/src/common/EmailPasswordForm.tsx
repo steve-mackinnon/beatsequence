@@ -53,7 +53,7 @@ export default function EmailPasswordForm(
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
     if (authUser != null) {
-      void router.push("/");
+      void router.push("/makebeats");
     }
   }, [authUser, router]);
 
