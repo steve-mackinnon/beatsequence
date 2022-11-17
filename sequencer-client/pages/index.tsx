@@ -16,12 +16,14 @@ export default function Home(): ReactElement {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
+    margin: "1rem",
   });
   const MakeBeatsOrCreateAccountButton = (): ReactElement => {
     if (user == null && !loading) {
       return (
         <Link href="/account/create" passHref>
-          <Button>Get started</Button>
+          <Button variant="contained">Create an account</Button>
         </Link>
       );
     }
