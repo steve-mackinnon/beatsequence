@@ -21,6 +21,7 @@ import { AuthContext } from "../context/authContext";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
+  padding: 1rem;
   width: 100%;
   justify-content: center;
   display: flex;
