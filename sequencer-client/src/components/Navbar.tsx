@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from "react";
 import Image from "next/image";
 import { Stack } from "@mui/system";
-import logo from "../../public/beatsequence-logo-white.svg";
+import logo from "../../public/beatsequence-logo-white.png";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
