@@ -27,12 +27,14 @@ export default function Navbar(props: NavbarProps): ReactElement {
           alignItems="center"
           padding="12px"
         >
-          <Image
-            src={logo}
-            alt="Beatsequence company logo"
-            width={160}
-            height={30}
-          />
+          <Link href="/" passHref>
+            <Image
+              src={logo}
+              alt="Beatsequence homepage"
+              width={160}
+              height={30}
+            />
+          </Link>
           <Stack
             flexDirection="row"
             justifyContent="space-between"
