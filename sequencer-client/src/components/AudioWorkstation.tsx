@@ -20,7 +20,7 @@ export default function AudioWorkstation(): ReactElement {
   const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (user == null && router.pathname !== "/account/login") {
+    if (!loading && user == null && router.pathname !== "/account/login") {
       void router.push("/account/login");
     }
   }, [user, loading, router]);

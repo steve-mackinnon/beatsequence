@@ -36,7 +36,6 @@ function MakeBeats(): ReactElement {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Provider store={store}>
         <DynamicAudioWorkstation />
       </Provider>
