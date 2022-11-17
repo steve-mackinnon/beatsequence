@@ -5,6 +5,7 @@ import { styled } from "@mui/system";
 import Link from "next/link";
 import { AuthContext } from "../src/context/authContext";
 import { useAuthState } from "react-firebase-hooks/auth";
+import styles from "../styles/Homepage.module.css";
 
 export default function Home(): ReactElement {
   const auth = useContext(AuthContext);
@@ -46,8 +47,8 @@ export default function Home(): ReactElement {
       </Head>
       <MainContainer>
         <h1>
-          Make beats without leaving your browser. Find inspiration for your
-          next track.
+          The <span className={styles.ColorText}>experimental beat maker</span>{" "}
+          for your browser.
         </h1>
         <h2>
           Beatsequence is an audio sequencer, synthesizer and drum machine for
