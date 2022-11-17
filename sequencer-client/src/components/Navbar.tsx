@@ -46,7 +46,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
               </Link>
             )}
             {notLoggedIn && (
-              <Link href="/account/signin">
+              <Link href="/account/login">
                 <Button>Sign in</Button>
               </Link>
             )}
