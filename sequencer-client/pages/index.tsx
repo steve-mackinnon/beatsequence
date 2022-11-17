@@ -23,7 +23,9 @@ export default function Home(): ReactElement {
     if (notAuthorized) {
       return (
         <Link href="/account/create" passHref>
-          <Button variant="contained">Create an account</Button>
+          <Button variant="contained" sx={{ margin: "1rem" }}>
+            Create an account
+          </Button>
         </Link>
       );
     }
@@ -34,7 +36,7 @@ export default function Home(): ReactElement {
     );
   };
   const getStartedText = notAuthorized
-    ? "Create an account to join the beta..."
+    ? "Create an account to start cooking up some beats and bleeps..."
     : "Dive into the beta...";
   return (
     <div>
@@ -67,6 +69,10 @@ export default function Home(): ReactElement {
           Designed and developed by electronic music producer and software
           engineer <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
         </h3>
+        <h4>
+          Note: Beatsequence is currently in beta - lots of new features are
+          coming!
+        </h4>
       </MainContainer>
     </div>
   );
