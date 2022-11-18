@@ -2,8 +2,8 @@ import React, { ReactElement } from "react";
 import { Provider } from "react-redux";
 import { store } from "../src/store";
 import { randomize } from "../src/features/steps/steps";
-import dynamic from "next/dynamic";
 import Head from "next/head";
+import AudioWorkstation from "../src/components/AudioWorkstation";
 
 // Always initialize the sequencer to a randomized state
 store.dispatch(
@@ -13,31 +13,29 @@ store.dispatch(
   })
 );
 
-// Disable SSR for the AudioWorkstation component since it's reliant
-// on either randomized or user-saved state.
-const DynamicAudioWorkstation = dynamic(
-  async () => await import("../src/components/AudioWorkstation"),
-  {
-    ssr: false,
-  }
-);
-
 function MakeBeats(): ReactElement {
   return (
     <div>
       <Head>
         <title>
-          Make beats with Beatsequence - audio sequencer, synthesizer and drum
-          machine for electronic music production
+          Beatsequence - experimental beat making tool for the browser
         </title>
         <meta
           name="description"
-          content="Make beats and bleeps with this powerful sequencer and synth engine in your web browser. Export audio tracks and bring them into your DAW."
+          content="Make beats in your browser with this powerful step sequencer and synthesis engine. Works seamlessly on mobile or desktop."
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="og:title"
+          property="og:title"
+          content="Beatsequence - experimental beat making tool for the browser"
+        />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://beatsequence.com/" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Provider store={store}>
-        <DynamicAudioWorkstation />
+        <AudioWorkstation />
       </Provider>
     </div>
   );

@@ -1,19 +1,10 @@
 import { ReactElement } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import dynamic from "next/dynamic";
-
-// Disable SSR for the AudioWorkstation component since it's reliant
-// on either randomized or user-saved state.
-const DynamicCreateAccount = dynamic(
-  async () => await import("../../../src/common/EmailPasswordForm"),
-  {
-    ssr: false,
-  }
-);
+import EmailPasswordForm from "../../../src/common/EmailPasswordForm";
 
 export default function Create(): ReactElement {
   return (
-    <DynamicCreateAccount
+    <EmailPasswordForm
       hook={useCreateUserWithEmailAndPassword}
       action="create"
     />
