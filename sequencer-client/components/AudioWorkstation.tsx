@@ -43,7 +43,13 @@ export default function AudioWorkstation(): ReactElement {
   return (
     <div className={styles.AudioWorkstation}>
       <Link href="/" passHref>
-        <Image src={logo} width={130} height={30} alt="Return to homepage" />
+        <Image
+          priority={true}
+          src={logo}
+          width={130}
+          height={30}
+          alt="Return to homepage"
+        />
       </Link>
       <HeaderControls />
       <TrackList />

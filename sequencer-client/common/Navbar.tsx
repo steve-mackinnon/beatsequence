@@ -41,6 +41,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
             }}
           >
             <Image
+              priority={true}
               src={logo}
               alt="Beatsequence homepage"
               width={160}
