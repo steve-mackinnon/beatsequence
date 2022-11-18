@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
-import Layout from "../src/components/Layout";
+import Layout from "../common/Layout";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { AuthContext } from "../src/context/authContext";
-import { auth } from "../src/firebase";
+import { AuthContext } from "../context/authContext";
+import { auth } from "../firebase";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";

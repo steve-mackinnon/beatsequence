@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../public/beatsequence-logo-white.png";
+import logo from "../public/beatsequence-logo-white.png";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
