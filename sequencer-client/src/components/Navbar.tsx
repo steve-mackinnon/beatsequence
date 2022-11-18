@@ -52,7 +52,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
             justifyContent="space-between"
             padding="12px"
           >
-            {notLoggedIn && (
+            {notLoggedIn && (props.showSignUpLink ?? true) && (
               <Link
                 href="/account/create"
                 passHref
@@ -61,7 +61,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
                 <Button>Sign up</Button>
               </Link>
             )}
-            {notLoggedIn && (
+            {notLoggedIn && (props.showSignInLink ?? true) && (
               <Link href="/account/login" style={{ textDecoration: "none" }}>
                 <Button>Sign in</Button>
               </Link>
