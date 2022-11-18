@@ -44,7 +44,7 @@ const darkTheme = createTheme({
       fontSize: 28,
     },
     h3: {
-      fontSize: 18,
+      fontSize: 22,
     },
     h4: {
       fontSize: 14,

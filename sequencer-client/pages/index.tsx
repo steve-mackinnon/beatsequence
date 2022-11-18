@@ -61,20 +61,20 @@ export default function Home(): ReactElement {
         </Typography>
         <MakeBeatsOrCreateAccountButton />
         <Typography variant="h2">
-          Beatsequence is a step sequencer, synthesizer and drum machine built
-          for electronic music production.
+          Beatsequence is a step sequencer, synthesizer and drum machine for
+          electronic music production.
         </Typography>
-        <Typography variant="h2">
-          Built with mobile in mind - the responsive interface allows you to
+        <Typography variant="h3">
+          Designed with mobile in mind - the responsive interface allows you to
           create seamlessly on any device.
         </Typography>
-        <Typography variant="body1">
-          Designed and developed by electronic music producer and software
-          engineer <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
+        <Typography variant="h3">
+          Developed by electronic music producer and software engineer{" "}
+          <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
         </Typography>
         <Typography variant="subtitle1">
-          Note: Beatsequence is currently in beta - lots of new features are
-          coming!
+          <strong>Note:</strong> Beatsequence is currently in early beta and has
+          a minimal feature set. More features are coming!
         </Typography>
       </MainContainer>
     </div>
