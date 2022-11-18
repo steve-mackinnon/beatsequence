@@ -13,6 +13,16 @@ const Spacer = styled("div")(
   `
 );
 
+const Container = styled("form")(
+  ({ theme }) => `
+  padding: 1rem;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  margin: 1rem;
+  `
+);
+
 export default function ResetPassword(): ReactElement {
   const auth = useContext(AuthContext);
   const [sendPasswordResetEmail, sending, error] =
@@ -36,22 +46,23 @@ export default function ResetPassword(): ReactElement {
   };
   if (sentEmail) {
     return (
-      <Stack spacing={3} alignItems="center">
-        <Typography variant="overline">Beatsequence</Typography>
-        <Typography align="center" variant="subtitle1" maxWidth="320px">
-          Please check the email address {email} for instructions to reset your
-          password.
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={onSubmitClick}
-          sx={{
-            minWidth: "320px",
-          }}
-        >
-          Resend email
-        </Button>
-      </Stack>
+      <Container>
+        <Stack spacing={3} alignItems="center">
+          <Typography align="center" variant="subtitle1" maxWidth="320px">
+            Please check the email address {email} for instructions to reset
+            your password.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={onSubmitClick}
+            sx={{
+              minWidth: "320px",
+            }}
+          >
+            Resend email
+          </Button>
+        </Stack>
+      </Container>
     );
   }
   return (
@@ -81,58 +92,59 @@ export default function ResetPassword(): ReactElement {
       }}
     >
       {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <Stack spacing={3} alignItems="center">
-            <Typography variant="overline">Beatsequence</Typography>
-            <Typography variant="subtitle1">Forgot your password?</Typography>
-            <Typography variant="subtitle1" align="center" maxWidth="320px">
-              Enter your email address and we will send you instructions to
-              reset your password.
-            </Typography>
-            <Stack alignItems="left">
-              <TextField
-                variant="outlined"
-                type="text"
-                label="Email"
+        <Container>
+          <form onSubmit={formik.handleSubmit}>
+            <Stack spacing={3} alignItems="center">
+              <Typography fontSize={"24px"}>Forgot your password?</Typography>
+              <Typography variant="subtitle1" align="center" maxWidth="320px">
+                Enter your email address and we will send you instructions to
+                reset your password.
+              </Typography>
+              <Stack alignItems="left">
+                <TextField
+                  variant="outlined"
+                  type="text"
+                  label="Email"
+                  sx={{
+                    minWidth: "320px",
+                  }}
+                  {...formik.getFieldProps("email")}
+                />
+                {(formik.touched.email ?? false) &&
+                formik.errors.email != null ? (
+                  <Typography variant="subtitle2" color="red">
+                    {formik.errors.email}
+                  </Typography>
+                ) : (
+                  <Spacer />
+                )}
+              </Stack>
+              <Button
+                variant="contained"
+                disabled={!formik.isValid}
+                type="submit"
                 sx={{
                   minWidth: "320px",
                 }}
-                {...formik.getFieldProps("email")}
-              />
-              {(formik.touched.email ?? false) &&
-              formik.errors.email != null ? (
-                <Typography variant="subtitle2" color="red">
-                  {formik.errors.email}
+              >
+                Continue
+              </Button>
+              <Link href="/account/login" passHref>
+                <MUILink>Back to login page</MUILink>
+              </Link>
+              {sending && (
+                <Typography variant="subtitle2">
+                  Sending email to {email}...
                 </Typography>
-              ) : (
-                <Spacer />
+              )}
+              {error != null && (
+                <Typography variant="subtitle2">
+                  Password reset failed: {error.message}
+                </Typography>
               )}
             </Stack>
-            <Button
-              variant="contained"
-              disabled={!formik.isValid}
-              type="submit"
-              sx={{
-                minWidth: "320px",
-              }}
-            >
-              Continue
-            </Button>
-            <Link href="/account/login" passHref>
-              <MUILink>Back to login page</MUILink>
-            </Link>
-            {sending && (
-              <Typography variant="subtitle2">
-                Sending email to {email}...
-              </Typography>
-            )}
-            {error != null && (
-              <Typography variant="subtitle2">
-                Password reset failed: {error.message}
-              </Typography>
-            )}
-          </Stack>
-        </form>
+          </form>
+        </Container>
       )}
     </Formik>
   );
