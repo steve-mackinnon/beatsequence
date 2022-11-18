@@ -19,7 +19,8 @@ const Container = styled("form")(
   width: 100%;
   justify-content: center;
   display: flex;
-  margin: 1rem;
+  margin: 1.5rem;
+  margin-top: 4rem;
   `
 );
 

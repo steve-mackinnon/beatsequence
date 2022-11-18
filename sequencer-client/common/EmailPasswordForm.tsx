@@ -25,7 +25,7 @@ const ContainerForm = styled("form")(
   width: 100%;
   justify-content: center;
   display: flex;
-  margin-top: 1rem;
+  margin-top: 4rem;
   `
 );
 
