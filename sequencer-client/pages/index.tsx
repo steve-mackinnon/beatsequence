@@ -47,14 +47,20 @@ export default function Home(): ReactElement {
     <div>
       <Head>
         <title>
-          Beat Sequence - audio sequencer, synthesizer and drum machine for
-          electronic music production
+          Beatsequence - experimental beat making tool for the browser
         </title>
         <meta
           name="description"
-          content="Make beats and bleeps with this powerful sequencer and synth engine in your web browser. Export audio tracks and bring them into your DAW."
+          content="Make beats in your browser with this powerful step sequencer and synthesis engine. Works seamlessly on mobile or desktop."
+        />
+        <meta
+          name="og:title"
+          property="og:title"
+          content="Beatsequence - experimental beat making tool for the browser"
         />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://beatsequence.com/" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainContainer>
         <Typography variant="h1">
