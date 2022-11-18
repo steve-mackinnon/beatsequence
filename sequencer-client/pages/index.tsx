@@ -16,7 +16,7 @@ export default function Home(): ReactElement {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    margin: "1rem",
+    margin: "1.5rem",
     gap: "2rem",
   });
   const notAuthorized = user == null && !loading;
@@ -38,9 +38,6 @@ export default function Home(): ReactElement {
       </Link>
     );
   };
-  const getStartedText = notAuthorized
-    ? "Create an account to start cooking up some beats..."
-    : "";
   return (
     <div>
       <Head>
@@ -62,21 +59,20 @@ export default function Home(): ReactElement {
           </span>{" "}
           built for the browser.
         </Typography>
+        <MakeBeatsOrCreateAccountButton />
         <Typography variant="h2">
           Beatsequence is a step sequencer, synthesizer and drum machine built
           for electronic music production.
         </Typography>
-        <Typography variant="h2">{getStartedText}</Typography>
-        <MakeBeatsOrCreateAccountButton />
         <Typography variant="h2">
           Built with mobile in mind - the responsive interface allows you to
-          stay in the flow on any device.
+          create seamlessly on any device.
         </Typography>
-        <Typography variant="h3">
+        <Typography variant="body1">
           Designed and developed by electronic music producer and software
           engineer <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
         </Typography>
-        <Typography variant="h4">
+        <Typography variant="subtitle1">
           Note: Beatsequence is currently in beta - lots of new features are
           coming!
         </Typography>
