@@ -45,7 +45,7 @@ export default function Home(): ReactElement {
   };
   return (
     <div>
-      <Head>
+      <Head key="landingpageHead">
         <title>
           Beatsequence - experimental beat making tool for the browser
         </title>
