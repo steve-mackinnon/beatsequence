@@ -76,7 +76,7 @@ export default function Home(): ReactElement {
           electronic music production.
         </Typography>
         <Typography variant="h3">
-          Designed with mobile in mind - the responsive interface allows you to
+          Designed with mobile in mind. The responsive interface allows you to
           create seamlessly on any device.
         </Typography>
         <Typography variant="h3">
