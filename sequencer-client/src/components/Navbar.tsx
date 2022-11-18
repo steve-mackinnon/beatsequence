@@ -20,14 +20,26 @@ export default function Navbar(props: NavbarProps): ReactElement {
 
   return (
     <header>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{
+          height: "60px",
+          justifyContent: "center",
+        }}
+      >
         <Stack
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          padding="12px"
+          paddingLeft="1.5rem"
         >
-          <Link href="/" passHref>
+          <Link
+            href="/"
+            passHref
+            style={{
+              height: 30,
+            }}
+          >
             <Image
               src={logo}
               alt="Beatsequence homepage"
