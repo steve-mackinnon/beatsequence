@@ -33,7 +33,7 @@ const darkTheme = createTheme({
       mobile: 0,
       tablet: 650,
       laptop: 1024,
-      desktop: 1256,
+      desktop: 1284,
     },
   },
   typography: {
