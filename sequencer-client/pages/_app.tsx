@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import Layout from "../components/Layout";
+import Layout from "../common/Layout";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AuthContext } from "../context/authContext";
