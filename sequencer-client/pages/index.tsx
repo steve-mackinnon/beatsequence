@@ -17,6 +17,7 @@ export default function Home(): ReactElement {
     alignItems: "center",
     textAlign: "center",
     margin: "1.5rem",
+    marginTop: "4rem",
     gap: "2rem",
   });
   const notAuthorized = user == null && !loading;
