@@ -38,16 +38,16 @@ const darkTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: 46,
+      fontSize: 42,
     },
     h2: {
-      fontSize: 30,
+      fontSize: 28,
     },
     h3: {
-      fontSize: 20,
+      fontSize: 18,
     },
     h4: {
-      fontSize: 16,
+      fontSize: 14,
     },
   },
 });
