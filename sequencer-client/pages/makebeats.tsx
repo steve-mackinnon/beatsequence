@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import { Provider } from "react-redux";
-import { store } from "../src/store";
-import { randomize } from "../src/features/steps/steps";
+import { store } from "../store";
+import { randomize } from "../features/steps/steps";
 import Head from "next/head";
-import AudioWorkstation from "../src/components/AudioWorkstation";
+import AudioWorkstation from "../components/AudioWorkstation";
 
 // Always initialize the sequencer to a randomized state
 store.dispatch(

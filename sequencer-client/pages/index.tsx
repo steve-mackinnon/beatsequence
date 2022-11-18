@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Button, Link as MuiLink, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Link from "next/link";
-import { AuthContext } from "../src/context/authContext";
+import { AuthContext } from "../context/authContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "../styles/Homepage.module.css";
 export default function Home(): ReactElement {
