@@ -29,13 +29,17 @@ export default function Home(): ReactElement {
           passHref
           style={{ textDecoration: "none" }}
         >
-          <Button variant="contained">Create an account</Button>
+          <Button size="large" variant="contained">
+            Get started
+          </Button>
         </Link>
       );
     }
     return (
       <Link href="/makebeats" passHref style={{ textDecoration: "none" }}>
-        <Button variant="contained">Enter Beatsequence</Button>
+        <Button size="large" variant="contained">
+          Get Started
+        </Button>
       </Link>
     );
   };
