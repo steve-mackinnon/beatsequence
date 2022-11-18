@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react";
 import Head from "next/head";
-import { Button, Link as MuiLink } from "@mui/material";
+import { Button, Link as MuiLink, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Link from "next/link";
 import { AuthContext } from "../src/context/authContext";
@@ -17,13 +17,17 @@ export default function Home(): ReactElement {
     alignItems: "center",
     textAlign: "center",
     margin: "1rem",
+    gap: "2rem",
   });
   const notAuthorized = user == null && !loading;
   const MakeBeatsOrCreateAccountButton = (): ReactElement => {
     if (notAuthorized) {
       return (
         <Link href="/account/create" passHref>
-          <Button variant="contained" sx={{ margin: "1rem" }}>
+          <Button
+            variant="contained"
+            sx={{ margin: "1rem", textDecoration: "none" }}
+          >
             Create an account
           </Button>
         </Link>
@@ -31,13 +35,21 @@ export default function Home(): ReactElement {
     }
     return (
       <Link href="/makebeats" passHref>
-        <Button variant="contained">Make beats</Button>
+        <Button
+          sx={{
+            margin: "1rem",
+            textDecoration: "none",
+          }}
+          variant="contained"
+        >
+          Enter Beatsequence
+        </Button>
       </Link>
     );
   };
   const getStartedText = notAuthorized
-    ? "Create an account to start cooking up some beats and bleeps..."
-    : "Dive into the beta...";
+    ? "Create an account to start cooking up some beats..."
+    : "";
   return (
     <div>
       <Head>
@@ -52,27 +64,31 @@ export default function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainContainer>
-        <h1>
+        <Typography variant="h1">
           The{" "}
           <span className={styles.ColorText}>
             experimental beat making tool
           </span>{" "}
-          for your browser.
-        </h1>
-        <h2>
-          Beatsequence is an audio sequencer, synthesizer and drum machine built
+          built for the browser.
+        </Typography>
+        <Typography variant="h2">
+          Beatsequence is a step sequencer, synthesizer and drum machine built
           for electronic music production.
-        </h2>
-        <h2>{getStartedText}</h2>
+        </Typography>
+        <Typography variant="h2">
+          Built with mobile in mind - the responsive interface allows you to
+          stay in the flow on any device.
+        </Typography>
+        <Typography variant="h2">{getStartedText}</Typography>
         <MakeBeatsOrCreateAccountButton />
-        <h3>
+        <Typography variant="h3">
           Designed and developed by electronic music producer and software
           engineer <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
-        </h3>
-        <h4>
+        </Typography>
+        <Typography variant="h4">
           Note: Beatsequence is currently in beta - lots of new features are
           coming!
-        </h4>
+        </Typography>
       </MainContainer>
     </div>
   );

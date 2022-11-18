@@ -36,6 +36,20 @@ const darkTheme = createTheme({
       desktop: 1256,
     },
   },
+  typography: {
+    h1: {
+      fontSize: 46,
+    },
+    h2: {
+      fontSize: 30,
+    },
+    h3: {
+      fontSize: 20,
+    },
+    h4: {
+      fontSize: 16,
+    },
+  },
 });
 
 export default function App({
