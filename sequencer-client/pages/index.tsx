@@ -23,27 +23,18 @@ export default function Home(): ReactElement {
   const MakeBeatsOrCreateAccountButton = (): ReactElement => {
     if (notAuthorized) {
       return (
-        <Link href="/account/create" passHref>
-          <Button
-            variant="contained"
-            sx={{ margin: "1rem", textDecoration: "none" }}
-          >
-            Create an account
-          </Button>
+        <Link
+          href="/account/create"
+          passHref
+          style={{ textDecoration: "none" }}
+        >
+          <Button variant="contained">Create an account</Button>
         </Link>
       );
     }
     return (
-      <Link href="/makebeats" passHref>
-        <Button
-          sx={{
-            margin: "1rem",
-            textDecoration: "none",
-          }}
-          variant="contained"
-        >
-          Enter Beatsequence
-        </Button>
+      <Link href="/makebeats" passHref style={{ textDecoration: "none" }}>
+        <Button variant="contained">Enter Beatsequence</Button>
       </Link>
     );
   };
@@ -75,12 +66,12 @@ export default function Home(): ReactElement {
           Beatsequence is a step sequencer, synthesizer and drum machine built
           for electronic music production.
         </Typography>
+        <Typography variant="h2">{getStartedText}</Typography>
+        <MakeBeatsOrCreateAccountButton />
         <Typography variant="h2">
           Built with mobile in mind - the responsive interface allows you to
           stay in the flow on any device.
         </Typography>
-        <Typography variant="h2">{getStartedText}</Typography>
-        <MakeBeatsOrCreateAccountButton />
         <Typography variant="h3">
           Designed and developed by electronic music producer and software
           engineer <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.

@@ -41,12 +41,16 @@ export default function Navbar(props: NavbarProps): ReactElement {
             padding="12px"
           >
             {notLoggedIn && (
-              <Link href="/account/create" passHref>
+              <Link
+                href="/account/create"
+                passHref
+                style={{ textDecoration: "none" }}
+              >
                 <Button>Sign up</Button>
               </Link>
             )}
             {notLoggedIn && (
-              <Link href="/account/login">
+              <Link href="/account/login" style={{ textDecoration: "none" }}>
                 <Button>Sign in</Button>
               </Link>
             )}
