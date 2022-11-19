@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { AuthContext } from "../context/authContext";
 import { auth } from "../firebase";
 import "normalize.css/normalize.css";
+import "../styles/global.css";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
