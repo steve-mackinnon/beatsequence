@@ -1,8 +1,13 @@
+/* Hack to override the user-agent autofill style to prevent an
+   ugly yellow fill on Sarari/iOS:
+   https://stackoverflow.com/questions/39859001/how-can-we-overwrite-user-agent-stylesheet
+*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff;
-  color: #ffffff;
-  -webkit-box-shadow: 0 0 0px 40rem rgb(77, 75, 75) inset;
-  box-shadow: 0 0 0px 40rem rgb(75, 75, 75) inset;
+input:-webkit-autofill:focus
+input:-webkit-autofill {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  box-shadow:  0 0 0px 1000px #000 inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
