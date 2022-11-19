@@ -18,7 +18,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { AuthContext } from "../context/authContext";
-import styles from "../styles/Input.module.css";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
@@ -26,7 +25,7 @@ const ContainerForm = styled("form")(
   width: 100%;
   justify-content: center;
   display: flex;
-  margin-top: 4grem;
+  margin-top: 4rem;
   `
 );
 
@@ -52,8 +51,6 @@ export default function EmailPasswordForm(
   const otherPagePath =
     props.action === "create" ? "/account/login" : "/account/create";
   const otherPageAction = props.action === "create" ? "Sign in" : "Sign up";
-
-  const inputStyle = { WebkitBoxShadow: "0 0 0 1000px rgb(39,39,39) inset" };
 
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
@@ -109,7 +106,6 @@ export default function EmailPasswordForm(
                 id="email"
                 type="email"
                 label="Email"
-                inputProps={{ style: inputStyle }}
                 sx={{
                   minWidth: "320px",
                 }}
@@ -123,7 +119,6 @@ export default function EmailPasswordForm(
                 variant="outlined"
                 type="password"
                 label="Password"
-                inputProps={{ style: inputStyle }}
                 sx={{
                   minWidth: "320px",
                 }}
