@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AuthContext } from "../context/authContext";
 import { auth } from "../firebase";
+import "normalize.css/normalize.css";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
