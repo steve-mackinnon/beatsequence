@@ -7,6 +7,8 @@ export interface SongParams {
 export interface SongState {
   playing: boolean;
   params: SongParams;
+  name: string;
+  hasBeenSaved: boolean;
 }
 
 export const initialState = {
@@ -14,11 +16,16 @@ export const initialState = {
   params: {
     tempo: 127.0,
   },
+  name: "New project",
+  hasBeenSaved: false,
 };
 
 export interface SongParamPayload {
   paramId: string;
   value: number;
+}
+export interface SaveAsPayload {
+  name: string;
 }
 export const songSlice = createSlice({
   name: "song",
@@ -41,9 +48,28 @@ export const songSlice = createSlice({
         action.payload.value;
     },
     resetState: (state, action) => {},
+    saveAs: (state, action: PayloadAction<SaveAsPayload>) => {
+      if (
+        action.payload.name.length === 0 ||
+        action.payload.name.trim().length === 0
+      ) {
+        console.log(
+          "Invalid project name. Length must be greater than zero and contain non-space charaters."
+        );
+        state.hasBeenSaved = false;
+        return;
+      }
+      state.name = action.payload.name;
+      state.hasBeenSaved = true;
+    },
   },
 });
 
-export const { togglePlayback, shutDownAudioEngine, resetState, setParam } =
-  songSlice.actions;
+export const {
+  togglePlayback,
+  shutDownAudioEngine,
+  resetState,
+  setParam,
+  saveAs,
+} = songSlice.actions;
 export default songSlice.reducer;
