@@ -25,61 +25,53 @@ input.SequencerStep[type=checkbox] {
   place-content: center;
 }
 
-input.SequencerStep[type=checkbox]:hover {
-  background-color: rgb(204, 215, 213);
+@media (hover: hover) {
+  input.SequencerStep[type=checkbox]:hover {
+    background-color: rgb(204, 215, 213);
+  }
+  input.SequencerStep.playing:hover[type=checkbox] {
+    background-color: rgb(224, 52, 155);
+  }
+  input.SequencerStep.muted.playing:hover[type=checkbox] {
+    background-color: rgb(154, 165, 160);
+  }
+  input.SequencerStep.muted:hover[type=checkbox] {
+    background-color: rgb(154, 165, 160);
+  }
+  input.SequencerStep.muted:hover[type="checkbox"]:checked::before {
+    background-color: rgb(11, 66, 64);
+  }
+  input.SequencerStep[type="checkbox"]:checked:hover::before {
+    background-color: rgb(21, 155, 150);
+  }
+  input.SequencerStep.playing[type="checkbox"]:checked:hover::before {
+    background-color: rgb(170, 34, 116);
+  }
+  input.SequencerStep.muted.playing[type="checkbox"]:checked:hover::before {
+    background-color: rgb(64, 11, 43);
+  }  
 }
 input.SequencerStep.playing[type=checkbox] {
   background-color: rgb(166, 38, 115);
 }
-
-input.SequencerStep.playing:hover[type=checkbox] {
-  background-color: rgb(224, 52, 155);
-}
-
 input.SequencerStep.muted.playing[type=checkbox] {
   background-color: rgb(72, 77, 75);
 }
-input.SequencerStep.muted.playing:hover[type=checkbox] {
-  background-color: rgb(154, 165, 160);
-}
-
 input.SequencerStep.muted[type=checkbox] {
   background-color: rgb(76, 81, 79);
 }
-input.SequencerStep.muted:hover[type=checkbox] {
-  background-color: rgb(154, 165, 160);
-}
-
 input.SequencerStep.muted[type="checkbox"]:checked::before {
   background-color: rgb(17, 103, 100);
 }
-input.SequencerStep.muted:hover[type="checkbox"]:checked::before {
-  background-color: rgb(11, 66, 64);
-}
-
 input.SequencerStep[type="checkbox"]:checked::before {
   background-color: rgb(31, 224, 218);
 }
-input.SequencerStep[type="checkbox"]:checked:hover::before {
-  background-color: rgb(21, 155, 150);
-}
-
 input.SequencerStep.playing[type="checkbox"]:checked::before {
   background-color: rgb(245, 50, 167);
 }
-input.SequencerStep.playing[type="checkbox"]:checked:hover::before {
-  background-color: rgb(170, 34, 116);
-}
-
-
 input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
   background-color: rgb(110, 19, 74);
 }
-input.SequencerStep.muted.playing[type="checkbox"]:checked:hover::before {
-  background-color: rgb(64, 11, 43);
-}
-
-
 input.SequencerStep[type="checkbox"]::before {
   content: "";
   width: 68px;
