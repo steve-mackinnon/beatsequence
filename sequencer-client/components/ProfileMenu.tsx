@@ -17,7 +17,7 @@ export default function ProfileMenu(): ReactElement {
   });
   const router = useRouter();
   const auth = useContext(AuthContext);
-  const [signOut, signingOut] = useSignOut(auth);
+  const [signOut] = useSignOut(auth);
 
   const onSignOutClick = async (_e: any): void => {
     const success = await signOut();

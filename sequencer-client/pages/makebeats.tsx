@@ -15,7 +15,7 @@ store.dispatch(
 
 function MakeBeats(): ReactElement {
   return (
-    <div>
+    <>
       <Head>
         <title>
           Beatsequence - experimental beat making tool for the browser
@@ -37,7 +37,7 @@ function MakeBeats(): ReactElement {
       <Provider store={store}>
         <AudioWorkstation />
       </Provider>
-    </div>
+    </>
   );
 }
 
