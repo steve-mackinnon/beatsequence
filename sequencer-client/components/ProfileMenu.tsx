@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { Button, Menu, MenuItem, CircularProgress } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import {
   usePopupState,
   bindTrigger,
@@ -19,14 +19,14 @@ export default function ProfileMenu(): ReactElement {
   const auth = useContext(AuthContext);
   const [signOut] = useSignOut(auth);
 
-  const onSignOutClick = async (_e: any): void => {
+  const onSignOutClick = async (): Promise<void> => {
     const success = await signOut();
     if (!success) {
       console.log("Failed to sign out.");
       return;
     }
     popupState.close();
-    await router.push("/account/create");
+    await router.push("/account/login");
   };
 
   return (
@@ -35,7 +35,13 @@ export default function ProfileMenu(): ReactElement {
         <MuiAvatar sx={{ color: "white" }}>SD</MuiAvatar>
       </Button>
       <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={onSignOutClick}>Sign out</MenuItem>
+        <MenuItem
+          onClick={() => {
+            void onSignOutClick();
+          }}
+        >
+          Sign out
+        </MenuItem>
       </Menu>
     </>
   );
