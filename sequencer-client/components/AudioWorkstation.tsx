@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect } from "react";
 import { FooterControls } from "./FooterControls";
-import styles from "./AudioWorkstation.module.css";
+import styles from "../styles/AudioWorkstation.module.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
