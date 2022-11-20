@@ -7,6 +7,7 @@ import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
+import ProfileMenu from "../components/ProfileMenu";
 
 interface NavbarProps {
   showSignInLink?: boolean;
@@ -16,7 +17,7 @@ interface NavbarProps {
 export default function Navbar(props: NavbarProps): ReactElement {
   const auth = useContext(AuthContext);
   const [user, loading] = useAuthState(auth);
-  const notLoggedIn = user == null && !loading;
+  const userLoggedIn = !(user == null && !loading);
 
   return (
     <header>
@@ -53,7 +54,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
             justifyContent="space-between"
             padding="12px"
           >
-            {notLoggedIn && (props.showSignUpLink ?? true) && (
+            {!userLoggedIn && (props.showSignUpLink ?? true) && (
               <Link
                 href="/account/create"
                 passHref
@@ -62,11 +63,12 @@ export default function Navbar(props: NavbarProps): ReactElement {
                 <Button>Sign up</Button>
               </Link>
             )}
-            {notLoggedIn && (props.showSignInLink ?? true) && (
+            {!userLoggedIn && (props.showSignInLink ?? true) && (
               <Link href="/account/login" style={{ textDecoration: "none" }}>
                 <Button>Sign in</Button>
               </Link>
             )}
+            {userLoggedIn && <ProfileMenu />}
           </Stack>
         </Stack>
       </AppBar>
