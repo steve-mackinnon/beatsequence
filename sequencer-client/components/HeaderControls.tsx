@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
 import { Stack } from "@mui/system";
-import { GlobalMenu } from "./GlobalMenu";
 import { ParamSlider } from "../common/ParamSlider";
 
 export function HeaderControls(): ReactElement {
@@ -13,7 +12,6 @@ export function HeaderControls(): ReactElement {
       justifyContent="space-between"
       paddingX="15px"
     >
-      <GlobalMenu />
       <Stack
         direction="row"
         alignItems="center"
