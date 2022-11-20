@@ -29,11 +29,7 @@ export function TrackParamsView(props: TrackParamsViewProps): ReactElement {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        flexFlow: {
-          mobile: "column",
-          tablet: "column",
-          desktop: "row",
-        },
+        flexFlow: "column",
         paddingTop: 1,
         flex: 1,
       }}

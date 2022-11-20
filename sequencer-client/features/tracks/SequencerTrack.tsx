@@ -31,9 +31,8 @@ export function SequencerTrack(props: TrackInfo): ReactElement {
       width={{
         mobile: "300px",
         tablet: "600px",
-        desktop: "1140px",
       }}
-      columns={{ mobile: 4, tablet: 8, desktop: 16 }}
+      columns={{ mobile: 4, tablet: 8 }}
     >
       {steps}
     </Grid>

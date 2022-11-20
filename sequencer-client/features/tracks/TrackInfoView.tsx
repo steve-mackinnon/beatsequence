@@ -53,16 +53,8 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         minWidth: "56px",
       };
   const containerStyle: SxProps = {
-    flexDirection: {
-      mobile: "column",
-      tablet: "column",
-      desktop: "row",
-    },
-    alignItems: {
-      mobile: "center",
-      tablet: "center",
-      desktop: "flex-start",
-    },
+    flexDirection: "column",
+    alignItems: "center",
   };
   return (
     <Stack sx={containerStyle}>
