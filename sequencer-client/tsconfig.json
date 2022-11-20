@@ -17,6 +17,17 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["src", "pages", "declaration.d.ts", "additional.d.ts"],
+  "include": [
+    "common",
+    "components",
+    "context",
+    "engine",
+    "features",
+    "generators",
+    "hooks",
+    "pages",
+    "declaration.d.ts",
+    "additional.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
