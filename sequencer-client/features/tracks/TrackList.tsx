@@ -14,7 +14,7 @@ export function TrackList(): ReactElement {
     <Box
       sx={{
         position: "absolute",
-        top: "80px",
+        top: "44px",
         left: "0px",
         bottom: "46px",
         overflowY: "scroll",

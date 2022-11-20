@@ -9,9 +9,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
 import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
-import logo from "../public/beatsequence-logo-white.png";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
@@ -42,15 +39,6 @@ export default function AudioWorkstation(): ReactElement {
   }
   return (
     <div className={styles.AudioWorkstation}>
-      <Link href="/" passHref>
-        <Image
-          priority={true}
-          src={logo}
-          width={130}
-          height={30}
-          alt="Return to homepage"
-        />
-      </Link>
       <HeaderControls />
       <TrackList />
       <FooterControls />
