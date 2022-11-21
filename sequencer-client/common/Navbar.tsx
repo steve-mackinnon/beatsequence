@@ -52,7 +52,13 @@ export default function Navbar(props: NavbarProps): ReactElement {
           flexDirection="row"
           justifyContent="space-between"
           padding="12px"
+          alignItems="center"
         >
+          {userLoggedIn && (
+            <Link href="/projects" passHref style={{ textDecoration: "none" }}>
+              <Button>Projects</Button>
+            </Link>
+          )}
           {!userLoggedIn && (props.showSignUpLink ?? true) && (
             <Link
               href="/account/create"
