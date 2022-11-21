@@ -3,7 +3,7 @@ import { AuthContext } from "../context/authContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { db } from "../firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useAppDispatch } from "../hooks";
@@ -46,7 +46,8 @@ export default function Projects(): ReactElement {
     const projectPermissions = collection(db, "project_permissions");
     const projectsQuery = query(
       projectPermissions,
-      where("readers", "array-contains", user.uid)
+      where("readers", "array-contains", user.uid),
+      orderBy("timestamp", "desc")
     );
     const fetchProjects = async (): Promise<ProjectInfo[]> => {
       const projectDocs = await getDocs(projectsQuery);
@@ -74,7 +75,7 @@ export default function Projects(): ReactElement {
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  });
+  }, [user]);
 
   if (isLoading) {
     return <span>Loading...</span>;

@@ -15,7 +15,14 @@ import { setStepStates, StepState } from "../steps/steps";
 import { RootState, store } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
 import { db, auth } from "../../firebase";
-import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import Router from "next/router";
 export const songListenerMiddleware = createListenerMiddleware();
 
@@ -80,6 +87,7 @@ songListenerMiddleware.startListening({
       });
       // Give the current user read/write permissions for the new project
       await setDoc(doc(db, "project_permissions", projectRef.id), {
+        timestamp: serverTimestamp(),
         name: projectToSave.name,
         writers: [auth.currentUser.uid],
         readers: [auth.currentUser.uid],
