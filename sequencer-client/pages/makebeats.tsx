@@ -1,17 +1,6 @@
 import React, { ReactElement } from "react";
-import { Provider } from "react-redux";
-import { store } from "../store";
-import { randomize } from "../features/steps/steps";
 import Head from "next/head";
 import AudioWorkstation from "../components/AudioWorkstation";
-
-// Always initialize the sequencer to a randomized state
-store.dispatch(
-  randomize({
-    trackId: undefined,
-    seed: Date.now().toString(),
-  })
-);
 
 function MakeBeats(): ReactElement {
   return (
@@ -34,9 +23,7 @@ function MakeBeats(): ReactElement {
         <link rel="canonical" href="https://beatsequence.com/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Provider store={store}>
-        <AudioWorkstation />
-      </Provider>
+      <AudioWorkstation />
     </>
   );
 }

@@ -132,6 +132,9 @@ export const stepsSlice = createSlice({
         return step;
       });
     },
+    setStepStates: (state, action: PayloadAction<StepState[]>) => {
+      return action.payload;
+    },
   },
 });
 
@@ -160,6 +163,7 @@ export const {
   fourOnTheFloor,
   randomize,
   fillAllSteps,
+  setStepStates,
 } = stepsSlice.actions;
 
 export default stepsSlice.reducer;

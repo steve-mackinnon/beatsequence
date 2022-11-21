@@ -200,6 +200,9 @@ export const tracksSlice = createSlice({
         return trackState;
       });
     },
+    setTrackStates: (state, action: PayloadAction<TrackState[]>) => {
+      return action.payload;
+    },
   },
 });
 
@@ -225,5 +228,6 @@ export const {
   setGeneratorParam,
   setDisplayName,
   toggleParamViewVisibility,
+  setTrackStates,
 } = tracksSlice.actions;
 export default tracksSlice.reducer;
