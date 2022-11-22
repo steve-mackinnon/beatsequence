@@ -21,6 +21,7 @@ export default function Projects(): ReactElement {
   const router = useRouter();
   const [projects, setProjects] = useState<ProjectInfo[]>([]);
   const [isLoading, setLoading] = useState(true);
+  const [errorLoading, setErrorLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   const handleLoadProjectClick = (info: ProjectInfo): void => {
@@ -43,6 +44,7 @@ export default function Projects(): ReactElement {
     if (user == null) {
       return;
     }
+    setErrorLoading(false);
     const projectPermissions = collection(db, "project_permissions");
     const projectsQuery = query(
       projectPermissions,
@@ -74,9 +76,15 @@ export default function Projects(): ReactElement {
         setProjects(projects);
         setLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setErrorLoading(true);
+      });
   }, [user]);
 
+  if (errorLoading) {
+    return <span>Error fetching projects from server...</span>;
+  }
   if (isLoading) {
     return <span>Loading...</span>;
   }
