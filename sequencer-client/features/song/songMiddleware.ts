@@ -7,7 +7,6 @@ import song, {
   trySaveAs,
   tryLoadProject,
   setProjectInfo,
-  SongState,
   loadProject,
 } from "./song";
 import { setTrackStates, TrackState } from "../tracks/tracks";
@@ -80,6 +79,8 @@ songListenerMiddleware.startListening({
         name: projectToSave.name,
         tracks: state.tracks,
         steps: state.steps,
+        writers: [auth.currentUser.uid],
+        readers: [auth.currentUser.uid],
         song: {
           name: state.song.projectToSave?.name,
           params: state.song.params,
