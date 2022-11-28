@@ -1,6 +1,8 @@
+"use client";
+
 import React, { ReactElement } from "react";
 import Head from "next/head";
-import AudioWorkstation from "../components/AudioWorkstation";
+import AudioWorkstation from "../../components/AudioWorkstation";
 
 function MakeBeats(): ReactElement {
   return (

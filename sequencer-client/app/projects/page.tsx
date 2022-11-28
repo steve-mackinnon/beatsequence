@@ -1,13 +1,19 @@
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/authContext";
-import { useAuthState } from "react-firebase-hooks/auth";
+"use client";
+
+import React, { ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { db } from "../firebase";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  getFirestore,
+} from "firebase/firestore";
 import { List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useAppDispatch } from "../hooks";
-import { tryLoadProject } from "../features/song/song";
+import useLoadProject from "../../hooks/useLoadProject";
+import { useUser, useFirebaseApp } from "reactfire";
 
 interface ProjectInfo {
   id: string;
@@ -15,36 +21,31 @@ interface ProjectInfo {
 }
 
 export default function Projects(): ReactElement {
-  const auth = useContext(AuthContext);
-  const [user, loading] = useAuthState(auth);
-  const userLoggedIn = !(user == null && !loading);
+  const { data: user } = useUser();
   const router = useRouter();
+  const app = useFirebaseApp();
   const [projects, setProjects] = useState<ProjectInfo[]>([]);
-  const [isLoading, setLoading] = useState(true);
   const [errorLoading, setErrorLoading] = useState(false);
-  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const loadProject = useLoadProject();
 
   const handleLoadProjectClick = (info: ProjectInfo): void => {
-    dispatch(
-      tryLoadProject({
-        name: info.name,
-        id: info.id,
-      })
-    );
+    loadProject(info.id);
   };
 
   useEffect(() => {
-    if (userLoggedIn) {
+    if (user != null) {
       return;
     }
     void router.push("/account/login");
-  }, [router, user, loading, userLoggedIn]);
+  }, [router, user]);
 
   useEffect(() => {
     if (user == null) {
       return;
     }
     setErrorLoading(false);
+    const db = getFirestore(app);
     const projectPermissions = collection(db, "project_permissions");
     const projectsQuery = query(
       projectPermissions,
@@ -80,12 +81,12 @@ export default function Projects(): ReactElement {
         console.log(e);
         setErrorLoading(true);
       });
-  }, [user]);
+  }, [user, app]);
 
   if (errorLoading) {
     return <span>Error fetching projects from server...</span>;
   }
-  if (isLoading) {
+  if (loading) {
     return <span>Loading...</span>;
   }
   const projectList = projects.map((project) => (

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactElement, useState } from "react";
 import { Slider, InputLabel } from "@mui/material";
 import { ParamInfo, useParameter } from "../hooks";

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   TextField,
   Button,
@@ -5,19 +7,20 @@ import {
   Link as MUILink,
   Alert,
 } from "@mui/material";
-import { ReactElement, useContext, useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-  useAuthState,
-} from "react-firebase-hooks/auth";
-import { browserLocalPersistence, setPersistence } from "firebase/auth";
+  browserLocalPersistence,
+  setPersistence,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  getAuth,
+} from "firebase/auth";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
-import { AuthContext } from "../context/authContext";
+import { useUser, useFirebaseApp } from "reactfire";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
@@ -31,18 +34,17 @@ const ContainerForm = styled("form")(
 
 export interface EmailPasswordFormProps {
   hook:
-    | typeof useCreateUserWithEmailAndPassword
-    | typeof useSignInWithEmailAndPassword;
+    | typeof createUserWithEmailAndPassword
+    | typeof signInWithEmailAndPassword;
   action: "create" | "signin";
 }
 export default function EmailPasswordForm(
   props: EmailPasswordFormProps
 ): ReactElement {
-  const auth = useContext(AuthContext);
+  const { status, data: user } = useUser();
+  const app = useFirebaseApp();
+  const auth = getAuth(app);
   const router = useRouter();
-  const [createOrLoginWithEmailAndPassword, user, loading, error] =
-    props.hook(auth);
-  const [authUser] = useAuthState(auth);
 
   const subtitleText =
     props.action === "create" ? "Create an account" : "Sign in";
@@ -54,10 +56,10 @@ export default function EmailPasswordForm(
 
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
-    if (authUser != null) {
+    if (user != null) {
       void router.push("/makebeats");
     }
-  }, [authUser, router]);
+  }, [user, router]);
 
   return (
     <Formik
@@ -75,10 +77,7 @@ export default function EmailPasswordForm(
       })}
       onSubmit={async (values) => {
         await setPersistence(auth, browserLocalPersistence).then(async () => {
-          await createOrLoginWithEmailAndPassword(
-            values.email,
-            values.password
-          );
+          await props.hook(auth, values.email, values.password);
         });
       }}
     >
@@ -144,20 +143,20 @@ export default function EmailPasswordForm(
               >
                 {props.action === "create" ? "Create Account" : "Sign in"}
               </Button>
-              {loading && (
+              {status === "loading" && (
                 <Typography>
                   {props.action === "create"
                     ? "Creating account..."
                     : "Signing in..."}
                 </Typography>
               )}
-              {user != null && !user.user.emailVerified && (
+              {user != null && !user.emailVerified && (
                 <Typography color="green">Success.</Typography>
               )}
-              {error != null && (
+              {status === "error" && (
                 <Typography variant="subtitle2" color="red">
                   {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
-                  failed: {error.message}
+                  failed
                 </Typography>
               )}
             </Stack>

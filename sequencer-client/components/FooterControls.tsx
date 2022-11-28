@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { togglePlayback, resetState } from "../features/song/song";

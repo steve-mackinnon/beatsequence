@@ -1,20 +1,21 @@
-import React, { ReactElement, useContext, useEffect } from "react";
+"use client";
+
+import React, { ReactElement, useEffect } from "react";
 import { FooterControls } from "./FooterControls";
 import styles from "../styles/AudioWorkstation.module.css";
 import { TrackList } from "../features/tracks/TrackList";
 import { useAppDispatch } from "../hooks";
 import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { AuthContext } from "../context/authContext";
 import { useRouter } from "next/router";
 import { Typography } from "@mui/material";
+import { useUser } from "reactfire";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const auth = useContext(AuthContext);
-  const [user, loading] = useAuthState(auth);
+  const { status, data: user } = useUser();
+  const loading = status === "loading";
 
   useEffect(() => {
     if (!loading && user == null && router.pathname !== "/account/login") {

@@ -15,7 +15,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "common",
@@ -26,8 +31,12 @@
     "generators",
     "hooks",
     "pages",
+    "*.ts*",
+    "*/**/*.ts*",
     "declaration.d.ts",
-    "additional.d.ts"
+    "additional.d.ts",
+    ".next/types/**/*.ts",
+    "app/account"
   ],
   "exclude": ["node_modules"]
 }

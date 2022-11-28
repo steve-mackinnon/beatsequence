@@ -1,7 +1,9 @@
+"use client";
+
 import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
-import { ReactElement, useContext, useState } from "react";
-import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
-import { AuthContext } from "../../../context/authContext";
+import { ReactElement, useState } from "react";
+import { sendPasswordResetEmail, getAuth } from "firebase/auth";
+import { useFirebaseApp } from "reactfire";
 import { Stack, styled } from "@mui/system";
 import Link from "next/link";
 import * as Yup from "yup";
@@ -25,21 +27,14 @@ const Container = styled("form")(
 );
 
 export default function ResetPassword(): ReactElement {
-  const auth = useContext(AuthContext);
-  const [sendPasswordResetEmail, sending, error] =
-    useSendPasswordResetEmail(auth);
+  const app = useFirebaseApp();
   const [sentEmail, setSentEmail] = useState(false);
   const [email, setEmail] = useState("");
 
   const onSubmitClick = (_e: any): void => {
-    sendPasswordResetEmail(email)
-      .then((success: boolean) => {
-        if (success) {
-          setSentEmail(true);
-        }
-        if (!success && error != null) {
-          console.log("Password reset failed with error " + error.message);
-        }
+    sendPasswordResetEmail(getAuth(app), email)
+      .then(() => {
+        setSentEmail(true);
       })
       .catch((_error) => {
         console.log("Password reset failed.");
@@ -78,14 +73,9 @@ export default function ResetPassword(): ReactElement {
       })}
       onSubmit={(values) => {
         setEmail(values.email);
-        sendPasswordResetEmail(values.email)
-          .then((success: boolean) => {
-            if (success) {
-              setSentEmail(true);
-            }
-            if (!success && error != null) {
-              console.log("Password reset failed with error " + error.message);
-            }
+        sendPasswordResetEmail(getAuth(app), values.email)
+          .then(() => {
+            setSentEmail(true);
           })
           .catch((_error) => {
             console.log("Password reset failed.");
@@ -133,16 +123,6 @@ export default function ResetPassword(): ReactElement {
               <Link href="/account/login" passHref>
                 <MUILink>Back to login page</MUILink>
               </Link>
-              {sending && (
-                <Typography variant="subtitle2">
-                  Sending email to {email}...
-                </Typography>
-              )}
-              {error != null && (
-                <Typography variant="subtitle2">
-                  Password reset failed: {error.message}
-                </Typography>
-              )}
             </Stack>
           </form>
         </Container>

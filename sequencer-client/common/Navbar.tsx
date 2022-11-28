@@ -1,13 +1,12 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
 import Image from "next/image";
 import { Stack } from "@mui/system";
 import logo from "../public/beatsequence-logo-white.png";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { AuthContext } from "../context/authContext";
 import ProfileMenu from "../components/ProfileMenu";
+import { useUser } from "reactfire";
 
 interface NavbarProps {
   showSignInLink?: boolean;
@@ -15,9 +14,8 @@ interface NavbarProps {
 }
 
 export default function Navbar(props: NavbarProps): ReactElement {
-  const auth = useContext(AuthContext);
-  const [user, loading] = useAuthState(auth);
-  const userLoggedIn = !(user == null && !loading);
+  const { data: user } = useUser();
+  const userLoggedIn = user != null;
 
   return (
     <AppBar

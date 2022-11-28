@@ -3,7 +3,9 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "eslint.workingDirectories": ["src"],
+  "eslint.workingDirectories": [
+    "src"
+  ],
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -16,5 +18,7 @@
   "editor.formatOnType": true,
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

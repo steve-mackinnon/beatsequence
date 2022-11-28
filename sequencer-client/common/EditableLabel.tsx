@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactElement, useState } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import { styled } from "@mui/system";

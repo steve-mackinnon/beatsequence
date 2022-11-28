@@ -1,11 +1,13 @@
+"use client";
+
 import React, { ReactElement, useState } from "react";
 import { Stack } from "@mui/system";
 import { ParamSlider } from "../common/ParamSlider";
 import { Button, Modal, Typography } from "@mui/material";
-import useProject from "../hooks/useProject";
+import useSaveProject from "../hooks/useSaveProject";
 import SaveProjectAsDialog from "./SaveProjectAsDialog";
 export function HeaderControls(): ReactElement {
-  const [projectName] = useProject();
+  const [projectName] = useSaveProject();
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
   const handleOpen = (): void => setSaveAsDialogOpen(true);
   const handleClose = (): void => setSaveAsDialogOpen(false);

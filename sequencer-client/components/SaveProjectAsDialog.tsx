@@ -1,7 +1,9 @@
+"use client";
+
 import React, { ReactElement, useState } from "react";
 import { Button, Stack, TextField } from "@mui/material";
 import { styled } from "@mui/system";
-import useProject from "../hooks/useProject";
+import useSaveProject from "../hooks/useSaveProject";
 
 const Container = styled("div")({
   position: "absolute",
@@ -24,7 +26,7 @@ export interface SaveProjectAsDialogProps {
 export default function SaveProjectAsDialog(
   props: SaveProjectAsDialogProps
 ): ReactElement {
-  const [project, saveProjectAs] = useProject();
+  const [project, saveProjectAs] = useSaveProject();
   const [currentProjectName, setCurrentProjectName] = useState(project);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
