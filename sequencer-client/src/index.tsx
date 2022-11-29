@@ -13,10 +13,12 @@ import {
   Route,
 } from "react-router-dom";
 import AudioWorkstation from "./components/AudioWorkstation";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
+      <Route index element={<Home />} />
       <Route path="/account">
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/reset-password" element={<ResetPassword />} />
