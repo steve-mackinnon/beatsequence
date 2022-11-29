@@ -18,19 +18,7 @@
     "incremental": true
   },
   "include": [
-    "common",
-    "components",
-    "context",
-    "engine",
-    "features",
-    "generators",
-    "hooks",
-    "src/pages",
-    "declaration.d.ts",
-    "additional.d.ts",
-    "*.ts*",
-    "*/**/ts*",
-    "src/store.ts"
+    "src"
   ],
   "exclude": ["node_modules"]
 }

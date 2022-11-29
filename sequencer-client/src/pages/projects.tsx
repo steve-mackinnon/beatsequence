@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { List, ListItem, ListItemButton, Typography } from "@mui/material";
@@ -18,7 +18,7 @@ export default function Projects(): ReactElement {
   const auth = useContext(AuthContext);
   const [user, loading] = useAuthState(auth);
   const userLoggedIn = !(user == null && !loading);
-  const router = useRouter();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectInfo[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [errorLoading, setErrorLoading] = useState(false);
@@ -37,8 +37,8 @@ export default function Projects(): ReactElement {
     if (userLoggedIn) {
       return;
     }
-    void router.push("/account/login");
-  }, [router, user, loading, userLoggedIn]);
+    navigate("/account/login");
+  }, [navigate, user, loading, userLoggedIn]);
 
   useEffect(() => {
     if (user == null) {

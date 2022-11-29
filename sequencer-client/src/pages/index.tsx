@@ -2,7 +2,7 @@ import React, { ReactElement, useContext } from "react";
 import Head from "next/head";
 import { Button, Link as MuiLink, Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "../styles/Homepage.module.css";
@@ -24,11 +24,7 @@ export default function Home(): ReactElement {
   const MakeBeatsOrCreateAccountButton = (): ReactElement => {
     if (notAuthorized) {
       return (
-        <Link
-          href="/account/create"
-          passHref
-          style={{ textDecoration: "none" }}
-        >
+        <Link to="/account/create" style={{ textDecoration: "none" }}>
           <Button size="large" variant="contained">
             Get started
           </Button>
@@ -36,7 +32,7 @@ export default function Home(): ReactElement {
       );
     }
     return (
-      <Link href="/makebeats" passHref style={{ textDecoration: "none" }}>
+      <Link to="/makebeats" style={{ textDecoration: "none" }}>
         <Button size="large" variant="contained">
           Get Started
         </Button>

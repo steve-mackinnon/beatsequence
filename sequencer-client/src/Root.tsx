@@ -1,5 +1,4 @@
 import React from "react";
-import AudioWorkstation from "./components/AudioWorkstation";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
@@ -20,6 +19,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { Outlet } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJrCkNuTumjOHhr5QU0RMPbdhNcf0QJ2s",
@@ -95,7 +95,7 @@ function App(): React.ReactElement {
                 <CssBaseline />
                 {/* <Layout> */}
                 {/* <div suppressHydrationWarning> */}
-                <AudioWorkstation />
+                <Outlet />
                 {/* </div> */}
                 {/* </Layout> */}
               </ThemeProvider>

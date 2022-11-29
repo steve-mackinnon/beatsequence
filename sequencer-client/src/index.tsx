@@ -1,12 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import Root from "./Root";
+import CreateAccount from "./pages/account/create";
+import Login from "./pages/account/login";
+import ResetPassword from "./pages/account/reset-password";
 
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
+import AudioWorkstation from "./components/AudioWorkstation";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Root />}>
+      <Route path="/account">
+        <Route path="/account/login" element={<Login />} />
+        <Route path="/account/reset-password" element={<ResetPassword />} />
+        <Route path="/account/create" element={<CreateAccount />} />
+      </Route>
+      <Route path="/makebeats" element={<AudioWorkstation />} />
+    </Route>
+  )
+);
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

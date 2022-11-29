@@ -5,7 +5,7 @@ import {
   bindTrigger,
   bindMenu,
 } from "material-ui-popup-state/hooks";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
 import MuiAvatar from "@mui/material/Avatar";
@@ -15,7 +15,7 @@ export default function ProfileMenu(): ReactElement {
     variant: "popover",
     popupId: `profileMenu`,
   });
-  const router = useRouter();
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [signOut] = useSignOut(auth);
 
@@ -26,7 +26,7 @@ export default function ProfileMenu(): ReactElement {
       return;
     }
     popupState.close();
-    await router.push("/account/login");
+    navigate("/account/login");
   };
 
   return (

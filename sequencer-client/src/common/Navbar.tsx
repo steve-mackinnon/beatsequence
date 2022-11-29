@@ -1,9 +1,9 @@
 import { ReactElement, useContext } from "react";
 import Image from "next/image";
 import { Stack } from "@mui/system";
-import logo from "../public/beatsequence-logo-white.png";
+import logo from "../../public/beatsequence-logo-white.png";
 import { Button } from "@mui/material";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
@@ -34,8 +34,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
         paddingLeft="1.5rem"
       >
         <Link
-          href="/"
-          passHref
+          to="/"
           style={{
             height: 30,
           }}
@@ -55,21 +54,17 @@ export default function Navbar(props: NavbarProps): ReactElement {
           alignItems="center"
         >
           {userLoggedIn && (
-            <Link href="/projects" passHref style={{ textDecoration: "none" }}>
+            <Link to="/projects" style={{ textDecoration: "none" }}>
               <Button>Projects</Button>
             </Link>
           )}
           {!userLoggedIn && (props.showSignUpLink ?? true) && (
-            <Link
-              href="/account/create"
-              passHref
-              style={{ textDecoration: "none" }}
-            >
+            <Link to="/account/create" style={{ textDecoration: "none" }}>
               <Button>Sign up</Button>
             </Link>
           )}
           {!userLoggedIn && (props.showSignInLink ?? true) && (
-            <Link href="/account/login" style={{ textDecoration: "none" }}>
+            <Link to="/account/login" style={{ textDecoration: "none" }}>
               <Button>Sign in</Button>
             </Link>
           )}

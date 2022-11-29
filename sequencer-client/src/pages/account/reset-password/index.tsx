@@ -3,7 +3,7 @@ import { ReactElement, useContext, useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { AuthContext } from "../../../context/authContext";
 import { Stack, styled } from "@mui/system";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 
@@ -130,7 +130,7 @@ export default function ResetPassword(): ReactElement {
               >
                 Continue
               </Button>
-              <Link href="/account/login" passHref>
+              <Link to="/account/login">
                 <MUILink>Back to login page</MUILink>
               </Link>
               {sending && (

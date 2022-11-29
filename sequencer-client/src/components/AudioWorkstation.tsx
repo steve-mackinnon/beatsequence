@@ -7,20 +7,20 @@ import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    if (!loading && user == null && router.pathname !== "/account/login") {
-      void router.push("/account/login");
+    if (!loading && user == null) {
+      navigate("/account/login");
     }
-  }, [user, loading, router]);
+  }, [user, loading, navigate]);
 
   const keydownListener = (event: KeyboardEvent): void => {
     if (event.code.toLowerCase() === "space") {

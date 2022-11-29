@@ -14,8 +14,7 @@ import {
 import { browserLocalPersistence, setPersistence } from "firebase/auth";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { AuthContext } from "../context/authContext";
 
@@ -39,10 +38,10 @@ export default function EmailPasswordForm(
   props: EmailPasswordFormProps
 ): ReactElement {
   const auth = useContext(AuthContext);
-  const router = useRouter();
   const [createOrLoginWithEmailAndPassword, user, loading, error] =
     props.hook(auth);
   const [authUser] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const subtitleText =
     props.action === "create" ? "Create an account" : "Sign in";
@@ -55,9 +54,9 @@ export default function EmailPasswordForm(
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
     if (authUser != null) {
-      void router.push("/makebeats");
+      navigate("/makebeats");
     }
-  }, [authUser, router]);
+  }, [authUser, navigate]);
 
   return (
     <Formik
@@ -95,7 +94,7 @@ export default function EmailPasswordForm(
               <Typography fontSize={"24px"}>{subtitleText}</Typography>
               <Typography fontSize="14px">
                 {gotoOtherPageText}
-                <Link href={otherPagePath} passHref>
+                <Link to={otherPagePath}>
                   <MUILink>{otherPageAction}</MUILink>
                 </Link>
               </Typography>
@@ -125,7 +124,7 @@ export default function EmailPasswordForm(
                 {...formik.getFieldProps("password")}
               />
               {props.action === "signin" && (
-                <Link href="/account/reset-password" passHref>
+                <Link to="/account/reset-password">
                   <MUILink>Forgot password?</MUILink>
                 </Link>
               )}
