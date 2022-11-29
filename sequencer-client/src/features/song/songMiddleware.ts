@@ -22,7 +22,7 @@ import {
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import Router from "next/router";
+import { redirect } from "react-router-dom";
 export const songListenerMiddleware = createListenerMiddleware();
 
 interface SongStorage {
@@ -151,9 +151,7 @@ songListenerMiddleware.startListening({
           })
         );
 
-        if (Router.pathname !== "/makebeats") {
-          await Router.push("/makebeats");
-        }
+        redirect("/makebeats");
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");

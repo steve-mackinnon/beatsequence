@@ -1,7 +1,5 @@
 import { ReactElement, useContext } from "react";
-import Image from "next/image";
 import { Stack } from "@mui/system";
-import logo from "../../public/beatsequence-logo-white.png";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -39,9 +37,8 @@ export default function Navbar(props: NavbarProps): ReactElement {
             height: 30,
           }}
         >
-          <Image
-            priority={true}
-            src={logo}
+          <img
+            src="beatsequence-logo-white.png"
             alt="Beatsequence homepage"
             width={160}
             height={30}

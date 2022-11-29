@@ -20,6 +20,7 @@ import "@fontsource/roboto/700.css";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { Outlet } from "react-router-dom";
+import Layout from "./common/Layout";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJrCkNuTumjOHhr5QU0RMPbdhNcf0QJ2s",
@@ -93,11 +94,9 @@ function App(): React.ReactElement {
             <Provider store={store}>
               <ThemeProvider theme={darkTheme}>
                 <CssBaseline />
-                {/* <Layout> */}
-                {/* <div suppressHydrationWarning> */}
-                <Outlet />
-                {/* </div> */}
-                {/* </Layout> */}
+                <Layout>
+                  <Outlet />
+                </Layout>
               </ThemeProvider>
             </Provider>
           </FirestoreProvider>

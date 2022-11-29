@@ -1,11 +1,10 @@
 import React, { ReactElement } from "react";
-import Head from "next/head";
 import AudioWorkstation from "../components/AudioWorkstation";
 
 function MakeBeats(): ReactElement {
   return (
     <>
-      <Head>
+      <head>
         <title>
           Beatsequence - experimental beat making tool for the browser
         </title>
@@ -22,7 +21,7 @@ function MakeBeats(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://beatsequence.com/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      </head>
       <AudioWorkstation />
     </>
   );

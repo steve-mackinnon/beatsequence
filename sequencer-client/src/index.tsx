@@ -4,6 +4,7 @@ import Root from "./Root";
 import CreateAccount from "./pages/account/create";
 import Login from "./pages/account/login";
 import ResetPassword from "./pages/account/reset-password";
+import Projects from "./pages/projects";
 
 import {
   createBrowserRouter,
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
         <Route path="/account/create" element={<CreateAccount />} />
       </Route>
       <Route path="/makebeats" element={<AudioWorkstation />} />
+      <Route path="/projects" element={<Projects />} />
     </Route>
   )
 );

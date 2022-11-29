@@ -1,5 +1,4 @@
 import React, { ReactElement, useContext } from "react";
-import Head from "next/head";
 import { Button, Link as MuiLink, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
@@ -41,7 +40,7 @@ export default function Home(): ReactElement {
   };
   return (
     <div>
-      <Head key="landingpageHead">
+      <head key="landingpageHead">
         <title>
           Beatsequence - experimental beat making tool for the browser
         </title>
@@ -57,7 +56,7 @@ export default function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://beatsequence.com/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      </head>
       <MainContainer>
         <Typography variant="h1">
           The{" "}
