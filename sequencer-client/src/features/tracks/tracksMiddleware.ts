@@ -6,7 +6,7 @@ import {
   TypedStartListening,
   TypedAddListener,
 } from "@reduxjs/toolkit";
-import { mute, unmute, setGeneratorParam } from "./tracks";
+import { mute, unmute, setGeneratorParam, setTrackStates } from "./tracks";
 
 export const tracksListenerMiddleware = createListenerMiddleware();
 
@@ -46,5 +46,15 @@ tracksListenerMiddleware.startListening({
       action.payload.trackId,
       state.tracks[action.payload.trackId]
     );
+  },
+});
+
+tracksListenerMiddleware.startListening({
+  actionCreator: setTrackStates,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    state.tracks.forEach((trackState, index: number) => {
+      sequencerEngine.setTrackState(index, trackState);
+    });
   },
 });

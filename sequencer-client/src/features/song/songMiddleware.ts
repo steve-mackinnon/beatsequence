@@ -3,6 +3,7 @@ import {
   togglePlayback,
   setParam,
   shutDownAudioEngine,
+  loadProject,
   SongParams,
 } from "./song";
 import { RootState } from "../../store";
@@ -30,5 +31,13 @@ songListenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     sequencerEngine.params[action.payload.paramId as keyof SongParams] =
       action.payload.value;
+  },
+});
+
+songListenerMiddleware.startListening({
+  actionCreator: loadProject,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sequencerEngine.params.tempo = state.song.params.tempo;
   },
 });

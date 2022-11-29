@@ -15,6 +15,7 @@ import {
   randomize,
   StepInfo,
   fillAllSteps,
+  setStepStates,
 } from "./steps";
 import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
@@ -111,5 +112,16 @@ stepsListenerMiddleware.startListening({
         state.steps
       );
     }
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: setStepStates,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    // Update all steps
+    state.steps.forEach((step: StepState) => {
+      sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+    });
   },
 });

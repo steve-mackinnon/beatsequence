@@ -13,8 +13,6 @@ export interface SongState {
   playing: boolean;
   params: SongParams;
   currentProject: ProjectInfo | undefined;
-  projectToLoad: ProjectInfo | undefined;
-  projectToSave: ProjectInfo | undefined;
 }
 
 export const initialState: SongState = {
@@ -23,8 +21,6 @@ export const initialState: SongState = {
     tempo: 127.0,
   },
   currentProject: undefined,
-  projectToLoad: undefined,
-  projectToSave: undefined,
 };
 
 export interface SongParamPayload {
@@ -60,31 +56,12 @@ export const songSlice = createSlice({
         action.payload.value;
     },
     resetState: (state, action) => {},
-    trySaveAs: (state, action: PayloadAction<SaveAsPayload>) => {
-      if (
-        action.payload.name.length === 0 ||
-        action.payload.name.trim().length === 0
-      ) {
-        console.log(
-          "Invalid project name. Length must be greater than zero and contain non-space charaters."
-        );
-        return;
-      }
-      state.projectToSave = {
-        name: action.payload.name,
-        id: "",
-      };
-    },
     setProjectInfo: (state, action: PayloadAction<ProjectInfo>) => {
       state.currentProject = action.payload;
-    },
-    tryLoadProject: (state, action: PayloadAction<ProjectInfo>) => {
-      state.projectToLoad = action.payload;
     },
     loadProject: (state, action: PayloadAction<LoadProjectPayload>) => {
       state.currentProject = action.payload.project;
       state.params = action.payload.params;
-      state.projectToLoad = undefined;
     },
   },
 });
@@ -94,8 +71,6 @@ export const {
   shutDownAudioEngine,
   resetState,
   setParam,
-  trySaveAs,
-  tryLoadProject,
   loadProject,
   setProjectInfo,
 } = songSlice.actions;
