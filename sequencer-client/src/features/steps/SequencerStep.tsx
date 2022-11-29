@@ -21,7 +21,6 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
   const dispatch = useAppDispatch();
 
   const [isCurrentStep, setIsCurrentStep] = useState(false);
-  const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const requestRef = useRef<number>();
@@ -57,14 +56,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     }
   };
 
-  const onTouchStart = (event: React.TouchEvent<HTMLInputElement>): void => {
-    setReceivedTouchEvent(true);
-    dispatchStepToggleEvent();
-  };
   const onStepEnableChange = (event: any): void => {
-    if (receivedTouchEvent) {
-      return;
-    }
     dispatchStepToggleEvent();
   };
 
@@ -81,8 +73,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       type="checkbox"
       className={inputClassNames.join(" ")}
       checked={stepState.enabled}
-      onMouseDown={onStepEnableChange}
-      onTouchStart={onTouchStart}
+      onChange={onStepEnableChange}
       ref={inputRef}
       onFocus={(event: React.FocusEvent<HTMLInputElement, Element>) => {
         // Hack to fix bug where pressing spacebar for playback toggle

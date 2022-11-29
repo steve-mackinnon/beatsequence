@@ -12,7 +12,7 @@ import {
 import { projectSavedAs } from "../features/song/song";
 
 type ProjectName = string;
-type SaveProjectAs = (name: string) => void;
+type SaveProjectAs = (name: string) => Promise<void>;
 
 export default function useSaveProject(): [ProjectName, SaveProjectAs] {
   const app = useFirebaseApp();

@@ -1,15 +1,11 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Stack } from "@mui/system";
 import { ParamSlider } from "../common/ParamSlider";
-import { Button, Modal, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import useProject from "../hooks/useProject";
-import SaveProjectAsDialog from "./SaveProjectAsDialog";
+import FileMenu from "./FileMenu";
 export function HeaderControls(): ReactElement {
   const projectName = useProject();
-  const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
-  const handleOpen = (): void => setSaveAsDialogOpen(true);
-  const handleClose = (): void => setSaveAsDialogOpen(false);
-
   return (
     <Stack
       direction="row"
@@ -38,10 +34,7 @@ export function HeaderControls(): ReactElement {
         />
       </Stack>
       <Typography>{projectName}</Typography>
-      <Button onClick={handleOpen}>Save as</Button>
-      <Modal open={saveAsDialogOpen} onClose={handleClose}>
-        <SaveProjectAsDialog dismissDialog={handleClose} />
-      </Modal>
+      <FileMenu />
     </Stack>
   );
 }
