@@ -1,8 +1,6 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
-import { initializeApp } from "firebase/app";
 import { Provider } from "react-redux";
 import "normalize.css/normalize.css";
 import "./styles/global.css";
@@ -17,20 +15,9 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 import { Outlet } from "react-router-dom";
 import Layout from "./common/Layout";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCJrCkNuTumjOHhr5QU0RMPbdhNcf0QJ2s",
-  authDomain: "beat-sequence.firebaseapp.com",
-  projectId: "beat-sequence",
-  storageBucket: "beat-sequence.appspot.com",
-  messagingSenderId: "159976998115",
-  appId: "1:159976998115:web:68e22e6db842809633b1d6",
-  measurementId: "G-GTFRFW8HLL",
-};
+import { app, db, auth, appCheck } from "./firebase";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -74,23 +61,12 @@ const darkTheme = createTheme({
   },
 });
 
-const APP_CHECK_TOKEN = "6LcWFyEjAAAAAJnCq6vcHLonsHeU0VuUHrDv6uSe";
-
 function App(): React.ReactElement {
-  const app = initializeApp(firebaseConfig);
-  const appCheck = initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider(APP_CHECK_TOKEN),
-    isTokenAutoRefreshEnabled: true,
-  });
-
-  const database = getFirestore(app);
-  const auth = getAuth(app);
-
   return (
     <FirebaseAppProvider firebaseApp={app}>
       <AppCheckProvider sdk={appCheck}>
         <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={database}>
+          <FirestoreProvider sdk={db}>
             <Provider store={store}>
               <ThemeProvider theme={darkTheme}>
                 <CssBaseline />
