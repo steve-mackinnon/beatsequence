@@ -56,9 +56,6 @@ export const songSlice = createSlice({
         action.payload.value;
     },
     resetState: (state, action) => {},
-    setProjectInfo: (state, action: PayloadAction<ProjectInfo>) => {
-      state.currentProject = action.payload;
-    },
     loadProject: (state, action: PayloadAction<LoadProjectPayload>) => {
       state.currentProject = action.payload.project;
       state.params = action.payload.params;
@@ -72,6 +69,5 @@ export const {
   resetState,
   setParam,
   loadProject,
-  setProjectInfo,
 } = songSlice.actions;
 export default songSlice.reducer;
