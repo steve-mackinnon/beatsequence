@@ -25,9 +25,12 @@
     "features",
     "generators",
     "hooks",
-    "pages",
+    "src/pages",
     "declaration.d.ts",
-    "additional.d.ts"
+    "additional.d.ts",
+    "*.ts*",
+    "*/**/ts*",
+    "src/store.ts"
   ],
   "exclude": ["node_modules"]
 }
