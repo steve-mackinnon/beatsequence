@@ -27,8 +27,8 @@ export default function Projects(): ReactElement {
   const [loading, setLoading] = useState(false);
   const loadProject = useLoadProject();
 
-  const handleLoadProjectClick = (info: ProjectInfo): void => {
-    loadProject(info.id);
+  const handleLoadProjectClick = async (info: ProjectInfo): Promise<void> => {
+    await loadProject(info.id);
   };
 
   useEffect(() => {
@@ -91,7 +91,9 @@ export default function Projects(): ReactElement {
     <ListItem key={project.id}>
       <ListItemButton
         onClick={() => {
-          handleLoadProjectClick(project);
+          void (async () => {
+            await handleLoadProjectClick(project);
+          })();
         }}
       >
         {project.name}
