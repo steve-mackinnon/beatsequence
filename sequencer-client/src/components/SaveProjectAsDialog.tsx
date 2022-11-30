@@ -1,7 +1,8 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Button, Stack, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import useSaveProject, { SaveProjectInterface } from "../hooks/useSaveProject";
+import { hotkeySuppressor } from "../hotkeySuppressor";
 
 const Container = styled("div")({
   position: "absolute",
@@ -27,6 +28,13 @@ export default function SaveProjectAsDialog(
   const { name: projectName, saveAs }: SaveProjectInterface = useSaveProject();
   const [currentProjectName, setCurrentProjectName] = useState(projectName);
 
+  useEffect(() => {
+    hotkeySuppressor.blockHotkeys = true;
+
+    return () => {
+      hotkeySuppressor.blockHotkeys = false;
+    };
+  });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCurrentProjectName(event.target.value);
   };

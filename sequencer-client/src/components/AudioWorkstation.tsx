@@ -9,6 +9,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { hotkeySuppressor } from "../hotkeySuppressor";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
@@ -23,6 +24,9 @@ export default function AudioWorkstation(): ReactElement {
   }, [user, loading, navigate]);
 
   const keydownListener = (event: KeyboardEvent): void => {
+    if (hotkeySuppressor.blockHotkeys) {
+      return;
+    }
     if (event.code.toLowerCase() === "space") {
       event.preventDefault();
       dispatch(togglePlayback({}));
