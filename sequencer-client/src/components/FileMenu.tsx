@@ -7,6 +7,7 @@ import {
 } from "material-ui-popup-state/hooks";
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveProjectAsDialog from "./SaveProjectAsDialog";
+import useSaveProject from "../hooks/useSaveProject";
 
 export default function FileMenu(): ReactElement {
   const popupState = usePopupState({
@@ -14,7 +15,7 @@ export default function FileMenu(): ReactElement {
     popupId: `fileMenu`,
   });
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
-
+  const { save, canSave } = useSaveProject();
   const handleClose = (): void => {
     setSaveAsDialogOpen(false);
     popupState.close();
@@ -27,11 +28,22 @@ export default function FileMenu(): ReactElement {
       </IconButton>
       <Menu {...bindMenu(popupState)}>
         <MenuItem
+          disabled={!canSave}
+          onClick={() => {
+            void (async () => {
+              await save();
+              popupState.close();
+            })();
+          }}
+        >
+          Save
+        </MenuItem>
+        <MenuItem
           onClick={() => {
             setSaveAsDialogOpen(true);
           }}
         >
-          Save as
+          Save As...
         </MenuItem>
       </Menu>
       <Modal open={saveAsDialogOpen} onClose={handleClose}>

@@ -8,13 +8,18 @@ import {
   collection,
   getFirestore,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { projectSavedAs } from "../features/song/song";
 
-type ProjectName = string;
-type SaveProjectAs = (name: string) => Promise<void>;
+export interface SaveProjectInterface {
+  name: string;
+  saveAs: (name: string) => Promise<void>;
+  save: () => Promise<void>;
+  canSave: boolean;
+}
 
-export default function useSaveProject(): [ProjectName, SaveProjectAs] {
+export default function useSaveProject(): SaveProjectInterface {
   const app = useFirebaseApp();
   const state = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
@@ -24,7 +29,7 @@ export default function useSaveProject(): [ProjectName, SaveProjectAs] {
       : "New project"
   );
 
-  const saveProjectAs = async (name: string): Promise<void> => {
+  const saveAs = async (name: string): Promise<void> => {
     if (name.length === 0 || name.trim().length === 0) {
       throw new Error(
         "Invalid project name. Length must be greater than zero and contain non-space charaters."
@@ -68,5 +73,35 @@ export default function useSaveProject(): [ProjectName, SaveProjectAs] {
     }
   };
 
-  return [projectName, saveProjectAs];
+  const save = async (): Promise<void> => {
+    if (state.song.currentProject == null) {
+      throw Error("Attempting to save a project without a name...");
+    }
+    const auth = getAuth(app);
+    if (auth.currentUser == null) {
+      throw new Error(
+        "Attempting to save a project without user authentication."
+      );
+    }
+    try {
+      const db = getFirestore(app);
+      // Save the project to the "projects" collection in firestore
+      const projectRef = doc(db, "projects", state.song.currentProject.id);
+      await updateDoc(projectRef, {
+        tracks: state.tracks,
+        steps: state.steps,
+        song: {
+          params: state.song.params,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return {
+    name: projectName,
+    saveAs,
+    save,
+    canSave: state.song.currentProject != null,
+  };
 }

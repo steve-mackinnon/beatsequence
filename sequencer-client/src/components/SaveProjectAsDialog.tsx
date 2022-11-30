@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Button, Stack, TextField } from "@mui/material";
 import { styled } from "@mui/system";
-import useSaveProject from "../hooks/useSaveProject";
+import useSaveProject, { SaveProjectInterface } from "../hooks/useSaveProject";
 
 const Container = styled("div")({
   position: "absolute",
@@ -24,11 +24,16 @@ export interface SaveProjectAsDialogProps {
 export default function SaveProjectAsDialog(
   props: SaveProjectAsDialogProps
 ): ReactElement {
-  const [project, saveProjectAs] = useSaveProject();
-  const [currentProjectName, setCurrentProjectName] = useState(project);
+  const { name: projectName, saveAs }: SaveProjectInterface = useSaveProject();
+  const [currentProjectName, setCurrentProjectName] = useState(projectName);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCurrentProjectName(event.target.value);
+  };
+
+  const handleSaveClick = async (): Promise<void> => {
+    await saveAs(currentProjectName);
+    props.dismissDialog();
   };
   return (
     <Container>
@@ -42,8 +47,9 @@ export default function SaveProjectAsDialog(
         <Button onClick={props.dismissDialog}>Cancel</Button>
         <Button
           onClick={() => {
-            saveProjectAs(currentProjectName);
-            props.dismissDialog();
+            void (async () => {
+              await handleSaveClick();
+            })();
           }}
         >
           Save
