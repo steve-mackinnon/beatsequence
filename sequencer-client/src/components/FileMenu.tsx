@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { IconButton, Menu, MenuItem, Modal } from "@mui/material";
+import { Divider, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import {
   usePopupState,
   bindTrigger,
@@ -49,6 +49,7 @@ export default function FileMenu(): ReactElement {
       </IconButton>
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={handleNewProjectClick}>New project</MenuItem>
+        <Divider />
         <MenuItem
           disabled={!canSave}
           onClick={() => {
