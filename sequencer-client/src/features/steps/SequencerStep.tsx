@@ -93,6 +93,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         name="coarsePitch"
         min={-64}
         max={64}
+        round={true}
       />
     );
   }

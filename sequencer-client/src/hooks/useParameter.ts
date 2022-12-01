@@ -13,6 +13,7 @@ export interface ParamInfo {
   name: string;
   min: number;
   max: number;
+  round?: boolean;
 }
 
 export function useParameter(
@@ -49,6 +50,9 @@ export function useParameter(
         value = paramInfo.max;
       } else if (value < paramInfo.min) {
         value = paramInfo.min;
+      }
+      if (paramInfo.round ?? false) {
+        value = Math.round(value);
       }
       if (paramInfo.trackId == null) {
         dispatch(
