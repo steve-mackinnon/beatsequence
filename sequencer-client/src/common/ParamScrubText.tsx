@@ -34,7 +34,6 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
     setStartY(e.screenY);
   };
   const onTouchStart = (e: TouchEvent): void => {
-    console.log(e);
     setReceivedTouchEvent(true);
     setDragStartValue(value);
 
@@ -45,7 +44,6 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
     if (startY == null || dragStartValue == null) {
       return;
     }
-    console.log(e);
     let increment = startY;
     if (receivedTouchEvent) {
       increment -= e.touches.item(0).screenY as number;
