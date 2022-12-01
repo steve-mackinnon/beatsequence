@@ -26,7 +26,7 @@ export default function useSaveProject(): SaveProjectInterface {
   const projectName = useAppSelector((state) =>
     state.song.currentProject != null
       ? state.song.currentProject.name
-      : "New project"
+      : "Untitled"
   );
 
   const saveAs = async (name: string): Promise<void> => {
