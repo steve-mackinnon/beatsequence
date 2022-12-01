@@ -12,7 +12,7 @@ export function FooterControls(): ReactElement {
   const playRef = useRef<HTMLButtonElement>(null);
 
   const onPlayStopClick = (_e: any): void => {
-    dispatch(togglePlayback({}));
+    dispatch(togglePlayback(undefined));
   };
   const onRandomizeClick = (_e: any): void => {
     dispatch(randomize({ trackId: undefined, seed: Date.now().toString() }));

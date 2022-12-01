@@ -16,20 +16,25 @@ export default function AudioWorkstation(): ReactElement {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [user, loading] = useAuthState(auth);
-
   useEffect(() => {
     if (!loading && user == null) {
       navigate("/account/login");
     }
   }, [user, loading, navigate]);
 
+  useEffect(() => {
+    return () => {
+      // Ensure playback stops when the audio workstation isn't visible
+      dispatch(togglePlayback(false));
+    };
+  });
   const keydownListener = (event: KeyboardEvent): void => {
     if (hotkeySuppressor.blockHotkeys) {
       return;
     }
     if (event.code.toLowerCase() === "space") {
       event.preventDefault();
-      dispatch(togglePlayback({}));
+      dispatch(togglePlayback(undefined));
     }
   };
   useEffect(() => {

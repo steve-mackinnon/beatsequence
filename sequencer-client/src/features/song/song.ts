@@ -39,8 +39,12 @@ export const songSlice = createSlice({
   name: "song",
   initialState,
   reducers: {
-    togglePlayback: (state, _) => {
-      state.playing = !state.playing;
+    togglePlayback: (state, action: PayloadAction<boolean | undefined>) => {
+      if (action.payload == null) {
+        state.playing = !state.playing;
+        return;
+      }
+      state.playing = action.payload;
     },
     shutDownAudioEngine: (state, _) => {
       state.playing = false;
