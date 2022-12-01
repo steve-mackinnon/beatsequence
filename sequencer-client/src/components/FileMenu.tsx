@@ -8,6 +8,8 @@ import {
 import MoreVert from "@mui/icons-material/MoreVert";
 import SaveProjectAsDialog from "./SaveProjectAsDialog";
 import useSaveProject from "../hooks/useSaveProject";
+import { useAppDispatch } from "../hooks";
+import { newProject } from "../features/song/song";
 
 export default function FileMenu(): ReactElement {
   const popupState = usePopupState({
@@ -16,17 +18,24 @@ export default function FileMenu(): ReactElement {
   });
   const [saveAsDialogOpen, setSaveAsDialogOpen] = useState(false);
   const { save, canSave } = useSaveProject();
+  const dispatch = useAppDispatch();
+
   const handleClose = (): void => {
     setSaveAsDialogOpen(false);
     popupState.close();
   };
 
+  const handleNewProjectClick = (): void => {
+    dispatch(newProject({}));
+    popupState.close();
+  };
   return (
     <>
       <IconButton {...bindTrigger(popupState)}>
         <MoreVert />
       </IconButton>
       <Menu {...bindMenu(popupState)}>
+        <MenuItem onClick={handleNewProjectClick}>New project</MenuItem>
         <MenuItem
           disabled={!canSave}
           onClick={() => {

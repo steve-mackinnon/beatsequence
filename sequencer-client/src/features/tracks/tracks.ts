@@ -204,6 +204,13 @@ export const tracksSlice = createSlice({
       return action.payload;
     },
   },
+  extraReducers: {
+    "song/newProject": (state, _) => {
+      initialState.forEach((trackState: TrackState, index: number) => {
+        state[index] = trackState;
+      });
+    },
+  },
 });
 
 export function selectTrackHasCoarsePitchParam(

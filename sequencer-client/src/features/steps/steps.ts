@@ -136,6 +136,13 @@ export const stepsSlice = createSlice({
       return action.payload;
     },
   },
+  extraReducers: {
+    "song/newProject": (state, _) => {
+      initialState.forEach((step: StepState, index: number) => {
+        state[index] = step;
+      });
+    },
+  },
 });
 
 export function stepStateForTrackAndStep(

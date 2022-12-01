@@ -74,7 +74,10 @@ export default function useSaveProject(): SaveProjectInterface {
   };
 
   const save = async (): Promise<void> => {
-    if (state.song.currentProject == null) {
+    if (
+      state.song.currentProject == null ||
+      state.song.currentProject.id == null
+    ) {
       throw Error("Attempting to save a project without a name...");
     }
     const auth = getAuth(app);

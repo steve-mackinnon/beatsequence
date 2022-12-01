@@ -39,11 +39,3 @@ persistenceMiddleware.startListening({
     syncEntireState(state);
   },
 });
-
-persistenceMiddleware.startListening({
-  type: "song/resetState",
-  effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    syncEntireState(state);
-  },
-});
