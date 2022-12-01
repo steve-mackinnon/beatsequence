@@ -105,6 +105,6 @@ export default function useSaveProject(): SaveProjectInterface {
     name: projectName,
     saveAs,
     save,
-    canSave: state.song.currentProject != null,
+    canSave: state.song.currentProject?.id != null,
   };
 }
