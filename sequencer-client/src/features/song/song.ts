@@ -6,7 +6,7 @@ export interface SongParams {
 
 export interface ProjectInfo {
   name: string;
-  id: string;
+  id?: string;
 }
 
 export interface SongState {
@@ -55,7 +55,6 @@ export const songSlice = createSlice({
       state.params[action.payload.paramId as keyof SongParams] =
         action.payload.value;
     },
-    resetState: (state, action) => {},
     loadProject: (state, action: PayloadAction<LoadProjectPayload>) => {
       state.currentProject = action.payload.project;
       state.params = action.payload.params;
@@ -63,15 +62,20 @@ export const songSlice = createSlice({
     projectSavedAs: (state, action: PayloadAction<ProjectInfo>) => {
       state.currentProject = action.payload;
     },
+    newProject: (state, _) => {
+      state.currentProject = {
+        name: "New project",
+      };
+    },
   },
 });
 
 export const {
   togglePlayback,
   shutDownAudioEngine,
-  resetState,
   setParam,
   loadProject,
+  newProject,
   projectSavedAs,
 } = songSlice.actions;
 export default songSlice.reducer;
