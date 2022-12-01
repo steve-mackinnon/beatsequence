@@ -70,33 +70,37 @@ export default function FileMenu(): ReactElement {
         </MenuItem>
       </Menu>
       <Modal open={saveAsDialogOpen} onClose={handleCloseSaveProjectDialog}>
-        <SaveProjectAsDialog dismissDialog={handleCloseSaveProjectDialog} />
+        <>
+          <SaveProjectAsDialog dismissDialog={handleCloseSaveProjectDialog} />
+        </>
       </Modal>
       <Modal
         open={showSaveBeforeClosingDialog}
         onClose={handleCloseSaveBeforceClosingDialog}
       >
-        <SaveChangesBeforeClosingDialog
-          cancel={() => {
-            popupState.close();
-            setShowSaveBeforeClosingDialog(false);
-          }}
-          save={() => {
-            popupState.close();
-            if (canSave) {
-              void save();
+        <>
+          <SaveChangesBeforeClosingDialog
+            cancel={() => {
+              popupState.close();
+              setShowSaveBeforeClosingDialog(false);
+            }}
+            save={() => {
+              popupState.close();
+              if (canSave) {
+                void save();
+                dispatch(newProject({}));
+                setShowSaveBeforeClosingDialog(false);
+              } else {
+                setSaveAsDialogOpen(true);
+              }
+            }}
+            dontSave={() => {
+              popupState.close();
               dispatch(newProject({}));
               setShowSaveBeforeClosingDialog(false);
-            } else {
-              setSaveAsDialogOpen(true);
-            }
-          }}
-          dontSave={() => {
-            popupState.close();
-            dispatch(newProject({}));
-            setShowSaveBeforeClosingDialog(false);
-          }}
-        />
+            }}
+          />
+        </>
       </Modal>
     </>
   );
