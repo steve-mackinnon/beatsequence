@@ -66,7 +66,11 @@ export class SequencerEngine {
         id: trackIndex,
         muted: false,
         generatorType: GeneratorType.SineBleep,
-        generatorParams: { decayTime: 0.1, gain: 1.0 },
+        generatorParams: {
+          decayTime: 0.1,
+          gain: 1.0,
+          triggerProbability: 100.0,
+        },
         displayName: "default",
         paramViewVisible: false,
       };
@@ -160,6 +164,14 @@ export class SequencerEngine {
     this._steps.forEach((steps: StepState[], index: number) => {
       const step = steps[stepIndex];
       const trackState = this._trackStates[index];
+
+      // Handle probability logic
+      if (
+        trackState.generatorParams.triggerProbability < 100.0 &&
+        Math.random() * 100.0 > trackState.generatorParams.triggerProbability
+      ) {
+        return;
+      }
       if (!step.enabled || trackState.muted || this._audioEngine == null) {
         return;
       }

@@ -1,4 +1,6 @@
-export interface ClosedHHParams {
+import { CommonParams } from "../commonParams";
+
+export interface ClosedHHParams extends CommonParams {
   decayTime: number;
   gain: number;
 }

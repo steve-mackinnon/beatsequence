@@ -1,4 +1,6 @@
-export interface OscParams {
+import { CommonParams } from "../commonParams";
+
+export interface OscParams extends CommonParams {
   decayTime: number;
   gain: number;
   osc_type: OscillatorType;

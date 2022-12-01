@@ -1,4 +1,6 @@
-export interface KickParams {
+import { CommonParams } from "../commonParams";
+
+export interface KickParams extends CommonParams {
   decayTime: number;
   transientTime: number;
   gain: number;

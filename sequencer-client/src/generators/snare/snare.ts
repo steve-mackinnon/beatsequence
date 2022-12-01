@@ -1,4 +1,6 @@
-export interface SnareParams {
+import { CommonParams } from "../commonParams";
+
+export interface SnareParams extends CommonParams {
   decayTime: number;
   gain: number;
 }

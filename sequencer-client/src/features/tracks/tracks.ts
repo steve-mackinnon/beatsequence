@@ -46,8 +46,24 @@ function getGainParamInfo(trackId: number): ParamInfo {
   };
 }
 
+function getTriggerProbabilityParamInfo(trackId: number): ParamInfo {
+  return {
+    name: "triggerProbability",
+    displayName: "Chance",
+    min: 0.0,
+    max: 100.0,
+    logScale: false,
+    valueSelector: (state: RootState, trackId: number) =>
+      state.tracks[trackId].generatorParams.triggerProbability,
+  };
+}
+
 function getCommonParamsForTrack(trackId: number): ParamInfo[] {
-  return [getGainParamInfo(trackId), getDecayTimeParamInfo(trackId)];
+  return [
+    getGainParamInfo(trackId),
+    getDecayTimeParamInfo(trackId),
+    getTriggerProbabilityParamInfo(trackId),
+  ];
 }
 
 export function paramInfoForGeneratorType(
@@ -123,6 +139,7 @@ for (let index = 0; index < INITIAL_NUM_TRACKS; ++index) {
     decayTime: decayTimeForGeneratorType(generatorType),
     gain: 1.0,
     transientTime: 0.1,
+    triggerProbability: 100.0,
   };
 
   initialState.push({
