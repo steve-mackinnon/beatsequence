@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Stack, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import useSaveProject, { SaveProjectInterface } from "../hooks/useSaveProject";
@@ -27,14 +27,20 @@ export default function SaveProjectAsDialog(
 ): ReactElement {
   const { name: projectName, saveAs }: SaveProjectInterface = useSaveProject();
   const [currentProjectName, setCurrentProjectName] = useState(projectName);
+  const textFieldRef = useRef<HTMLInputElement>(null);
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   useEffect(() => {
     hotkeySuppressor.blockHotkeys = true;
+    if (isInitialRender && textFieldRef.current !== null) {
+      textFieldRef.current?.select();
+      setIsInitialRender(false);
+    }
 
     return () => {
       hotkeySuppressor.blockHotkeys = false;
     };
-  });
+  }, [isInitialRender]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCurrentProjectName(event.target.value);
   };
@@ -50,6 +56,7 @@ export default function SaveProjectAsDialog(
         onChange={handleChange}
         name="Project Name"
         label="Project Name"
+        inputRef={textFieldRef}
       />
       <Stack direction="row" justifyContent="space-between">
         <Button onClick={props.dismissDialog}>Cancel</Button>
