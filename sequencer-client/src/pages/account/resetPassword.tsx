@@ -1,7 +1,7 @@
 import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
 import { ReactElement, useContext, useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
-import { AuthContext } from "../../../context/authContext";
+import { AuthContext } from "../../context/authContext";
 import { Stack, styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";

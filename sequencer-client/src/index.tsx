@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import Root from "./Root";
 import CreateAccount from "./pages/account/create";
 import Login from "./pages/account/login";
-import ResetPassword from "./pages/account/reset-password";
+import ResetPassword from "./pages/account/resetPassword";
 import Projects from "./pages/projects";
 
 import {
