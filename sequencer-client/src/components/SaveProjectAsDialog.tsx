@@ -59,6 +59,7 @@ export default function SaveProjectAsDialog(
               await handleSaveClick();
             })();
           }}
+          disabled={currentProjectName.length === 0}
         >
           Save
         </Button>
