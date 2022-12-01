@@ -29,6 +29,7 @@ export function HeaderControls(): ReactElement {
             name: "tempo",
             min: 10,
             max: 200,
+            round: true,
           }}
           label="Tempo"
         />

@@ -9,8 +9,8 @@ function logarithmicMap(value: number): number {
 function calculateValue(value: number, min: number, max: number): number {
   return min + logarithmicMap(value) * (max - min);
 }
-function formatValueLabel(value: number): string {
-  return value.toFixed(2);
+function formatValueLabel(value: number, round: boolean): string {
+  return value.toFixed(round ? 0 : 2);
 }
 
 export interface ParamSliderProps {
@@ -87,7 +87,9 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
         onChange={onChange}
         value={value}
         valueLabelDisplay="auto"
-        valueLabelFormat={formatValueLabel}
+        valueLabelFormat={(value: number) =>
+          formatValueLabel(value, props.paramInfo.round ?? false)
+        }
       />
     </Container>
   );
