@@ -7,20 +7,13 @@ import { togglePlayback } from "../features/song/song";
 import { HeaderControls } from "./HeaderControls";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AuthContext } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { hotkeySuppressor } from "../hotkeySuppressor";
 
 export default function AudioWorkstation(): ReactElement {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const auth = useContext(AuthContext);
-  const [user, loading] = useAuthState(auth);
-  useEffect(() => {
-    if (!loading && user == null) {
-      navigate("/account/login");
-    }
-  }, [user, loading, navigate]);
+  const [, loading] = useAuthState(auth);
 
   useEffect(() => {
     return () => {
