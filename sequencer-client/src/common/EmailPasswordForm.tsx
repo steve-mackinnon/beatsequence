@@ -57,6 +57,8 @@ export default function EmailPasswordForm(
       initialValues={{
         email: "",
         password: "",
+        firstName: "",
+        lastName: "",
       }}
       validationSchema={Yup.object({
         email: Yup.string()
@@ -65,6 +67,8 @@ export default function EmailPasswordForm(
         password: Yup.string()
           .required("Password required")
           .min(6, "Password must be at least 6 characters long."),
+        firstName: Yup.string().required("First name required"),
+        lastName: Yup.string().required("Last name required"),
       })}
       onSubmit={async (values) => {
         await setPersistence(auth, browserLocalPersistence).then(async () => {
@@ -133,6 +137,46 @@ export default function EmailPasswordForm(
                     </Typography>
                   )}
               </Stack>
+              {props.action === "create" && (
+                <>
+                  <Stack spacing={1}>
+                    <TextField
+                      variant="outlined"
+                      id="firstName"
+                      type="text"
+                      label="First name"
+                      sx={{
+                        minWidth: "320px",
+                      }}
+                      {...formik.getFieldProps("firstName")}
+                    />
+                    {(formik.touched.firstName ?? false) &&
+                      formik.errors.firstName != null && (
+                        <Typography color="red">
+                          {formik.errors.firstName}
+                        </Typography>
+                      )}
+                  </Stack>
+                  <Stack spacing={1}>
+                    <TextField
+                      variant="outlined"
+                      id="lastName"
+                      type="text"
+                      label="Last name"
+                      sx={{
+                        minWidth: "320px",
+                      }}
+                      {...formik.getFieldProps("lastName")}
+                    />
+                    {(formik.touched.lastName ?? false) &&
+                      formik.errors.lastName != null && (
+                        <Typography color="red">
+                          {formik.errors.lastName}
+                        </Typography>
+                      )}
+                  </Stack>
+                </>
+              )}
               <Button
                 variant="contained"
                 type="submit"
