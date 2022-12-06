@@ -1,10 +1,4 @@
-import {
-  TextField,
-  Button,
-  Typography,
-  Link as MUILink,
-  Alert,
-} from "@mui/material";
+import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
 import { ReactElement, useContext, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
@@ -100,39 +94,45 @@ export default function EmailPasswordForm(
               </Typography>
             </Stack>
             <Stack spacing={3} alignItems="left">
-              <TextField
-                variant="outlined"
-                id="email"
-                type="email"
-                label="Email"
-                sx={{
-                  minWidth: "320px",
-                }}
-                {...formik.getFieldProps("email")}
-              />
-              {(formik.touched.email ?? false) &&
-                formik.errors.email != null && (
-                  <Alert severity="error">{formik.errors.email}</Alert>
+              <Stack spacing={1}>
+                <TextField
+                  variant="outlined"
+                  id="email"
+                  type="email"
+                  label="Email"
+                  sx={{
+                    minWidth: "320px",
+                  }}
+                  {...formik.getFieldProps("email")}
+                />
+                {(formik.touched.email ?? false) &&
+                  formik.errors.email != null && (
+                    <Typography color="red">{formik.errors.email}</Typography>
+                  )}
+              </Stack>
+              <Stack spacing={1}>
+                <TextField
+                  variant="outlined"
+                  type="password"
+                  label="Password"
+                  sx={{
+                    minWidth: "320px",
+                  }}
+                  {...formik.getFieldProps("password")}
+                />
+                {props.action === "signin" && (
+                  <Link to="/account/reset-password">
+                    <MUILink>Forgot password?</MUILink>
+                  </Link>
                 )}
-              <TextField
-                variant="outlined"
-                type="password"
-                label="Password"
-                sx={{
-                  minWidth: "320px",
-                }}
-                {...formik.getFieldProps("password")}
-              />
-              {props.action === "signin" && (
-                <Link to="/account/reset-password">
-                  <MUILink>Forgot password?</MUILink>
-                </Link>
-              )}
-              {props.action === "create" &&
-                (formik.touched.password ?? false) &&
-                formik.errors.password != null && (
-                  <Alert severity="error">{formik.errors.password}</Alert>
-                )}
+                {props.action === "create" &&
+                  (formik.touched.password ?? false) &&
+                  formik.errors.password != null && (
+                    <Typography color="red">
+                      {formik.errors.password}
+                    </Typography>
+                  )}
+              </Stack>
               <Button
                 variant="contained"
                 type="submit"
