@@ -1,14 +1,9 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import { Button, Link as MuiLink, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
-import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "../styles/Homepage.module.css";
 export default function Home(): ReactElement {
-  const auth = useContext(AuthContext);
-  const [user, loading] = useAuthState(auth);
-
   const MainContainer = styled("main")({
     display: "flex",
     flexDirection: "column",
@@ -19,17 +14,7 @@ export default function Home(): ReactElement {
     marginTop: "4rem",
     gap: "2rem",
   });
-  const notAuthorized = user == null && !loading;
   const MakeBeatsOrCreateAccountButton = (): ReactElement => {
-    if (notAuthorized) {
-      return (
-        <Link to="/account/create" style={{ textDecoration: "none" }}>
-          <Button size="large" variant="contained">
-            Get started
-          </Button>
-        </Link>
-      );
-    }
     return (
       <Link to="/makebeats" style={{ textDecoration: "none" }}>
         <Button size="large" variant="contained">

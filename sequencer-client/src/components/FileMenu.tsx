@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useContext } from "react";
 import { Divider, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import {
   usePopupState,
@@ -11,6 +11,8 @@ import useSaveProject from "../hooks/useSaveProject";
 import { SaveChangesBeforeClosingDialog } from "./SaveChangesBeforeClosingDialog";
 import { useAppDispatch } from "../hooks";
 import { newProject } from "../features/song/song";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 export default function FileMenu(): ReactElement {
   const popupState = usePopupState({
@@ -22,7 +24,11 @@ export default function FileMenu(): ReactElement {
   const { save, canSave } = useSaveProject();
   const [showSaveBeforeClosingDialog, setShowSaveBeforeClosingDialog] =
     useState(false);
-
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleCreateAccountClick = (): void => {
+    navigate("/account/create");
+  };
   const handleCloseSaveProjectDialog = (): void => {
     setSaveAsDialogOpen(false);
     // If the save project dialog was initiated from a new project,
@@ -42,33 +48,48 @@ export default function FileMenu(): ReactElement {
   const handleNewProjectClick = (): void => {
     setShowSaveBeforeClosingDialog(true);
   };
+
+  const menuItems: ReactElement[] = [];
+  if (auth.currentUser == null) {
+    menuItems.push(
+      <MenuItem onClick={handleCreateAccountClick}>
+        Create an account to save...
+      </MenuItem>
+    );
+  } else {
+    menuItems.push(
+      <MenuItem onClick={handleNewProjectClick}>New project</MenuItem>
+    );
+    menuItems.push(<Divider />);
+    menuItems.push(
+      <MenuItem
+        disabled={!canSave}
+        onClick={() => {
+          void (async () => {
+            await save();
+            popupState.close();
+          })();
+        }}
+      >
+        Save
+      </MenuItem>
+    );
+    menuItems.push(
+      <MenuItem
+        onClick={() => {
+          setSaveAsDialogOpen(true);
+        }}
+      >
+        Save As...
+      </MenuItem>
+    );
+  }
   return (
     <>
       <IconButton {...bindTrigger(popupState)}>
         <MoreVert />
       </IconButton>
-      <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={handleNewProjectClick}>New project</MenuItem>
-        <Divider />
-        <MenuItem
-          disabled={!canSave}
-          onClick={() => {
-            void (async () => {
-              await save();
-              popupState.close();
-            })();
-          }}
-        >
-          Save
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setSaveAsDialogOpen(true);
-          }}
-        >
-          Save As...
-        </MenuItem>
-      </Menu>
+      <Menu {...bindMenu(popupState)}>{menuItems}</Menu>
       <Modal open={saveAsDialogOpen} onClose={handleCloseSaveProjectDialog}>
         <>
           <SaveProjectAsDialog dismissDialog={handleCloseSaveProjectDialog} />
