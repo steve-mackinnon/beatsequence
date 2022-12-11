@@ -32,6 +32,7 @@
     "reactfire": "^4.2.2",
     "seedrandom": "^3.0.5",
     "styled-components": "^5.3.6",
+    "tone": "^14.7.77",
     "typescript": "*",
     "web-vitals": "^2.1.0",
     "yup": "^0.32.11"

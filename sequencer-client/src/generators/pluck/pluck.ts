@@ -1,4 +1,5 @@
 import { CommonParams } from "../commonParams";
+import { AmplitudeEnvelope, Oscillator, Gain } from "tone";
 
 export interface OscParams extends CommonParams {
   decayTime: number;
@@ -7,24 +8,23 @@ export interface OscParams extends CommonParams {
 }
 
 export function makeBleep(
-  context: AudioContext,
-  destination: AudioNode,
   startTime: number,
   frequency: number,
   parameters: OscParams
 ): void {
-  const osc = new OscillatorNode(context, {
-    type: parameters.osc_type,
-    frequency,
-  });
-
+  const gain = new Gain(parameters.gain).toDestination();
   const decayTime = parameters.decayTime;
-  const ampEnvelope = new GainNode(context);
-  ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.3 * parameters.gain, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + decayTime);
+  const ampEnv = new AmplitudeEnvelope({
+    attack: 0.01,
+    decay: decayTime,
+    sustain: 0,
+    release: 0.05,
+  }).connect(gain);
+  const osc = new Oscillator(frequency, parameters.osc_type).connect(ampEnv);
+  osc
+    .connect(ampEnv)
+    .start(startTime)
+    .stop(startTime + parameters.decayTime);
 
-  osc.connect(ampEnvelope).connect(destination);
-  osc.start(startTime);
-  osc.stop(startTime + decayTime);
+  ampEnv.triggerAttackRelease(parameters.decayTime, startTime);
 }

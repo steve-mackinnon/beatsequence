@@ -1,4 +1,5 @@
 import { CommonParams } from "../commonParams";
+import { Gain, AmplitudeEnvelope, Filter, Noise } from "tone";
 
 export interface ClosedHHParams extends CommonParams {
   decayTime: number;
@@ -6,45 +7,32 @@ export interface ClosedHHParams extends CommonParams {
 }
 
 export function makeClosedHH(
-  context: AudioContext,
-  destination: AudioNode,
   startTime: number,
   parameters: ClosedHHParams
 ): void {
-  const bufferSize = context.sampleRate * 0.07;
-  const noiseBuffer = new AudioBuffer({
-    length: bufferSize,
-    sampleRate: context.sampleRate,
-  });
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-  const noise = new AudioBufferSourceNode(context, {
-    buffer: noiseBuffer,
-  });
-
-  const ampEnvelope = new GainNode(context);
-  ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.5 * parameters.gain, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(
-    0.00001,
-    startTime + parameters.decayTime
-  );
-
-  const lowpass = new BiquadFilterNode(context, {
-    type: "lowpass",
+  const gain = new Gain(0.5 * parameters.gain).toDestination();
+  const ampEnv = new AmplitudeEnvelope({
+    attack: 0.01,
+    decay: parameters.decayTime,
+    sustain: 0,
+    release: 0.05,
+    decayCurve: "exponential",
+  }).connect(gain);
+  const lpf = new Filter({
     frequency: 14000,
-  });
-  const highpass = new BiquadFilterNode(context, {
-    type: "highpass",
+    type: "lowpass",
+  }).connect(ampEnv);
+  const hpf = new Filter({
     frequency: 4400,
+    type: "highpass",
   });
-
+  const noise = new Noise("pink");
   noise
-    .connect(lowpass)
-    .connect(highpass)
-    .connect(ampEnvelope)
-    .connect(destination);
-  noise.start(startTime);
+    .connect(hpf)
+    .connect(lpf)
+    .connect(ampEnv)
+    .start(startTime)
+    .stop(startTime + parameters.decayTime);
+
+  ampEnv.triggerAttackRelease(parameters.decayTime, startTime);
 }

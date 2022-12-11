@@ -1,50 +1,37 @@
 import { CommonParams } from "../commonParams";
+import { Gain, AmplitudeEnvelope, Filter, Noise } from "tone";
 
 export interface SnareParams extends CommonParams {
   decayTime: number;
   gain: number;
 }
 
-export function makeSnare(
-  context: AudioContext,
-  destination: AudioNode,
-  startTime: number,
-  parameters: SnareParams
-): void {
-  const bufferSize = context.sampleRate * 0.2;
-  const noiseBuffer = new AudioBuffer({
-    length: bufferSize,
-    sampleRate: context.sampleRate,
-  });
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-  const noise = new AudioBufferSourceNode(context, {
-    buffer: noiseBuffer,
-  });
-
-  const ampEnvelope = new GainNode(context);
-  ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(0.7 * parameters.gain, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(
-    0.00001,
-    startTime + parameters.decayTime
-  );
-
-  const lowpass = new BiquadFilterNode(context, {
-    type: "lowpass",
+export function makeSnare(startTime: number, parameters: SnareParams): void {
+  const gain = new Gain(parameters.gain).toDestination();
+  const ampEnv = new AmplitudeEnvelope({
+    decay: parameters.decayTime,
+    attack: 0.01,
+    release: 0.07,
+    sustain: 0.0,
+    decayCurve: "exponential",
+  }).connect(gain);
+  const lpf = new Filter({
     frequency: 10000,
+    type: "lowpass",
   });
-  const highpass = new BiquadFilterNode(context, {
+  const hpf = new Filter({
+    frequency: 7000,
     type: "highpass",
-    frequency: 120,
+    Q: 12,
   });
-
+  const noise = new Noise({
+    type: "white",
+  });
   noise
-    .connect(lowpass)
-    .connect(highpass)
-    .connect(ampEnvelope)
-    .connect(destination);
-  noise.start(startTime);
+    .connect(hpf)
+    .connect(lpf)
+    .connect(ampEnv)
+    .start(startTime)
+    .stop(startTime + parameters.decayTime);
+  ampEnv.triggerAttackRelease(parameters.decayTime, startTime);
 }

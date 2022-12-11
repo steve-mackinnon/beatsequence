@@ -5,7 +5,7 @@ import { semitoneToHz } from "./pitchUtils";
 import { KickParams, OscParams } from "../generators";
 import { StepState } from "../features/steps/steps";
 import { SongParams } from "../features/song/song";
-
+import { Transport } from "tone";
 const scheduleAheadTimeSecs: number = 0.1;
 const lookaheadMs = 25.0;
 
@@ -37,9 +37,18 @@ export class SequencerEngine {
   private _timerID: any = undefined;
   private _currentStep: number = 0;
   private _nextNoteTime: number = 0.0; // when the next note is due.
-  public params: SongParams = {
+  private _params: SongParams = {
     tempo: 127.0,
   };
+
+  set params(params: SongParams) {
+    this._params = params;
+    Transport.bpm.value = params.tempo;
+  }
+
+  get params(): SongParams {
+    return this._params;
+  }
 
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
