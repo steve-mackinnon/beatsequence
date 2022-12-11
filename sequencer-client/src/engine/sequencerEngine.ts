@@ -1,6 +1,6 @@
 import { TrackState } from "../features/tracks/tracks";
 import { GeneratorType } from "../features/tracks/GeneratorType";
-import { AudioEngine } from "./audioEngine";
+import { audioEngine, AudioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { KickParams, OscParams } from "../generators";
 import { StepState } from "../features/steps/steps";
@@ -83,6 +83,13 @@ export class SequencerEngine {
 
   setAudioEngine(audioEngine: AudioEngine): void {
     this._audioEngine = audioEngine;
+    this._audioEngine.registerPlaybackListener((playing: boolean) => {
+      if (playing) {
+        this.startPlayback();
+      } else {
+        this.stopPlayback();
+      }
+    });
   }
 
   startPlayback(): void {
@@ -233,3 +240,4 @@ export class SequencerEngine {
 }
 
 export const sequencerEngine = new SequencerEngine();
+sequencerEngine.setAudioEngine(audioEngine);

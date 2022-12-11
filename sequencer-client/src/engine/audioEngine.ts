@@ -8,15 +8,28 @@ import {
   SnareParams,
   ClosedHHParams,
 } from "../generators";
-import { SequencerEngine, sequencerEngine } from "./sequencerEngine";
 
+export type PlaybackListener = (playing: boolean) => void;
 export class AudioEngine {
   private _context: AudioContext | undefined = undefined;
-  private readonly _sequencer: SequencerEngine;
   private _playing: boolean = false;
+  private readonly _playbackListeners: Map<number, PlaybackListener> =
+    new Map();
 
-  constructor(sequencer: SequencerEngine) {
-    this._sequencer = sequencer;
+  private _listenerCounter: number = 0;
+
+  registerPlaybackListener(listener: PlaybackListener): number {
+    this._listenerCounter++;
+    this._playbackListeners.set(this._listenerCounter, listener);
+    return this._listenerCounter;
+  }
+
+  unregisterPlaybackListener(id: number): boolean {
+    if (this._playbackListeners.has(id)) {
+      this._playbackListeners.delete(id);
+      return true;
+    }
+    return false;
   }
 
   get playing(): boolean {
@@ -29,13 +42,12 @@ export class AudioEngine {
     }
     if (this._context == null) {
       this._context = new AudioContext();
-      this._sequencer.setAudioEngine(this);
     }
 
     if (playing) {
       const setPlaying = (): void => {
         this._playing = true;
-        this._sequencer.startPlayback();
+        this._playbackListeners.forEach((listener) => listener(true));
       };
       if (this._context.state !== "running") {
         // resume() the context if it is not already running
@@ -55,7 +67,7 @@ export class AudioEngine {
       // stops. resume() requires a noticable amount of latency before
       // playback starts and it introduces audible glitches.
       this._playing = false;
-      this._sequencer.stopPlayback();
+      this._playbackListeners.forEach((listener) => listener(false));
     }
   }
 
@@ -110,4 +122,4 @@ export class AudioEngine {
   }
 }
 
-export const audioEngine = new AudioEngine(sequencerEngine);
+export const audioEngine = new AudioEngine();
