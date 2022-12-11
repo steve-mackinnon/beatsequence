@@ -6,8 +6,6 @@ import { KickParams, OscParams } from "../generators";
 import { StepState } from "../features/steps/steps";
 import { SongParams } from "../features/song/song";
 import { Transport } from "tone";
-const scheduleAheadTimeSecs: number = 0.1;
-const lookaheadMs = 25.0;
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
@@ -34,9 +32,8 @@ export type StepChangedCallback = () => void;
 export class SequencerEngine {
   private _audioEngine: AudioEngine | null = null;
 
-  private _timerID: any = undefined;
+  private readonly _timerID: any = undefined;
   private _currentStep: number = 0;
-  private _nextNoteTime: number = 0.0; // when the next note is due.
   private _params: SongParams = {
     tempo: 127.0,
   };
@@ -88,6 +85,59 @@ export class SequencerEngine {
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
     }
+
+    Transport.setLoopPoints("1:1:1", "17:1:1");
+    Transport.loop = true;
+    Transport.scheduleRepeat((time) => {
+      this._currentStep += 1;
+      if (this._currentStep === 16) {
+        this._currentStep = 0;
+      }
+      this._steps.forEach((steps: StepState[], index: number) => {
+        const trackState = this._trackStates[index];
+        const step = steps[this._currentStep];
+        if (!step.enabled || trackState.muted || this._audioEngine == null) {
+          return;
+        }
+        if (
+          trackState.generatorParams.triggerProbability < 100.0 &&
+          Math.random() * 100.0 > trackState.generatorParams.triggerProbability
+        ) {
+          return;
+        }
+        switch (trackState.generatorType) {
+          case GeneratorType.Kick:
+            this._audioEngine.scheduleKick(
+              time,
+              trackState.generatorParams as KickParams
+            );
+            break;
+          case GeneratorType.Snare:
+            this._audioEngine.scheduleSnare(time, trackState.generatorParams);
+            break;
+          case GeneratorType.ClosedHH:
+            this._audioEngine.scheduleClosedHH(
+              time,
+              trackState.generatorParams
+            );
+            break;
+          case GeneratorType.SineBleep:
+            this._audioEngine.scheduleNote(
+              time,
+              semitoneToHz(step.params.coarsePitch),
+              trackState.generatorParams as OscParams
+            );
+            break;
+          case GeneratorType.SquareBleep:
+            this._audioEngine.scheduleNote(
+              time,
+              semitoneToHz(step.params.coarsePitch),
+              trackState.generatorParams as OscParams
+            );
+            break;
+        }
+      });
+    }, "16n");
   }
 
   setAudioEngine(audioEngine: AudioEngine): void {
@@ -105,14 +155,12 @@ export class SequencerEngine {
     if (this._audioEngine == null) {
       return;
     }
-    this._currentStep = 0;
-    this._nextNoteTime = this._audioEngine.currentTime();
-    this._runNoteScheduler();
+    Transport.start("+0.1");
   }
 
   stopPlayback(): void {
     this._currentStep = 0;
-    clearTimeout(this._timerID);
+    Transport.stop();
   }
 
   setTrackState(trackIndex: number, trackState: TrackState): void {
@@ -222,30 +270,30 @@ export class SequencerEngine {
     });
   }
 
-  private _advanceStep(): void {
-    const secondsPerStep = 60.0 / this.params.tempo / 4.0;
+  // private _advanceStep(): void {
+  //   const secondsPerStep = 60.0 / this.params.tempo / 4.0;
 
-    this._nextNoteTime += secondsPerStep; // Add step length to last step time
+  //   this._nextNoteTime += secondsPerStep; // Add step length to last step time
 
-    // Advance the beat number, wrap to zero when reaching 4
-    this._currentStep = (this._currentStep + 1) % this._numSteps;
-  }
+  //   // Advance the beat number, wrap to zero when reaching 4
+  //   this._currentStep = (this._currentStep + 1) % this._numSteps;
+  // }
 
-  private _runNoteScheduler(): void {
-    if (this._audioEngine == null) {
-      return;
-    }
-    // While there are notes that will need to play before the next interval,
-    // schedule them.
-    while (
-      this._nextNoteTime <
-      this._audioEngine.currentTime() + scheduleAheadTimeSecs
-    ) {
-      this._scheduleNoteForStep(this._currentStep, this._nextNoteTime);
-      this._advanceStep();
-    }
-    this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
-  }
+  // private _runNoteScheduler(): void {
+  //   if (this._audioEngine == null) {
+  //     return;
+  //   }
+  //   // While there are notes that will need to play before the next interval,
+  //   // schedule them.
+  //   while (
+  //     this._nextNoteTime <
+  //     this._audioEngine.currentTime() + scheduleAheadTimeSecs
+  //   ) {
+  //     this._scheduleNoteForStep(this._currentStep, this._nextNoteTime);
+  //     this._advanceStep();
+  //   }
+  //   this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
+  // }
 }
 
 export const sequencerEngine = new SequencerEngine();
