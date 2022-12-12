@@ -3,8 +3,6 @@ import { AmplitudeEnvelope, Oscillator, Gain } from "tone";
 import { Generator } from "../generator";
 
 export interface OscParams extends CommonParams {
-  decayTime: number;
-  gain: number;
   osc_type: OscillatorType;
 }
 
@@ -30,13 +28,16 @@ export class Pluck implements Generator {
         "Received invalid frequency in Pluck's trigger() method. Falling back to a default value of 200 hz"
       );
     }
+    this._gain.set({
+      gain: params.gain,
+    });
     const freq = frequency ?? 200;
-    const params_ = params as OscParams;
-    this._ampEnv.decay = params_.decayTime;
+    this._ampEnv.decay = params.decayTime;
     this._osc.set({
       frequency: freq,
+      type: (params as OscParams).osc_type,
     });
-    this._osc.start(time).stop(time + params_.decayTime);
-    this._ampEnv.triggerAttackRelease(params_.decayTime, time);
+    this._osc.start(time).stop(time + params.decayTime);
+    this._ampEnv.triggerAttackRelease(params.decayTime, time);
   }
 }

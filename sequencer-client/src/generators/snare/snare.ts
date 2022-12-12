@@ -2,11 +2,6 @@ import { CommonParams } from "../commonParams";
 import { Gain, AmplitudeEnvelope, Filter, Noise } from "tone";
 import { Generator } from "../generator";
 
-export interface SnareParams extends CommonParams {
-  decayTime: number;
-  gain: number;
-}
-
 export class Snare implements Generator {
   private readonly _gain: Gain;
   private readonly _ampEnv: AmplitudeEnvelope;
@@ -39,11 +34,14 @@ export class Snare implements Generator {
   }
 
   trigger(time: number, params: CommonParams): void {
-    const snareParams = params as SnareParams;
-    this._ampEnv.decay = snareParams.decayTime;
-    this._ampEnv.release = snareParams.decayTime * 0.1;
+    this._gain.set({
+      gain: params.gain,
+    });
 
-    this._noiseOsc.start(time, 0, snareParams.decayTime);
-    this._ampEnv.triggerAttackRelease(snareParams.decayTime, time);
+    this._ampEnv.decay = params.decayTime;
+    this._ampEnv.release = params.decayTime * 0.1;
+
+    this._noiseOsc.start(time, 0, params.decayTime);
+    this._ampEnv.triggerAttackRelease(params.decayTime, time);
   }
 }

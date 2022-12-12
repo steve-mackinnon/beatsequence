@@ -36,6 +36,9 @@ export class HiHat implements Generator {
   }
 
   trigger(time: number, params: CommonParams): void {
+    this._gain.set({
+      gain: params.gain,
+    });
     const params_ = params as ClosedHHParams;
     this._noise.start(time, 0, params_.decayTime);
     this._ampEnv.triggerAttackRelease(params_.decayTime, time);

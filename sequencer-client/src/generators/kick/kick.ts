@@ -74,8 +74,12 @@ export class Kick implements Generator {
     this._oscShort.connect(this._filterShort).connect(this._ampShort);
   }
 
-  trigger(startTime: number, parameters_: CommonParams): void {
-    const parameters = parameters_ as KickParams;
+  trigger(startTime: number, params: CommonParams): void {
+    this._gain.set({
+      gain: params.gain,
+    });
+
+    const parameters = params as KickParams;
     this._ampLong.decay = parameters.decayTime;
     this._ampShort.decay = parameters.transientTime;
     this._freqEnvShort.decay = parameters.transientTime;
