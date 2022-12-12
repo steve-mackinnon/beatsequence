@@ -1,14 +1,28 @@
 import { TrackState } from "../features/tracks/tracks";
 import { GeneratorType } from "../features/tracks/GeneratorType";
-import { audioEngine, AudioEngine } from "./audioEngine";
+import { AudioEngine, audioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
-import { KickParams, OscParams } from "../generators";
+import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { StepState } from "../features/steps/steps";
 import { SongParams } from "../features/song/song";
 import { Transport } from "tone";
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
+}
+
+function makeGenerator(type: GeneratorType): Generator {
+  switch (type) {
+    case GeneratorType.Kick:
+      return new Kick();
+    case GeneratorType.ClosedHH:
+      return new HiHat();
+    case GeneratorType.SineBleep:
+    case GeneratorType.SquareBleep:
+      return new Pluck();
+    case GeneratorType.Snare:
+      return new Snare();
+  }
 }
 
 function makeStepsForTrack(numSteps: number, trackId: number): StepState[] {
@@ -50,6 +64,8 @@ export class SequencerEngine {
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
   private _trackStates: TrackState[];
+  private readonly _generators: Generator[];
+
   private readonly _stepChangedCallbacks: Array<
     Array<StepChangedCallback | null>
   >;
@@ -65,6 +81,8 @@ export class SequencerEngine {
     this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
       this.numTracks
     );
+
+    this._generators = new Array<Generator>(this.numTracks);
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
@@ -84,6 +102,8 @@ export class SequencerEngine {
       this._stepChangedCallbacks[trackIndex] =
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
+
+      this._generators[trackIndex] = makeGenerator(trackIndex as GeneratorType);
     }
 
     Transport.setLoopPoints("1:1:1", "17:1:1");
@@ -96,7 +116,7 @@ export class SequencerEngine {
       this._steps.forEach((steps: StepState[], index: number) => {
         const trackState = this._trackStates[index];
         const step = steps[this._currentStep];
-        if (!step.enabled || trackState.muted || this._audioEngine == null) {
+        if (!step.enabled || trackState.muted) {
           return;
         }
         if (
@@ -105,37 +125,11 @@ export class SequencerEngine {
         ) {
           return;
         }
-        switch (trackState.generatorType) {
-          case GeneratorType.Kick:
-            this._audioEngine.scheduleKick(
-              time,
-              trackState.generatorParams as KickParams
-            );
-            break;
-          case GeneratorType.Snare:
-            this._audioEngine.scheduleSnare(time, trackState.generatorParams);
-            break;
-          case GeneratorType.ClosedHH:
-            this._audioEngine.scheduleClosedHH(
-              time,
-              trackState.generatorParams
-            );
-            break;
-          case GeneratorType.SineBleep:
-            this._audioEngine.scheduleNote(
-              time,
-              semitoneToHz(step.params.coarsePitch),
-              trackState.generatorParams as OscParams
-            );
-            break;
-          case GeneratorType.SquareBleep:
-            this._audioEngine.scheduleNote(
-              time,
-              semitoneToHz(step.params.coarsePitch),
-              trackState.generatorParams as OscParams
-            );
-            break;
-        }
+        this._generators[index].trigger(
+          time,
+          trackState.generatorParams,
+          semitoneToHz(step.params.coarsePitch)
+        );
       });
     }, "16n");
   }
@@ -152,9 +146,6 @@ export class SequencerEngine {
   }
 
   startPlayback(): void {
-    if (this._audioEngine == null) {
-      return;
-    }
     Transport.start("+0.1");
   }
 
@@ -183,11 +174,7 @@ export class SequencerEngine {
     if (this._audioEngine == null || !this._audioEngine.playing) {
       return 0;
     }
-    // Internally, _currentStep is always leading because we schedule each
-    // step with the audio engine ahead of time. For display purposes, the
-    // current step is really this._currentStep - 1 to compensate for this
-    // ahead-of-time scheduling.
-    return this._currentStep === 0 ? this._numSteps - 1 : this._currentStep - 1;
+    return this._currentStep;
   }
 
   private _broadcastStepUpdate(trackIndex: number, stepIndex: number): void {
@@ -220,80 +207,6 @@ export class SequencerEngine {
   ): void {
     this._stepChangedCallbacks[trackIndex][stepIndex] = callback;
   }
-
-  private _scheduleNoteForStep(stepIndex: number, time: number): void {
-    if (this._audioEngine == null) {
-      return;
-    }
-    this._steps.forEach((steps: StepState[], index: number) => {
-      const step = steps[stepIndex];
-      const trackState = this._trackStates[index];
-
-      // Handle probability logic
-      if (
-        trackState.generatorParams.triggerProbability < 100.0 &&
-        Math.random() * 100.0 > trackState.generatorParams.triggerProbability
-      ) {
-        return;
-      }
-      if (!step.enabled || trackState.muted || this._audioEngine == null) {
-        return;
-      }
-      switch (trackState.generatorType) {
-        case GeneratorType.Kick:
-          this._audioEngine.scheduleKick(
-            time,
-            trackState.generatorParams as KickParams
-          );
-          break;
-        case GeneratorType.Snare:
-          this._audioEngine.scheduleSnare(time, trackState.generatorParams);
-          break;
-        case GeneratorType.ClosedHH:
-          this._audioEngine.scheduleClosedHH(time, trackState.generatorParams);
-          break;
-        case GeneratorType.SineBleep:
-          this._audioEngine.scheduleNote(
-            time,
-            semitoneToHz(step.params.coarsePitch),
-            trackState.generatorParams as OscParams
-          );
-          break;
-        case GeneratorType.SquareBleep:
-          this._audioEngine.scheduleNote(
-            time,
-            semitoneToHz(step.params.coarsePitch),
-            trackState.generatorParams as OscParams
-          );
-          break;
-      }
-    });
-  }
-
-  // private _advanceStep(): void {
-  //   const secondsPerStep = 60.0 / this.params.tempo / 4.0;
-
-  //   this._nextNoteTime += secondsPerStep; // Add step length to last step time
-
-  //   // Advance the beat number, wrap to zero when reaching 4
-  //   this._currentStep = (this._currentStep + 1) % this._numSteps;
-  // }
-
-  // private _runNoteScheduler(): void {
-  //   if (this._audioEngine == null) {
-  //     return;
-  //   }
-  //   // While there are notes that will need to play before the next interval,
-  //   // schedule them.
-  //   while (
-  //     this._nextNoteTime <
-  //     this._audioEngine.currentTime() + scheduleAheadTimeSecs
-  //   ) {
-  //     this._scheduleNoteForStep(this._currentStep, this._nextNoteTime);
-  //     this._advanceStep();
-  //   }
-  //   this._timerID = setTimeout(() => this._runNoteScheduler(), lookaheadMs);
-  // }
 }
 
 export const sequencerEngine = new SequencerEngine();

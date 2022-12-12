@@ -1,13 +1,3 @@
-import {
-  makeKick,
-  makeBleep,
-  makeSnare,
-  makeClosedHH,
-  OscParams,
-  KickParams,
-  SnareParams,
-  ClosedHHParams,
-} from "../generators";
 import { start, context } from "tone";
 
 export type PlaybackListener = (playing: boolean) => void;
@@ -68,22 +58,6 @@ export class AudioEngine {
 
   async shutDown(): Promise<void> {
     // Transport.stop();
-  }
-
-  scheduleNote(startTime: number, frequency: number, params: OscParams): void {
-    makeBleep(startTime, frequency, params);
-  }
-
-  scheduleKick(startTime: number, params: KickParams): void {
-    makeKick(startTime, params);
-  }
-
-  scheduleSnare(startTime: number, params: SnareParams): void {
-    makeSnare(startTime, params);
-  }
-
-  scheduleClosedHH(startTime: number, params: ClosedHHParams): void {
-    makeClosedHH(startTime, params);
   }
 
   currentTime(): number {
