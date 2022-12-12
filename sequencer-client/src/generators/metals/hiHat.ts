@@ -2,11 +2,6 @@ import { CommonParams } from "../commonParams";
 import { Gain, AmplitudeEnvelope, Filter, Noise } from "tone";
 import { Generator } from "../generator";
 
-export interface ClosedHHParams extends CommonParams {
-  decayTime: number;
-  gain: number;
-}
-
 export class HiHat implements Generator {
   private readonly _gain: Gain;
   private readonly _ampEnv: AmplitudeEnvelope;
@@ -39,8 +34,7 @@ export class HiHat implements Generator {
     this._gain.set({
       gain: params.gain,
     });
-    const params_ = params as ClosedHHParams;
-    this._noise.start(time, 0, params_.decayTime);
-    this._ampEnv.triggerAttackRelease(params_.decayTime, time);
+    this._noise.start(time, 0, params.decayTime);
+    this._ampEnv.triggerAttackRelease(params.decayTime, time);
   }
 }

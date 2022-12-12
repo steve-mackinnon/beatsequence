@@ -1,5 +1,5 @@
 export * from "./kick/kick";
-export * from "./metals/closedHiHat";
+export * from "./metals/hiHat";
 export * from "./pluck/pluck";
 export * from "./snare/snare";
 export * from "./generator";
