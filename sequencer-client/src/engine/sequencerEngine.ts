@@ -109,10 +109,6 @@ export class SequencerEngine {
     Transport.setLoopPoints("1:1:1", "17:1:1");
     Transport.loop = true;
     Transport.scheduleRepeat((time) => {
-      this._currentStep += 1;
-      if (this._currentStep === 16) {
-        this._currentStep = 0;
-      }
       this._steps.forEach((steps: StepState[], index: number) => {
         const trackState = this._trackStates[index];
         const step = steps[this._currentStep];
@@ -131,6 +127,10 @@ export class SequencerEngine {
           semitoneToHz(step.params.coarsePitch)
         );
       });
+      this._currentStep += 1;
+      if (this._currentStep === 16) {
+        this._currentStep = 0;
+      }
     }, "16n");
   }
 
@@ -151,7 +151,7 @@ export class SequencerEngine {
 
   stopPlayback(): void {
     this._currentStep = 0;
-    Transport.stop();
+    Transport.pause();
   }
 
   setTrackState(trackIndex: number, trackState: TrackState): void {
