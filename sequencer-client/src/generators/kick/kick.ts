@@ -7,6 +7,7 @@ import {
   Oscillator,
   FrequencyEnvelope,
   Noise,
+  ToneAudioNode,
 } from "tone";
 
 export interface KickParams extends CommonParams {
@@ -28,9 +29,9 @@ export class Kick implements Generator {
   private readonly _noise: Noise;
   private readonly _ampNoise: AmplitudeEnvelope;
 
-  constructor() {
-    this._gain = new Gain(1.0).toDestination();
-    this._gainNoise = new Gain(0.6).toDestination();
+  constructor(destination: ToneAudioNode) {
+    this._gain = new Gain(1.0).connect(destination);
+    this._gainNoise = new Gain(0.6).connect(destination);
     this._ampLong = new AmplitudeEnvelope({
       attack: 0.001,
       decay: 0.2,

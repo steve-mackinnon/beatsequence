@@ -10,7 +10,7 @@ export class AudioEngine {
 
   constructor() {
     getDestination().volume.set({
-      value: -6,
+      value: -1,
     });
   }
 

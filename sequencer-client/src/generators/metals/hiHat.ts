@@ -1,5 +1,5 @@
 import { CommonParams } from "../commonParams";
-import { Gain, AmplitudeEnvelope, Filter, Noise } from "tone";
+import { Gain, AmplitudeEnvelope, Filter, Noise, ToneAudioNode } from "tone";
 import { Generator } from "../generator";
 
 export class HiHat implements Generator {
@@ -9,8 +9,8 @@ export class HiHat implements Generator {
   private readonly _hpf: Filter;
   private readonly _noise: Noise;
 
-  constructor() {
-    this._gain = new Gain(0.5).toDestination();
+  constructor(destination: ToneAudioNode) {
+    this._gain = new Gain(0.5).connect(destination);
     this._ampEnv = new AmplitudeEnvelope({
       attack: 0.01,
       decay: 0.1,

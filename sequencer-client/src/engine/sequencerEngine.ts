@@ -5,23 +5,26 @@ import { semitoneToHz } from "./pitchUtils";
 import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { StepState } from "../features/steps/steps";
 import { SongParams } from "../features/song/song";
-import { Transport } from "tone";
+import { Limiter, ToneAudioNode, Transport } from "tone";
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
 }
 
-function makeGenerator(type: GeneratorType): Generator {
+function makeGenerator(
+  type: GeneratorType,
+  destination: ToneAudioNode
+): Generator {
   switch (type) {
     case GeneratorType.Kick:
-      return new Kick();
+      return new Kick(destination);
     case GeneratorType.ClosedHH:
-      return new HiHat();
+      return new HiHat(destination);
     case GeneratorType.SineBleep:
     case GeneratorType.SquareBleep:
-      return new Pluck();
+      return new Pluck(destination);
     case GeneratorType.Snare:
-      return new Snare();
+      return new Snare(destination);
   }
 }
 
@@ -71,6 +74,7 @@ export class SequencerEngine {
   >;
 
   readonly numTracks: number;
+  readonly _masterFX: Limiter;
 
   constructor() {
     // Object.keys() returns 2 keys per enumeration for numeric enums,
@@ -83,6 +87,8 @@ export class SequencerEngine {
     );
 
     this._generators = new Array<Generator>(this.numTracks);
+
+    this._masterFX = new Limiter(-0.3).toDestination();
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
@@ -103,7 +109,10 @@ export class SequencerEngine {
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
 
-      this._generators[trackIndex] = makeGenerator(trackIndex as GeneratorType);
+      this._generators[trackIndex] = makeGenerator(
+        trackIndex as GeneratorType,
+        this._masterFX
+      );
     }
 
     Transport.setLoopPoints("1:1:1", "17:1:1");

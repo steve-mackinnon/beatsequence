@@ -5,6 +5,7 @@ import {
   Filter,
   Noise,
   FrequencyEnvelope,
+  ToneAudioNode,
 } from "tone";
 import { Generator } from "../generator";
 
@@ -19,8 +20,8 @@ export class Snare implements Generator {
   private readonly _ampEnvHigh: AmplitudeEnvelope;
   private readonly _freqEnvHigh: FrequencyEnvelope;
 
-  constructor() {
-    this._gain = new Gain(1.0).toDestination();
+  constructor(destination: ToneAudioNode) {
+    this._gain = new Gain(1.0).connect(destination);
     this._ampEnv = new AmplitudeEnvelope({
       decay: 0.1,
       attack: 0.01,

@@ -1,5 +1,5 @@
 import { CommonParams } from "../commonParams";
-import { AmplitudeEnvelope, PolySynth, Gain, Synth } from "tone";
+import { AmplitudeEnvelope, PolySynth, Gain, Synth, ToneAudioNode } from "tone";
 import { Generator } from "../generator";
 
 export interface OscParams extends CommonParams {
@@ -11,8 +11,8 @@ export class Pluck implements Generator {
   private readonly _ampEnv: AmplitudeEnvelope;
   private readonly _osc: PolySynth;
 
-  constructor() {
-    this._gain = new Gain(1.0).toDestination();
+  constructor(destination: ToneAudioNode) {
+    this._gain = new Gain(1.0).connect(destination);
     this._ampEnv = new AmplitudeEnvelope({
       attack: 0.01,
       decay: 0.2,
