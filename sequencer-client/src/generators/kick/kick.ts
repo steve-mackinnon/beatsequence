@@ -6,6 +6,7 @@ import {
   Filter,
   Oscillator,
   FrequencyEnvelope,
+  Noise,
 } from "tone";
 
 export interface KickParams extends CommonParams {
@@ -16,6 +17,7 @@ export interface KickParams extends CommonParams {
 
 export class Kick implements Generator {
   private readonly _gain: Gain;
+  private readonly _gainNoise: Gain;
   private readonly _ampLong: AmplitudeEnvelope;
   private readonly _ampShort: AmplitudeEnvelope;
   private readonly _filter: Filter;
@@ -23,9 +25,12 @@ export class Kick implements Generator {
   private readonly _oscLong: Oscillator;
   private readonly _oscShort: Oscillator;
   private readonly _freqEnvShort: FrequencyEnvelope;
+  private readonly _noise: Noise;
+  private readonly _ampNoise: AmplitudeEnvelope;
 
   constructor() {
     this._gain = new Gain(1.0).toDestination();
+    this._gainNoise = new Gain(0.6).toDestination();
     this._ampLong = new AmplitudeEnvelope({
       attack: 0.001,
       decay: 0.2,
@@ -39,6 +44,13 @@ export class Kick implements Generator {
       release: 0.01,
       decayCurve: "exponential",
     }).connect(this._gain);
+    this._ampNoise = new AmplitudeEnvelope({
+      attack: 0.001,
+      decay: 0.03,
+      sustain: 0.0,
+      release: 0.01,
+      decayCurve: "exponential",
+    }).connect(this._gainNoise);
     this._filter = new Filter({
       frequency: 300 * (1 + 0.05),
       type: "lowpass",
@@ -57,12 +69,15 @@ export class Kick implements Generator {
       frequency: 200.0,
       type: "triangle",
     });
+    this._noise = new Noise({
+      type: "pink",
+    });
 
     this._freqEnvShort = new FrequencyEnvelope({
       baseFrequency: "F0",
-      octaves: 1,
+      octaves: 4,
       attack: 0.001,
-      decay: 0.05,
+      decay: 0.1,
       sustain: 0.0,
       release: 0.01,
     });
@@ -72,11 +87,16 @@ export class Kick implements Generator {
     this._oscLong.connect(this._filter).connect(this._ampLong);
 
     this._oscShort.connect(this._filterShort).connect(this._ampShort);
+
+    this._noise.connect(this._ampNoise);
   }
 
   trigger(startTime: number, params: CommonParams): void {
     this._gain.set({
       gain: params.gain,
+    });
+    this._gainNoise.set({
+      gain: params.gain * 0.7,
     });
 
     const parameters = params as KickParams;
@@ -86,11 +106,13 @@ export class Kick implements Generator {
     this._ampShort.decay = parameters.transientTime;
 
     this._filterShort.set({
-      frequency: 300 * (1 + parameters.transientTime),
+      frequency: 500 * (1 + parameters.transientTime),
     });
     this._ampLong.triggerAttackRelease(parameters.decayTime, startTime);
     this._ampShort.triggerAttackRelease(parameters.decayTime, startTime);
     this._oscLong.start(startTime).stop(startTime + parameters.decayTime);
     this._oscShort.start(startTime).stop(startTime + parameters.decayTime);
+    this._noise.start(startTime, 0, parameters.decayTime);
+    this._ampNoise.triggerAttackRelease(parameters.decayTime, startTime);
   }
 }
