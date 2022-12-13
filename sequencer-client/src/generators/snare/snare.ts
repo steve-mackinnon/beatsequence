@@ -23,7 +23,7 @@ export class Snare implements Generator {
       type: "lowpass",
     });
     this._hpf = new Filter({
-      frequency: 7000,
+      frequency: 120,
       type: "highpass",
       Q: 12,
     });

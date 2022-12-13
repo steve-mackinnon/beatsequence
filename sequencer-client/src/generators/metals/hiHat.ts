@@ -26,7 +26,7 @@ export class HiHat implements Generator {
       frequency: 4400,
       type: "highpass",
     });
-    this._noise = new Noise("pink");
+    this._noise = new Noise("white");
     this._noise.connect(this._hpf).connect(this._lpf).connect(this._ampEnv);
   }
 
@@ -34,6 +34,7 @@ export class HiHat implements Generator {
     this._gain.set({
       gain: params.gain,
     });
+    this._ampEnv.decay = params.decayTime;
     this._noise.start(time, 0, params.decayTime);
     this._ampEnv.triggerAttackRelease(params.decayTime, time);
   }
