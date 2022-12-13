@@ -1,5 +1,5 @@
 import { CommonParams } from "../commonParams";
-import { AmplitudeEnvelope, Oscillator, Gain } from "tone";
+import { AmplitudeEnvelope, PolySynth, Gain, Synth } from "tone";
 import { Generator } from "../generator";
 
 export interface OscParams extends CommonParams {
@@ -9,7 +9,7 @@ export interface OscParams extends CommonParams {
 export class Pluck implements Generator {
   private readonly _gain: Gain;
   private readonly _ampEnv: AmplitudeEnvelope;
-  private readonly _osc: Oscillator;
+  private readonly _osc: PolySynth;
 
   constructor() {
     this._gain = new Gain(1.0).toDestination();
@@ -19,7 +19,12 @@ export class Pluck implements Generator {
       sustain: 0,
       release: 0.05,
     }).connect(this._gain);
-    this._osc = new Oscillator(200.0, "sine").connect(this._ampEnv);
+    this._osc = new PolySynth(Synth).connect(this._ampEnv);
+    this._osc.set({
+      oscillator: {
+        type: "sine",
+      },
+    });
   }
 
   trigger(time: number, params: CommonParams, frequency?: number): void {
@@ -33,11 +38,7 @@ export class Pluck implements Generator {
     });
     const freq = frequency ?? 200;
     this._ampEnv.decay = params.decayTime;
-    this._osc.set({
-      frequency: freq,
-      type: (params as OscParams).osc_type,
-    });
-    this._osc.start(time).stop(time + params.decayTime);
+    this._osc.triggerAttackRelease(freq, params.decayTime, time);
     this._ampEnv.triggerAttackRelease(params.decayTime, time);
   }
 }
