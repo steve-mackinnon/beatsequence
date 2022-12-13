@@ -146,11 +146,11 @@ export class SequencerEngine {
   }
 
   startPlayback(): void {
-    Transport.start("+0.1");
+    this._currentStep = 0;
+    Transport.start();
   }
 
   stopPlayback(): void {
-    this._currentStep = 0;
     Transport.pause();
   }
 
