@@ -88,7 +88,7 @@ export class SequencerEngine {
 
     this._generators = new Array<Generator>(this.numTracks);
 
-    this._masterFX = new Limiter(-0.3).toDestination();
+    this._masterFX = new Limiter(-4.0).toDestination();
 
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
