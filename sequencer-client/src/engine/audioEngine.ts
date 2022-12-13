@@ -1,4 +1,4 @@
-import { start, context } from "tone";
+import { start, context, getDestination } from "tone";
 
 export type PlaybackListener = (playing: boolean) => void;
 export class AudioEngine {
@@ -7,6 +7,12 @@ export class AudioEngine {
     new Map();
 
   private _listenerCounter: number = 0;
+
+  constructor() {
+    getDestination().volume.set({
+      value: -6,
+    });
+  }
 
   registerPlaybackListener(listener: PlaybackListener): number {
     this._listenerCounter++;
