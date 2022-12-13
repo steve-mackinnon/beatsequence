@@ -20,6 +20,7 @@ export class Pluck implements Generator {
       release: 0.05,
     }).connect(this._gain);
     this._osc = new PolySynth(Synth).connect(this._ampEnv);
+    this._osc.maxPolyphony = 10;
     this._osc.set({
       oscillator: {
         type: "sine",
