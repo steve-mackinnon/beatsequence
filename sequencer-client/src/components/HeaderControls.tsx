@@ -2,10 +2,10 @@ import React, { ReactElement } from "react";
 import { Stack } from "@mui/system";
 import { ParamSlider } from "../common/ParamSlider";
 import { Typography } from "@mui/material";
-import useProject from "../hooks/useProject";
+import { useProjectName } from "../hooks/useProjectName";
 import FileMenu from "./FileMenu";
 export function HeaderControls(): ReactElement {
-  const projectName = useProject();
+  const projectName = useProjectName();
   return (
     <Stack
       direction="row"

@@ -1,6 +1,7 @@
 import { useAppSelector, useAppDispatch } from "./index";
 import { useFirebaseApp } from "reactfire";
 import { getAuth } from "firebase/auth";
+import { useProjectName } from "./useProjectName";
 import {
   doc,
   addDoc,
@@ -23,11 +24,7 @@ export default function useSaveProject(): SaveProjectInterface {
   const app = useFirebaseApp();
   const state = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
-  const projectName = useAppSelector((state) =>
-    state.song.currentProject != null
-      ? state.song.currentProject.name
-      : "Untitled"
-  );
+  const projectName = useProjectName();
 
   const saveAs = async (name: string): Promise<void> => {
     if (name.length === 0 || name.trim().length === 0) {
