@@ -117,6 +117,7 @@ export class SequencerEngine {
 
     Transport.setLoopPoints("1:1:1", "17:1:1");
     Transport.loop = true;
+    Transport.bpm.value = this._params.tempo;
     Transport.scheduleRepeat((time) => {
       this._steps.forEach((steps: StepState[], index: number) => {
         const trackState = this._trackStates[index];
