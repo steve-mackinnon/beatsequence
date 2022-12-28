@@ -5,7 +5,6 @@ import {
   shutDownAudioEngine,
   loadProject,
   newProject,
-  SongParams,
 } from "./song";
 import { RootState } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
@@ -30,9 +29,10 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: setParam,
-  effect: (action, listenerApi) => {
-    sequencerEngine.params[action.payload.paramId as keyof SongParams] =
-      action.payload.value;
+  effect: (action) => {
+    const newParams = { ...sequencerEngine.params };
+    newParams.tempo = action.payload.value;
+    sequencerEngine.params = newParams;
   },
 });
 

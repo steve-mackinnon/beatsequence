@@ -1,4 +1,6 @@
 import { CommonParams } from "../commonParams";
+import { Generator } from "../generator";
+import { Gain, ToneAudioNode, MembraneSynth } from "tone";
 
 export interface KickParams extends CommonParams {
   decayTime: number;
@@ -6,50 +8,40 @@ export interface KickParams extends CommonParams {
   gain: number;
 }
 
-export function makeKick(
-  context: AudioContext,
-  destination: AudioNode,
-  startTime: number,
-  parameters: KickParams
-): void {
-  const ampEnvelope = new GainNode(context);
-  ampEnvelope.gain.cancelScheduledValues(startTime);
-  ampEnvelope.gain.setValueAtTime(parameters.gain, startTime);
-  ampEnvelope.gain.exponentialRampToValueAtTime(
-    0.01,
-    startTime + parameters.decayTime
-  );
+export class Kick implements Generator {
+  private readonly _gain: Gain;
+  private readonly _membraneSynth: MembraneSynth;
 
-  const osc = new OscillatorNode(context, {
-    type: "sine",
-    frequency: 60,
-  });
-  const osc2 = new OscillatorNode(context, {
-    type: "triangle",
-    frequency: 200,
-  });
-  const filter = new BiquadFilterNode(context, {
-    frequency: 300.0 * (1 + parameters.transientTime),
-    type: "lowpass",
-    Q: 10,
-  });
-  // Amp envelope
-  osc.connect(ampEnvelope).connect(destination);
-  osc.start(startTime);
-  osc.stop(startTime + parameters.decayTime);
+  constructor(destination: ToneAudioNode) {
+    this._gain = new Gain(1.0).connect(destination);
+    this._membraneSynth = new MembraneSynth({
+      octaves: 2,
+      pitchDecay: 0.05,
+      envelope: {
+        attack: 0.001,
+        decay: 0.2,
+        release: 0.05,
+        sustain: 0.0,
+      },
+    }).connect(this._gain);
+  }
 
-  const amp2Envelope = new GainNode(context);
-  amp2Envelope.gain.cancelScheduledValues(startTime);
-  amp2Envelope.gain.setValueAtTime(0.4 * parameters.gain, startTime);
-  amp2Envelope.gain.exponentialRampToValueAtTime(
-    0.01,
-    startTime + parameters.transientTime
-  );
-  osc2.connect(amp2Envelope).connect(filter).connect(destination);
-  osc2.frequency.exponentialRampToValueAtTime(
-    35,
-    startTime + parameters.transientTime * 0.5
-  );
-  osc2.start(startTime);
-  osc2.stop(startTime + parameters.transientTime);
+  trigger(startTime: number, params: CommonParams): void {
+    this._gain.set({
+      gain: params.gain,
+    });
+    const parameters = params as KickParams;
+    this._membraneSynth.set({
+      envelope: {
+        decay: parameters.decayTime,
+      },
+      pitchDecay: parameters.transientTime * 0.15,
+      octaves: 1.5 + parameters.transientTime * 1.5,
+    });
+    this._membraneSynth.triggerAttackRelease(
+      60.0,
+      parameters.decayTime,
+      startTime
+    );
+  }
 }

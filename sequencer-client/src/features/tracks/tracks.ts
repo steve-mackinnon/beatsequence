@@ -2,13 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sequencerEngine } from "../../engine";
 import { GeneratorType } from "./GeneratorType";
 import { RootState } from "../../store";
-import { AnyGeneratorParams, KickParams } from "../../generators";
+import { KickParams } from "../../generators";
+import { CommonParams } from "../../generators/commonParams";
 
 export interface TrackState {
   id: number;
   muted: boolean;
   generatorType: GeneratorType;
-  generatorParams: AnyGeneratorParams;
+  generatorParams: CommonParams;
   displayName: string;
   paramViewVisible: boolean;
 }
@@ -195,8 +196,8 @@ export const tracksSlice = createSlice({
       state.map((trackState: TrackState) => {
         if (trackState.id === action.payload.trackId) {
           const paramId = action.payload.paramId;
-          trackState.generatorParams[paramId as keyof AnyGeneratorParams] =
-            action.payload.paramValue as number;
+          trackState.generatorParams[paramId as keyof CommonParams] = action
+            .payload.paramValue as number;
         }
         return trackState;
       });

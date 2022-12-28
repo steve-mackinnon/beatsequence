@@ -6,7 +6,7 @@ import {
   setParam,
 } from "../features/steps/steps";
 import { setGeneratorParam } from "../features/tracks/tracks";
-import { AnyGeneratorParams } from "../generators";
+import { CommonParams } from "../generators/commonParams";
 export interface ParamInfo {
   trackId: number | undefined;
   stepIndex: number | undefined;
@@ -35,7 +35,7 @@ export function useParameter(
       return 0;
     } else if (paramInfo.trackId != null) {
       const track = state.tracks[paramInfo.trackId];
-      return track.generatorParams[paramInfo.name as keyof AnyGeneratorParams];
+      return track.generatorParams[paramInfo.name as keyof CommonParams];
     } else {
       return state.song.params[paramInfo.name as keyof SongParams];
     }
