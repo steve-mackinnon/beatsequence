@@ -119,15 +119,15 @@ export function defaultNameForGeneratorType(
 function decayTimeForGeneratorType(generatorType: GeneratorType): number {
   switch (generatorType) {
     case GeneratorType.Kick:
-      return 0.2;
+      return 0.4;
     case GeneratorType.Snare:
       return 0.12;
     case GeneratorType.ClosedHH:
       return 0.03;
     case GeneratorType.SineBleep:
-      return 0.18;
+      return 0.26;
     case GeneratorType.SquareBleep:
-      return 0.18;
+      return 0.09;
   }
 }
 
