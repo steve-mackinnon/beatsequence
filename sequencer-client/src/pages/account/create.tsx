@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword } from "../../hooks";
 import EmailPasswordForm from "../../common/EmailPasswordForm";
 
 export default function Create(): ReactElement {
