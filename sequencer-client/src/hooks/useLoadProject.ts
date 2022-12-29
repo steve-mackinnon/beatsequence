@@ -8,7 +8,7 @@ import { setTrackStates, TrackState } from "../features/tracks/tracks";
 import { loadProject as loadProjectAction } from "../features/song/song";
 
 type LoadProject = (name: string) => Promise<void>;
-export default function useLoadProject(): LoadProject {
+export function useLoadProject(): LoadProject {
   const app = useFirebaseApp();
   const dispatch = useDispatch();
   const auth = useAuth();
@@ -46,7 +46,7 @@ export default function useLoadProject(): LoadProject {
         dispatch(
           loadProjectAction({
             project: {
-              name: songState.name,
+              name: projectState.name,
               id: projectId,
             },
             params: songState.params,

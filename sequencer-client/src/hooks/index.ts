@@ -9,6 +9,7 @@ export * from "./useAuth";
 export * from "./useCreateUserWithEmailAndPassword";
 export * from "./useLoadProject";
 export * from "./useParameter";
+export * from "./useProjects";
 export * from "./useProjectName";
 export * from "./useSaveProject";
 export * from "./useSendPasswordResetEmail";

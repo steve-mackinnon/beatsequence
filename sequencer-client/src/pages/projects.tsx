@@ -1,30 +1,13 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  getFirestore,
-} from "firebase/firestore";
 import { List, ListItem, ListItemButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import useLoadProject from "../hooks/useLoadProject";
-import { useUser, useFirebaseApp } from "reactfire";
-
-interface ProjectInfo {
-  id: string;
-  name: string;
-}
+import { useAuth, useLoadProject, useProjects, ProjectInfo } from "../hooks";
 
 export default function Projects(): ReactElement {
-  const { data: user } = useUser();
   const navigate = useNavigate();
-  const app = useFirebaseApp();
-  const [projects, setProjects] = useState<ProjectInfo[]>([]);
-  const [errorLoading, setErrorLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { uid } = useAuth();
+  const { projects, error } = useProjects();
   const loadProject = useLoadProject();
 
   const handleLoadProjectClick = async (info: ProjectInfo): Promise<void> => {
@@ -32,59 +15,16 @@ export default function Projects(): ReactElement {
   };
 
   useEffect(() => {
-    if (user != null) {
+    if (uid != null) {
       return;
     }
     navigate("/account/login");
-  }, [navigate, user]);
+  }, [navigate, uid]);
 
-  useEffect(() => {
-    if (user == null) {
-      return;
-    }
-    setErrorLoading(false);
-    const db = getFirestore(app);
-    const projectPermissions = collection(db, "project_permissions");
-    const projectsQuery = query(
-      projectPermissions,
-      where("readers", "array-contains", user.uid),
-      orderBy("timestamp", "desc")
-    );
-    const fetchProjects = async (): Promise<ProjectInfo[]> => {
-      const projectDocs = await getDocs(projectsQuery);
-      const projects: ProjectInfo[] = [];
-      projectDocs.forEach((doc) => {
-        const data = doc.data();
-        let name = "unknown";
-        if (data.name != null) {
-          name = data.name as string;
-        } else {
-          console.log(
-            `name field not found for project with ID ${doc.id} from project_permissions`
-          );
-        }
-        projects.push({
-          id: doc.id,
-          name,
-        });
-      });
-      return projects;
-    };
-    fetchProjects()
-      .then((projects) => {
-        setProjects(projects);
-        setLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setErrorLoading(true);
-      });
-  }, [user, app]);
-
-  if (errorLoading) {
-    return <span>Error fetching projects from server...</span>;
+  if (error != null) {
+    return <span>{error}</span>;
   }
-  if (loading) {
+  if (projects == null) {
     return <span>Loading...</span>;
   }
   const projectList = projects.map((project) => (
