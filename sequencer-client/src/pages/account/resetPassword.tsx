@@ -1,7 +1,6 @@
 import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
-import { ReactElement, useContext, useState } from "react";
-import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
-import { AuthContext } from "../../context/authContext";
+import { ReactElement, useState } from "react";
+import { useSendPasswordResetEmail } from "../../hooks/useSendPasswordResetEmail";
 import { Stack, styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
@@ -24,9 +23,8 @@ const Container = styled("form")(
 );
 
 export default function ResetPassword(): ReactElement {
-  const auth = useContext(AuthContext);
-  const [sendPasswordResetEmail, sending, error] =
-    useSendPasswordResetEmail(auth);
+  const { sendPasswordResetEmail, sending, error } =
+    useSendPasswordResetEmail();
   const [sentEmail, setSentEmail] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -37,7 +35,7 @@ export default function ResetPassword(): ReactElement {
           setSentEmail(true);
         }
         if (!success && error != null) {
-          console.log("Password reset failed with error " + error.message);
+          console.log("Password reset failed with error " + error);
         }
       })
       .catch((_error) => {
@@ -83,7 +81,7 @@ export default function ResetPassword(): ReactElement {
               setSentEmail(true);
             }
             if (!success && error != null) {
-              console.log("Password reset failed with error " + error.message);
+              console.log("Password reset failed with error " + error);
             }
           })
           .catch((_error) => {
@@ -144,7 +142,7 @@ export default function ResetPassword(): ReactElement {
             )}
             {error != null && (
               <Typography variant="subtitle2">
-                Password reset failed: {error.message}
+                Password reset failed: {error}
               </Typography>
             )}
           </Stack>
