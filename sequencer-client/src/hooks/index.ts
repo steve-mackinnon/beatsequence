@@ -13,3 +13,4 @@ export * from "./useProjectName";
 export * from "./useSaveProject";
 export * from "./useSendPasswordResetEmail";
 export * from "./useSignInWithEmailAndPassword";
+export * from "./useSignOut";

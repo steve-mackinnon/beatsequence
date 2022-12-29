@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import {
   usePopupState,
@@ -6,8 +6,7 @@ import {
   bindMenu,
 } from "material-ui-popup-state/hooks";
 import { useNavigate } from "react-router-dom";
-import { useSignOut } from "react-firebase-hooks/auth";
-import { AuthContext } from "../context/authContext";
+import { useSignOut } from "../hooks";
 import MuiAvatar from "@mui/material/Avatar";
 
 export default function ProfileMenu(): ReactElement {
@@ -16,8 +15,7 @@ export default function ProfileMenu(): ReactElement {
     popupId: `profileMenu`,
   });
   const navigate = useNavigate();
-  const auth = useContext(AuthContext);
-  const [signOut] = useSignOut(auth);
+  const signOut = useSignOut();
 
   const onSignOutClick = async (): Promise<void> => {
     const success = await signOut();
