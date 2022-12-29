@@ -1,5 +1,5 @@
 import { useFirebaseApp } from "reactfire";
-import { getAuth } from "firebase/auth";
+import { useAuth } from "./useAuth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,11 +11,11 @@ type LoadProject = (name: string) => Promise<void>;
 export default function useLoadProject(): LoadProject {
   const app = useFirebaseApp();
   const dispatch = useDispatch();
-  const auth = getAuth(app);
+  const auth = useAuth();
   const navigate = useNavigate();
 
   const loadProject = async (projectId: string): Promise<void> => {
-    if (auth.currentUser == null) {
+    if (auth.uid == null) {
       throw new Error(
         "Attempting to load a project without user authentication."
       );
