@@ -91,59 +91,63 @@ export default function ResetPassword(): ReactElement {
           });
       }}
     >
-      {(formik) => (
-        <Container>
-          <form onSubmit={formik.handleSubmit}>
-            <Stack spacing={3} alignItems="center">
-              <Typography fontSize={"24px"}>Forgot your password?</Typography>
-              <Typography variant="subtitle1" align="center" maxWidth="320px">
-                Enter your email address and we will send you instructions to
-                reset your password.
-              </Typography>
-              <Stack alignItems="left">
-                <TextField
-                  variant="outlined"
-                  type="text"
-                  label="Email"
-                  sx={{
-                    minWidth: "320px",
-                  }}
-                  {...formik.getFieldProps("email")}
-                />
-                {(formik.touched.email ?? false) &&
-                formik.errors.email != null ? (
-                  <Typography variant="subtitle2" color="red">
-                    {formik.errors.email}
-                  </Typography>
-                ) : (
-                  <Spacer />
-                )}
-              </Stack>
-              <Button
-                variant="contained"
-                disabled={!formik.isValid}
-                type="submit"
+      {({
+        handleSubmit,
+        getFieldProps,
+        errors,
+        touched,
+        isValid,
+        isSubmitting,
+      }) => (
+        <Container onSubmit={handleSubmit}>
+          <Stack spacing={3} alignItems="center">
+            <Typography fontSize={"24px"}>Forgot your password?</Typography>
+            <Typography variant="subtitle1" align="center" maxWidth="320px">
+              Enter your email address and we will send you instructions to
+              reset your password.
+            </Typography>
+            <Stack alignItems="left">
+              <TextField
+                variant="outlined"
+                type="text"
+                label="Email"
                 sx={{
                   minWidth: "320px",
                 }}
-              >
-                Continue
-              </Button>
-              <Link to="/account/login">
-                <MUILink>Back to login page</MUILink>
-              </Link>
-              {sending && (
-                <Typography variant="subtitle2">
-                  Sending email to {email}...
+                {...getFieldProps("email")}
+              />
+              {(touched.email ?? false) && errors.email != null ? (
+                <Typography variant="subtitle2" color="red">
+                  {errors.email}
                 </Typography>
-              )}
-              {error != null && (
-                <Typography variant="subtitle2">
-                  Password reset failed: {error.message}
-                </Typography>
+              ) : (
+                <Spacer />
               )}
             </Stack>
-          </form>
+            <Button
+              variant="contained"
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              sx={{
+                minWidth: "320px",
+              }}
+            >
+              Continue
+            </Button>
+            <Link to="/account/login">
+              <MUILink>Back to login page</MUILink>
+            </Link>
+            {sending && (
+              <Typography variant="subtitle2">
+                Sending email to {email}...
+              </Typography>
+            )}
+            {error != null && (
+              <Typography variant="subtitle2">
+                Password reset failed: {error.message}
+              </Typography>
+            )}
+          </Stack>
         </Container>
       )}
     </Formik>
