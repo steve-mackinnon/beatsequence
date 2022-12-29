@@ -1,16 +1,14 @@
 import { TextField, Button, Typography, Link as MUILink } from "@mui/material";
-import { ReactElement, useContext, useEffect } from "react";
+import { ReactElement, useEffect } from "react";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
-  useAuthState,
-} from "react-firebase-hooks/auth";
-import { browserLocalPersistence, setPersistence } from "firebase/auth";
+  useAuth,
+} from "../hooks";
 import { Stack, styled } from "@mui/system";
 import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { AuthContext } from "../context/authContext";
 
 const ContainerForm = styled("form")(
   ({ theme }) => `
@@ -31,10 +29,8 @@ export interface EmailPasswordFormProps {
 export default function EmailPasswordForm(
   props: EmailPasswordFormProps
 ): ReactElement {
-  const auth = useContext(AuthContext);
-  const [createOrLoginWithEmailAndPassword, user, loading, error] =
-    props.hook(auth);
-  const [authUser] = useAuthState(auth);
+  const auth = useAuth();
+  const { action, loading, error } = props.hook();
   const navigate = useNavigate();
 
   const subtitleText =
@@ -47,10 +43,10 @@ export default function EmailPasswordForm(
 
   // Route user to homepage after account creation or login succeed
   useEffect(() => {
-    if (authUser != null) {
+    if (auth.uid != null) {
       navigate("/makebeats");
     }
-  }, [authUser, navigate]);
+  }, [auth, navigate]);
 
   return (
     <Formik
@@ -67,12 +63,7 @@ export default function EmailPasswordForm(
           .min(6, "Password must be at least 6 characters long."),
       })}
       onSubmit={async (values) => {
-        await setPersistence(auth, browserLocalPersistence).then(async () => {
-          await createOrLoginWithEmailAndPassword(
-            values.email,
-            values.password
-          );
-        });
+        await action(values.email, values.password);
       }}
     >
       {(formik) => (
@@ -150,13 +141,13 @@ export default function EmailPasswordForm(
                     : "Signing in..."}
                 </Typography>
               )}
-              {user != null && !user.user.emailVerified && (
+              {auth.uid != null && (
                 <Typography color="green">Success.</Typography>
               )}
               {error != null && (
                 <Typography variant="subtitle2" color="red">
                   {props.action === "create" ? "Account creation " : "Sign-in "}{" "}
-                  failed: {error.message}
+                  failed: {error}
                 </Typography>
               )}
             </Stack>

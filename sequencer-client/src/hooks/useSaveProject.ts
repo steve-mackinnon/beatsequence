@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "./index";
 import { useFirebaseApp } from "reactfire";
-import { getAuth } from "firebase/auth";
+import { useAuth } from "./useAuth";
 import { useProjectName } from "./useProjectName";
 import {
   doc,
@@ -25,6 +25,7 @@ export default function useSaveProject(): SaveProjectInterface {
   const state = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const projectName = useProjectName();
+  const auth = useAuth();
 
   const saveAs = async (name: string): Promise<void> => {
     if (name.length === 0 || name.trim().length === 0) {
@@ -32,8 +33,7 @@ export default function useSaveProject(): SaveProjectInterface {
         "Invalid project name. Length must be greater than zero and contain non-space charaters."
       );
     }
-    const auth = getAuth(app);
-    if (auth.currentUser == null) {
+    if (auth.uid == null) {
       throw new Error(
         "Attempting to save a project without user authentication."
       );
@@ -45,8 +45,8 @@ export default function useSaveProject(): SaveProjectInterface {
         name,
         tracks: state.tracks,
         steps: state.steps,
-        writers: [auth.currentUser.uid],
-        readers: [auth.currentUser.uid],
+        writers: [auth.uid],
+        readers: [auth.uid],
         song: {
           name,
           params: state.song.params,
@@ -56,8 +56,8 @@ export default function useSaveProject(): SaveProjectInterface {
       await setDoc(doc(db, "project_permissions", projectRef.id), {
         timestamp: serverTimestamp(),
         name,
-        writers: [auth.currentUser.uid],
-        readers: [auth.currentUser.uid],
+        writers: [auth.uid],
+        readers: [auth.uid],
       });
       dispatch(
         projectSavedAs({
@@ -77,8 +77,7 @@ export default function useSaveProject(): SaveProjectInterface {
     ) {
       throw Error("Attempting to save a project without a name...");
     }
-    const auth = getAuth(app);
-    if (auth.currentUser == null) {
+    if (auth.uid == null) {
       throw new Error(
         "Attempting to save a project without user authentication."
       );
