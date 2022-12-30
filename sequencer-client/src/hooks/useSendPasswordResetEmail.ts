@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/authContext";
-import { useSendPasswordResetEmail as firbaseUseSendPasswordResetEmail } from "react-firebase-hooks/auth";
+import { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 export interface SendPasswordResetEmailHook {
   sending: boolean;
@@ -8,12 +7,22 @@ export interface SendPasswordResetEmailHook {
   error: string | undefined;
 }
 export function useSendPasswordResetEmail(): SendPasswordResetEmailHook {
-  const auth = useContext(AuthContext);
-  const [sendPasswordResetEmail, sending, error] =
-    firbaseUseSendPasswordResetEmail(auth);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<undefined | string>(undefined);
+
+  const resetPassword = async (email: string): Promise<boolean> => {
+    setError(undefined);
+    setSending(true);
+    const response = await supabase.auth.resetPasswordForEmail(email);
+    if (response.error != null) {
+      setError(response.error.message);
+      return false;
+    }
+    return true;
+  };
   return {
     sending,
-    sendPasswordResetEmail,
-    error: error?.message,
+    sendPasswordResetEmail: resetPassword,
+    error,
   };
 }
