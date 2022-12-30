@@ -1,6 +1,5 @@
-import { useCreateUserWithEmailAndPassword as firebaseCreateUser } from "react-firebase-hooks/auth";
-import { getAuth } from "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+import { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 export type CreateUserWithEmailAndPassword = (
   email: string,
@@ -12,21 +11,29 @@ export interface CreateUserWithEmailAndPasswordHook {
   error: string | undefined;
 }
 export function useCreateUserWithEmailAndPassword(): CreateUserWithEmailAndPasswordHook {
-  const app = useFirebaseApp();
-  const auth = getAuth(app);
-  const [createUser, , loading, error] = firebaseCreateUser(auth);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<undefined | string>(undefined);
 
   const createUserWithEmailAndPassword = async (
     email: string,
     password: string
   ): Promise<string | undefined> => {
-    const userCredential = await createUser(email, password);
-    return userCredential?.user.uid;
+    setError(undefined);
+    setLoading(true);
+    const response = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    setLoading(false);
+    if (response.error != null) {
+      setError(response.error.message);
+    }
+    return response.data.user?.id;
   };
 
   return {
     action: createUserWithEmailAndPassword,
     loading,
-    error: error?.message,
+    error,
   };
 }

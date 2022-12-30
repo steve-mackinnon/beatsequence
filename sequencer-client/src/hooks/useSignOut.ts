@@ -1,11 +1,12 @@
-import { useSignOut as firebaseSignOut } from "react-firebase-hooks/auth";
-import { useFirebaseApp } from "reactfire";
-import { getAuth } from "firebase/auth";
+import { supabase } from "../supabaseClient";
 
 export type SignOut = () => Promise<boolean>;
 
 export function useSignOut(): SignOut {
-  const auth = getAuth(useFirebaseApp());
-  const [signOut] = firebaseSignOut(auth);
+  const signOut = async (): Promise<boolean> => {
+    const response = await supabase.auth.signOut();
+    const success = response.error == null;
+    return success;
+  };
   return signOut;
 }

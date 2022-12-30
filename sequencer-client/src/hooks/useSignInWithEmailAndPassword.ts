@@ -1,6 +1,5 @@
-import { useSignInWithEmailAndPassword as firebaseSignIn } from "react-firebase-hooks/auth";
-import { getAuth } from "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+import { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 export type SignInWithEmailAndPassword = (
   email: string,
@@ -13,20 +12,27 @@ export interface SignInWithEmailAndPasswordHook {
 }
 
 export function useSignInWithEmailAndPassword(): SignInWithEmailAndPasswordHook {
-  const app = useFirebaseApp();
-  const auth = getAuth(app);
-  const [signIn, , loading, error] = firebaseSignIn(auth);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
-  const createUserWithEmailAndPassword = async (
+  const signInWithEmailAndPassword = async (
     email: string,
     password: string
   ): Promise<string | undefined> => {
-    const userCredential = await signIn(email, password);
-    return userCredential?.user.uid;
+    setLoading(true);
+    const response = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (response.error != null) {
+      setError(response.error.message);
+    }
+    setLoading(false);
+    return response.data.user?.id;
   };
   return {
-    action: createUserWithEmailAndPassword,
+    action: signInWithEmailAndPassword,
     loading,
-    error: error?.message,
+    error,
   };
 }
