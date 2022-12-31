@@ -14,7 +14,7 @@ export const DEFAULT_PATTERN: Pattern = {
   steps: (() => {
     const steps = new Array<Step[]>();
     for (let trackIndex = 0; trackIndex < NUM_DEFAULT_TRACKS; ++trackIndex) {
-      steps.push(new Array<Step>(NUM_DEFAULT_STEPS));
+      steps.push(new Array<Step>());
       for (let stepIndex = 0; stepIndex < NUM_DEFAULT_STEPS; ++stepIndex) {
         steps[trackIndex].push({
           enabled: false,

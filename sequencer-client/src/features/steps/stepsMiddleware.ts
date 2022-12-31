@@ -5,20 +5,18 @@ import {
   TypedAddListener,
 } from "@reduxjs/toolkit";
 import {
-  StepState,
   enable,
   disable,
   setParam,
-  stepStateForTrackAndStep,
   twoOnTheFloor,
   fourOnTheFloor,
   randomize,
   StepInfo,
   fillAllSteps,
-  setStepStates,
 } from "./steps";
 import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
+import { Step } from "../../entities/step";
 
 export const stepsListenerMiddleware = createListenerMiddleware();
 
@@ -30,32 +28,21 @@ export const addAppListener = addListener as TypedAddListener<
 
 function sendStepStateToSequencerEngine(
   stepInfo: StepInfo,
-  steps: StepState[]
+  steps: Step[][]
 ): void {
-  const stepState = stepStateForTrackAndStep(
+  sequencerEngine.setStepState(
     stepInfo.trackId,
     stepInfo.stepIndex,
-    steps
-  );
-  sequencerEngine.setStepState(
-    stepState.trackId,
-    stepState.stepIndex,
-    stepState
+    steps[stepInfo.trackId][stepInfo.stepIndex]
   );
 }
 
 function sendAllStepStatesToSequencerEngineForTrack(
   trackId: number,
-  steps: StepState[]
+  steps: Step[][]
 ): void {
-  steps.forEach((stepState: StepState) => {
-    if (stepState.trackId === trackId) {
-      sequencerEngine.setStepState(
-        stepState.trackId,
-        stepState.stepIndex,
-        stepState
-      );
-    }
+  steps[trackId].forEach((step: Step, stepIndex: number) => {
+    sequencerEngine.setStepState(trackId, stepIndex, step);
   });
 }
 
@@ -103,8 +90,10 @@ stepsListenerMiddleware.startListening({
     const state = listenerApi.getState() as RootState;
     if (action.payload.trackId === undefined) {
       // Update all steps
-      state.steps.forEach((step: StepState) => {
-        sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+      state.steps.forEach((trackSteps: Step[], trackIndex: number) => {
+        trackSteps.forEach((step: Step, stepIndex: number) => {
+          sequencerEngine.setStepState(trackIndex, stepIndex, step);
+        });
       });
     } else {
       sendAllStepStatesToSequencerEngineForTrack(
@@ -112,16 +101,5 @@ stepsListenerMiddleware.startListening({
         state.steps
       );
     }
-  },
-});
-
-stepsListenerMiddleware.startListening({
-  actionCreator: setStepStates,
-  effect: (action, listenerApi) => {
-    const state = listenerApi.getState() as RootState;
-    // Update all steps
-    state.steps.forEach((step: StepState) => {
-      sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
-    });
   },
 });

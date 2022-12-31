@@ -1,10 +1,6 @@
 import { useAppSelector, useAppDispatch } from ".";
 import { setParam as setSongParam } from "../features/song/songSlice";
-import {
-  stepStateForTrackAndStep,
-  AnyStepParams,
-  setParam,
-} from "../features/steps/steps";
+import { setParam } from "../features/steps/steps";
 import { setGeneratorParam } from "../features/tracks/tracks";
 import { CommonParams } from "../entities/commonParams";
 export interface ParamInfo {
@@ -21,18 +17,9 @@ export function useParameter(
 ): [number, (newValue: number) => void] {
   const paramValue = useAppSelector((state) => {
     if (paramInfo.stepIndex != null && paramInfo.trackId != null) {
-      const step = stepStateForTrackAndStep(
-        paramInfo.trackId,
-        paramInfo.stepIndex,
-        state.steps
-      );
-      if (paramInfo.name in step.params) {
-        return step.params[paramInfo.name as keyof AnyStepParams];
-      }
-      console.log(
-        `Attempting to set ${paramInfo.name} param, which does not exist...`
-      );
-      return 0;
+      // TODO: This hack assumes steps only have a coarse pitch parameter
+      const step = state.steps[paramInfo.trackId][paramInfo.stepIndex];
+      return step.coarsePitch;
     } else if (paramInfo.trackId != null) {
       const track = state.tracks[paramInfo.trackId];
       return track.generatorParams[paramInfo.name as keyof CommonParams];

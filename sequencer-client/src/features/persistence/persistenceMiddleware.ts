@@ -6,8 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { audioEngine, sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
-import { StepState } from "../steps/steps";
 import { Track, defaultNameForGeneratorType } from "../../entities/track";
+import { Step } from "../../entities/step";
 
 export const persistenceMiddleware = createListenerMiddleware();
 
@@ -19,8 +19,10 @@ export const addAppListener = addListener as TypedAddListener<
 
 const syncEntireState = (state: RootState): void => {
   audioEngine.playing = false;
-  state.steps.forEach((step: StepState) => {
-    sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
+  state.steps.forEach((steps: Step[], trackIndex: number) => {
+    steps.forEach((step: Step, stepIndex: number) => {
+      sequencerEngine.setStepState(trackIndex, stepIndex, step);
+    });
   });
   state.tracks.forEach((trackState: Track, index) => {
     if (trackState.displayName == null) {
