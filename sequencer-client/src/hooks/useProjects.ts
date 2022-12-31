@@ -22,7 +22,7 @@ export interface ProjectsHook {
   error?: string;
 }
 export function useProjects(): ProjectsHook {
-  const { uid } = useAuth();
+  const uid = useAuth();
   const app = getApp();
   const db = getFirestore(app);
   const [projects, setProjects] = useState<ProjectList | undefined>(undefined);

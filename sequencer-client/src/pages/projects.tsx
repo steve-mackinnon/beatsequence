@@ -6,7 +6,7 @@ import { useAuth, useLoadProject, useProjects, ProjectInfo } from "../hooks";
 
 export default function Projects(): ReactElement {
   const navigate = useNavigate();
-  const { uid } = useAuth();
+  const uid = useAuth();
   const { projects, error } = useProjects();
   const loadProject = useLoadProject();
 

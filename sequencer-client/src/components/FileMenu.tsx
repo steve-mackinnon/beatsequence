@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useContext } from "react";
+import React, { ReactElement, useState } from "react";
 import { Divider, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import {
   usePopupState,
@@ -9,10 +9,9 @@ import MoreVert from "@mui/icons-material/MoreVert";
 import SaveProjectAsDialog from "./SaveProjectAsDialog";
 import useSaveProject from "../hooks/useSaveProject";
 import { SaveChangesBeforeClosingDialog } from "./SaveChangesBeforeClosingDialog";
-import { useAppDispatch } from "../hooks";
+import { useAppDispatch, useAuth } from "../hooks";
 import { newProject } from "../features/song/song";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
 
 export default function FileMenu(): ReactElement {
   const popupState = usePopupState({
@@ -24,7 +23,7 @@ export default function FileMenu(): ReactElement {
   const { save, canSave } = useSaveProject();
   const [showSaveBeforeClosingDialog, setShowSaveBeforeClosingDialog] =
     useState(false);
-  const auth = useContext(AuthContext);
+  const uid = useAuth();
   const navigate = useNavigate();
   const handleCreateAccountClick = (): void => {
     navigate("/account/create");
@@ -50,7 +49,7 @@ export default function FileMenu(): ReactElement {
   };
 
   const menuItems: ReactElement[] = [];
-  if (auth.currentUser == null) {
+  if (uid == null) {
     menuItems.push(
       <MenuItem onClick={handleCreateAccountClick}>
         Create an account to save...
