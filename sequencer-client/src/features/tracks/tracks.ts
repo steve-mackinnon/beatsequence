@@ -80,6 +80,11 @@ export const tracksSlice = createSlice({
         state[index] = trackState;
       });
     },
+    "song/loadProject": (state, payload) => {
+      payload.payload.project.tracks.forEach((track: Track, index: number) => {
+        state[index] = track;
+      });
+    },
   },
 });
 

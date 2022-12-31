@@ -88,6 +88,20 @@ export const stepsSlice = createSlice({
         });
       });
     },
+    "song/loadProject": (state, payload) => {
+      console.log(payload);
+      const hasPattern = "pattern" in payload.payload.project;
+      if (!hasPattern) {
+        throw Error("Pattern shouldn't be null");
+      }
+      payload.payload.project.pattern.steps.forEach(
+        (trackSteps: Step[], trackIndex: number) => {
+          trackSteps.forEach((step: Step, stepIndex: number) => {
+            state[trackIndex][stepIndex] = step;
+          });
+        }
+      );
+    },
   },
 });
 

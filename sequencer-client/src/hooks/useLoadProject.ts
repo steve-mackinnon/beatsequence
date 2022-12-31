@@ -48,7 +48,9 @@ export function useLoadProject(): LoadProject {
         ) {
           stepsForEachTrack.push(new Array<Step>());
           for (let stepIndex = 0; stepIndex < numStepsPerTrack; ++stepIndex) {
-            stepsForEachTrack[trackIndex].push(steps[trackIndex * stepIndex]);
+            stepsForEachTrack[trackIndex].push(
+              steps[trackIndex * numStepsPerTrack + stepIndex]
+            );
           }
         }
         const songState = projectState.song;
@@ -60,7 +62,7 @@ export function useLoadProject(): LoadProject {
             project: {
               name: projectState.name,
               id: projectId,
-              tempo: songState.params,
+              tempo: songState.params.tempo,
               playing: false,
               tracks,
               pattern: {

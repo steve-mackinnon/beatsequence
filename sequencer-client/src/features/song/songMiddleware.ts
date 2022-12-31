@@ -9,6 +9,7 @@ import {
 import { RootState } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
 import { Step } from "../../entities/step";
+import { Track } from "../../entities/track";
 export const songListenerMiddleware = createListenerMiddleware();
 
 songListenerMiddleware.startListening({
@@ -39,6 +40,14 @@ songListenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.tempo = state.song.tempo;
+    state.steps.forEach((steps: Step[], trackIndex: number) => {
+      steps.forEach((step: Step, stepIndex: number) => {
+        sequencerEngine.setStepState(trackIndex, stepIndex, step);
+      });
+    });
+    state.tracks.forEach((track: Track, index: number) => {
+      sequencerEngine.setTrackState(index, track);
+    });
   },
 });
 
