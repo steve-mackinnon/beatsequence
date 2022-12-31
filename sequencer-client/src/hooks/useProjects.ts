@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   collection,
   query,
@@ -27,49 +27,57 @@ export function useProjects(): ProjectsHook {
   const db = getFirestore(app);
   const [projects, setProjects] = useState<ProjectList | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
-  if (uid == null) {
-    return {
-      error: "Unable to fetch projects: user is not signed in.",
-    };
-  }
 
-  const projectPermissions = collection(db, "project_permissions");
-  const projectsQuery = query(
-    projectPermissions,
-    where("readers", "array-contains", uid),
-    orderBy("timestamp", "desc")
-  );
-  const fetchProjects = async (): Promise<ProjectInfo[]> => {
-    const projectDocs = await getDocs(projectsQuery);
-    const projects: ProjectInfo[] = [];
-    projectDocs.forEach((doc) => {
-      const data = doc.data();
-      let name = "unknown";
-      if (data.name != null) {
-        name = data.name as string;
-      } else {
-        console.log(
-          `name field not found for project with ID ${doc.id} from project_permissions`
+  // Asynchronously fetch data when the user signs in
+  useEffect(() => {
+    async function fetchData(): Promise<void> {
+      console.log("Fetch projects");
+      if (uid == null) {
+        setError("Unable to fetch projects: user is not signed in.");
+        return;
+      }
+      try {
+        const projectPermissions = collection(db, "project_permissions");
+        const projectsQuery = query(
+          projectPermissions,
+          where("readers", "array-contains", uid),
+          orderBy("timestamp", "desc")
+        );
+        console.log("Fetch projects");
+        const projectDocs = await getDocs(projectsQuery);
+        const projects: ProjectInfo[] = [];
+        projectDocs.forEach((doc) => {
+          const data = doc.data();
+          let name = "unknown";
+          if (data.name != null) {
+            name = data.name as string;
+          } else {
+            console.log(
+              `name field not found for project with ID ${doc.id} from project_permissions`
+            );
+          }
+          projects.push({
+            id: doc.id,
+            name,
+          });
+        });
+        setProjects(projects);
+        setError(undefined);
+      } catch (e) {
+        console.log(e);
+        setError(
+          "An error occurred while fetching projects from the server. Please try again later."
         );
       }
-      projects.push({
-        id: doc.id,
-        name,
-      });
-    });
-    return projects;
-  };
-  fetchProjects()
-    .then((projects) => {
-      setProjects(projects);
-      setError(undefined);
-    })
-    .catch((e) => {
+    }
+    fetchData().catch((e) => {
       console.log(e);
       setError(
         "An error occurred while fetching projects from the server. Please try again later."
       );
     });
+  }, [uid, db]);
+
   return {
     projects,
     error,
