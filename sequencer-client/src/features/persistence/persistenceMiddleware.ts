@@ -7,7 +7,7 @@ import {
 import { audioEngine, sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
 import { StepState } from "../steps/steps";
-import { TrackState, defaultNameForGeneratorType } from "../tracks/tracks";
+import { Track, defaultNameForGeneratorType } from "../../entities/track";
 
 export const persistenceMiddleware = createListenerMiddleware();
 
@@ -22,7 +22,7 @@ const syncEntireState = (state: RootState): void => {
   state.steps.forEach((step: StepState) => {
     sequencerEngine.setStepState(step.trackId, step.stepIndex, step);
   });
-  state.tracks.forEach((trackState: TrackState, index) => {
+  state.tracks.forEach((trackState: Track, index) => {
     if (trackState.displayName == null) {
       trackState.displayName = defaultNameForGeneratorType(
         trackState.generatorType

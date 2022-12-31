@@ -3,9 +3,9 @@ import { useAuth } from "./useAuth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setStepStates, StepState } from "../features/steps/steps";
-import { setTrackStates, TrackState } from "../features/tracks/tracks";
 import { loadProject as loadProjectAction } from "../features/song/songSlice";
+import { Track } from "../entities/track";
+import { Step } from "../entities/step";
 
 type LoadProject = (name: string) => Promise<void>;
 export function useLoadProject(): LoadProject {
@@ -31,14 +31,26 @@ export function useLoadProject(): LoadProject {
         if (trackStates == null) {
           throw new Error("tracks object was missing from project.");
         }
-        dispatch(setTrackStates(trackStates as TrackState[]));
-
         const stepStates = projectState.steps;
         if (stepStates == null) {
           throw new Error("steps object was missing from project.");
         }
-        dispatch(setStepStates(stepStates as StepState[]));
 
+        const tracks = trackStates as Track[];
+        const steps = stepStates as Step[];
+        const stepsForEachTrack = new Array<Step[]>();
+        const numStepsPerTrack = steps.length / tracks.length;
+        // Transform steps from flat array into a 2d steps-per-track array
+        for (
+          let trackIndex = 0;
+          trackIndex < trackStates.length;
+          ++trackIndex
+        ) {
+          stepsForEachTrack.push(new Array<Step>());
+          for (let stepIndex = 0; stepIndex < numStepsPerTrack; ++stepIndex) {
+            stepsForEachTrack[trackIndex].push(steps[trackIndex * stepIndex]);
+          }
+        }
         const songState = projectState.song;
         if (songState == null) {
           throw new Error("song object was missing from project.");
@@ -50,6 +62,11 @@ export function useLoadProject(): LoadProject {
               id: projectId,
               tempo: songState.params,
               playing: false,
+              tracks,
+              pattern: {
+                name: "Pattern 1",
+                steps: stepsForEachTrack,
+              },
             },
           })
         );

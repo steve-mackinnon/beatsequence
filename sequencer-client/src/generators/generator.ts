@@ -1,4 +1,4 @@
-import { CommonParams } from "./commonParams";
+import { CommonParams } from "../entities/commonParams";
 
 export interface Generator {
   trigger: (

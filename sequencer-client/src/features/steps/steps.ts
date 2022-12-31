@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
-import { INITIAL_NUM_TRACKS } from "../tracks/tracks";
+import { NUM_DEFAULT_TRACKS } from "../../entities/track";
 import { sequencerEngine } from "../../engine";
 
 export interface StepInfo {
@@ -37,7 +37,7 @@ interface RandomizePayload {
 // Define the initial state using that type
 const INITIAL_NUM_STEPS = 16;
 export const initialState: StepState[] = new Array<StepState>();
-for (let index = 0; index < INITIAL_NUM_TRACKS * INITIAL_NUM_STEPS; ++index) {
+for (let index = 0; index < NUM_DEFAULT_TRACKS * INITIAL_NUM_STEPS; ++index) {
   initialState.push({
     params: {
       coarsePitch: 0,

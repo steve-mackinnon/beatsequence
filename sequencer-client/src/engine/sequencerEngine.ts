@@ -1,10 +1,10 @@
-import { TrackState } from "../features/tracks/tracks";
-import { GeneratorType } from "../features/tracks/GeneratorType";
+import { GeneratorType } from "../entities/generatorType";
 import { AudioEngine, audioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { StepState } from "../features/steps/steps";
 import { Limiter, ToneAudioNode, Transport } from "tone";
+import { Track } from "../entities/track";
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
@@ -63,7 +63,7 @@ export class SequencerEngine {
 
   private readonly _numSteps: number = 16;
   private readonly _steps: StepState[][];
-  private _trackStates: TrackState[];
+  private _trackStates: Track[];
   private readonly _generators: Generator[];
 
   private readonly _stepChangedCallbacks: Array<
@@ -78,7 +78,7 @@ export class SequencerEngine {
     // which is why the / 2 is necessary here.
     this.numTracks = Object.keys(GeneratorType).length / 2;
     this._steps = new Array<StepState[]>(this.numTracks);
-    this._trackStates = new Array<TrackState>(this.numTracks);
+    this._trackStates = new Array<Track>(this.numTracks);
     this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
       this.numTracks
     );
@@ -161,11 +161,11 @@ export class SequencerEngine {
     Transport.pause();
   }
 
-  setTrackState(trackIndex: number, trackState: TrackState): void {
+  setTrackState(trackIndex: number, trackState: Track): void {
     this._trackStates[trackIndex] = trackState;
   }
 
-  getTrackState(trackIndex: number): TrackState {
+  getTrackState(trackIndex: number): Track {
     return this._trackStates[trackIndex];
   }
 

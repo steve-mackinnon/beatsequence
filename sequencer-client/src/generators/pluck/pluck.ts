@@ -1,4 +1,4 @@
-import { CommonParams } from "../commonParams";
+import { CommonParams } from "../../entities/commonParams";
 import { AmplitudeEnvelope, PolySynth, Gain, Synth, ToneAudioNode } from "tone";
 import { Generator } from "../generator";
 

@@ -6,7 +6,7 @@ import {
   setParam,
 } from "../features/steps/steps";
 import { setGeneratorParam } from "../features/tracks/tracks";
-import { CommonParams } from "../generators/commonParams";
+import { CommonParams } from "../entities/commonParams";
 export interface ParamInfo {
   trackId: number | undefined;
   stepIndex: number | undefined;

@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Song } from "../../entities/song";
-
-export const initialState: Song = {
-  tempo: 127.0,
-  name: "Untitled",
-  playing: false,
-};
+import { Song, DEFAULT_SONG } from "../../entities/song";
 
 export interface SongParamPayload {
   paramId: string;
@@ -20,7 +14,7 @@ export interface LoadProjectPayload {
 
 export const songSlice = createSlice({
   name: "song",
-  initialState,
+  initialState: DEFAULT_SONG,
   reducers: {
     togglePlayback: (song, action: PayloadAction<boolean | undefined>) => {
       if (action.payload == null) {
@@ -46,11 +40,9 @@ export const songSlice = createSlice({
       song.tempo = action.payload.tempo;
     },
     newProject: (song, _) => {
-      song = {
-        name: "New Project",
-        tempo: 127,
-        playing: false,
-      };
+      song.name = "New project";
+      song.tempo = 127;
+      song.playing = false;
     },
   },
 });
