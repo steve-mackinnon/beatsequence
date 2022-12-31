@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import stepsReducer from "./features/steps/steps";
 import tracksReducer from "./features/tracks/tracks";
-import songReducer from "./features/song/song";
+import songReducer from "./features/song/songSlice";
 import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
 import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
 import { songListenerMiddleware } from "./features/song/songMiddleware";

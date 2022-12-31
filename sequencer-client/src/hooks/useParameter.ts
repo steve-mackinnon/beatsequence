@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from ".";
-import { SongParams, setParam as setSongParam } from "../features/song/song";
+import { setParam as setSongParam } from "../features/song/songSlice";
 import {
   stepStateForTrackAndStep,
   AnyStepParams,
@@ -37,7 +37,7 @@ export function useParameter(
       const track = state.tracks[paramInfo.trackId];
       return track.generatorParams[paramInfo.name as keyof CommonParams];
     } else {
-      return state.song.params[paramInfo.name as keyof SongParams];
+      return state.song.tempo;
     }
   });
   const dispatch = useAppDispatch();

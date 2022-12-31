@@ -30,7 +30,7 @@ const syncEntireState = (state: RootState): void => {
     }
     sequencerEngine.setTrackState(index, trackState);
   });
-  sequencerEngine.params = state.song.params;
+  sequencerEngine.tempo = state.song.tempo;
 };
 persistenceMiddleware.startListening({
   type: "persist/REHYDRATE",

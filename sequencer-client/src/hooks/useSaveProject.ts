@@ -11,7 +11,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { projectSavedAs } from "../features/song/song";
+import { projectSavedAs } from "../features/song/songSlice";
 
 export interface SaveProjectInterface {
   name: string;
@@ -49,7 +49,9 @@ export default function useSaveProject(): SaveProjectInterface {
         readers: [auth.uid],
         song: {
           name,
-          params: state.song.params,
+          params: {
+            tempo: state.song.tempo,
+          },
         },
       });
       // Give the current user read/write permissions for the new project
@@ -59,22 +61,16 @@ export default function useSaveProject(): SaveProjectInterface {
         writers: [auth.uid],
         readers: [auth.uid],
       });
-      dispatch(
-        projectSavedAs({
-          id: projectRef.id,
-          name,
-        })
-      );
+      const song = { ...state.song };
+      song.id = projectRef.id;
+      dispatch(projectSavedAs(song));
     } catch (e) {
       console.log(e);
     }
   };
 
   const save = async (): Promise<void> => {
-    if (
-      state.song.currentProject == null ||
-      state.song.currentProject.id == null
-    ) {
+    if (state.song.id == null) {
       throw Error("Attempting to save a project without a name...");
     }
     if (auth.uid == null) {
@@ -85,12 +81,14 @@ export default function useSaveProject(): SaveProjectInterface {
     try {
       const db = getFirestore(app);
       // Save the project to the "projects" collection in firestore
-      const projectRef = doc(db, "projects", state.song.currentProject.id);
+      const projectRef = doc(db, "projects", state.song.id);
       await updateDoc(projectRef, {
         tracks: state.tracks,
         steps: state.steps,
         song: {
-          params: state.song.params,
+          params: {
+            tempo: state.song.tempo,
+          },
         },
       });
     } catch (e) {
@@ -101,6 +99,6 @@ export default function useSaveProject(): SaveProjectInterface {
     name: projectName,
     saveAs,
     save,
-    canSave: state.song.currentProject?.id != null,
+    canSave: state.song.id != null,
   };
 }

@@ -4,7 +4,6 @@ import { AudioEngine, audioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { StepState } from "../features/steps/steps";
-import { SongParams } from "../features/song/song";
 import { Limiter, ToneAudioNode, Transport } from "tone";
 
 function randomPitch(): number {
@@ -51,17 +50,15 @@ export class SequencerEngine {
 
   private readonly _timerID: any = undefined;
   private _currentStep: number = 0;
-  private _params: SongParams = {
-    tempo: 127.0,
-  };
+  private _tempo: number = 127.0;
 
-  set params(params: SongParams) {
-    this._params = params;
-    Transport.bpm.value = params.tempo;
+  set tempo(tempo: number) {
+    this._tempo = tempo;
+    Transport.bpm.value = tempo;
   }
 
-  get params(): SongParams {
-    return this._params;
+  get tempo(): number {
+    return this._tempo;
   }
 
   private readonly _numSteps: number = 16;
@@ -117,7 +114,7 @@ export class SequencerEngine {
 
     Transport.setLoopPoints("1:1:1", "17:1:1");
     Transport.loop = true;
-    Transport.bpm.value = this._params.tempo;
+    Transport.bpm.value = this._tempo;
     Transport.scheduleRepeat((time) => {
       this._steps.forEach((steps: StepState[], index: number) => {
         const trackState = this._trackStates[index];

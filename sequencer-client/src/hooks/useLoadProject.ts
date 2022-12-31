@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setStepStates, StepState } from "../features/steps/steps";
 import { setTrackStates, TrackState } from "../features/tracks/tracks";
-import { loadProject as loadProjectAction } from "../features/song/song";
+import { loadProject as loadProjectAction } from "../features/song/songSlice";
 
 type LoadProject = (name: string) => Promise<void>;
 export function useLoadProject(): LoadProject {
@@ -48,8 +48,9 @@ export function useLoadProject(): LoadProject {
             project: {
               name: projectState.name,
               id: projectId,
+              tempo: songState.params,
+              playing: false,
             },
-            params: songState.params,
           })
         );
 
