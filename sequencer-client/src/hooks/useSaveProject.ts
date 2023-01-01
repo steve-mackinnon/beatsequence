@@ -73,6 +73,7 @@ export default function useSaveProject(): SaveProjectInterface {
         readers: [auth.uid],
       });
       const song = { ...state.song };
+      song.name = name;
       song.id = projectRef.id;
       dispatch(projectSavedAs(song));
     } catch (e) {
