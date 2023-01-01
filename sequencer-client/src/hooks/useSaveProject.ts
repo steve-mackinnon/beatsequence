@@ -11,7 +11,18 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import { Step } from "../entities/step";
 import { projectSavedAs } from "../features/song/songSlice";
+
+function transformStepsForSaving(steps: Step[][], numTracks: number): Step[] {
+  const transformedSteps = new Array<Step>();
+  for (let trackIndex = 0; trackIndex < numTracks; ++trackIndex) {
+    for (let stepIndex = 0; stepIndex < steps[trackIndex].length; ++stepIndex) {
+      transformedSteps.push(steps[trackIndex][stepIndex]);
+    }
+  }
+  return transformedSteps;
+}
 
 export interface SaveProjectInterface {
   name: string;
@@ -44,7 +55,7 @@ export default function useSaveProject(): SaveProjectInterface {
       const projectRef = await addDoc(collection(db, "projects"), {
         name,
         tracks: state.tracks,
-        steps: state.steps,
+        steps: transformStepsForSaving(state.steps, state.tracks.length),
         writers: [auth.uid],
         readers: [auth.uid],
         song: {
@@ -84,7 +95,7 @@ export default function useSaveProject(): SaveProjectInterface {
       const projectRef = doc(db, "projects", state.song.id);
       await updateDoc(projectRef, {
         tracks: state.tracks,
-        steps: state.steps,
+        steps: transformStepsForSaving(state.steps, state.tracks.length),
         song: {
           params: {
             tempo: state.song.tempo,
