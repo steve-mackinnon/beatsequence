@@ -31,7 +31,6 @@ export function useProjects(): ProjectsHook {
   // Asynchronously fetch data when the user signs in
   useEffect(() => {
     async function fetchData(): Promise<void> {
-      console.log("Fetch projects");
       if (uid == null) {
         setError("Unable to fetch projects: user is not signed in.");
         return;
@@ -43,7 +42,6 @@ export function useProjects(): ProjectsHook {
           where("readers", "array-contains", uid),
           orderBy("timestamp", "desc")
         );
-        console.log("Fetch projects");
         const projectDocs = await getDocs(projectsQuery);
         const projects: ProjectInfo[] = [];
         projectDocs.forEach((doc) => {
@@ -70,13 +68,17 @@ export function useProjects(): ProjectsHook {
         );
       }
     }
+    // Bail out if we already have data
+    if (projects != null) {
+      return;
+    }
     fetchData().catch((e) => {
       console.log(e);
       setError(
         "An error occurred while fetching projects from the server. Please try again later."
       );
     });
-  }, [uid, db]);
+  }, [uid, db, projects]);
 
   return {
     projects,
