@@ -2,7 +2,7 @@ import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { sequencerEngine } from "../../engine/sequencerEngine";
 import { ParamScrubText } from "../../common/ParamScrubText";
-import { enable, disable, stepStateForTrackAndStep } from "./steps";
+import { enable, disable } from "./steps";
 import { selectTrackHasCoarsePitchParam } from "../tracks/tracks";
 import styles from "./SequencerStep.module.css";
 
@@ -11,9 +11,9 @@ export interface SequencerStepProps {
   trackId: number;
 }
 export function SequencerStep(props: SequencerStepProps): ReactElement {
-  const stepState = useAppSelector((state) =>
-    stepStateForTrackAndStep(props.trackId, props.stepIndex, state.steps)
-  );
+  const stepState = useAppSelector((state) => {
+    return state.steps[props.trackId][props.stepIndex];
+  });
   const trackState = useAppSelector((state) => state.tracks[props.trackId]);
   const showCoarsePitchControl = useAppSelector((state) =>
     selectTrackHasCoarsePitchParam(state, props.trackId)

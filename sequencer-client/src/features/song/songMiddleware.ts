@@ -3,12 +3,13 @@ import {
   togglePlayback,
   setParam,
   shutDownAudioEngine,
-  loadProject,
+  loadSong,
   newProject,
-} from "./song";
+} from "./songSlice";
 import { RootState } from "../../store";
 import { audioEngine, sequencerEngine } from "../../engine";
-import { StepState } from "../steps/steps";
+import { Step } from "../../entities/step";
+import { Track } from "../../entities/track";
 export const songListenerMiddleware = createListenerMiddleware();
 
 songListenerMiddleware.startListening({
@@ -30,17 +31,23 @@ songListenerMiddleware.startListening({
 songListenerMiddleware.startListening({
   actionCreator: setParam,
   effect: (action) => {
-    const newParams = { ...sequencerEngine.params };
-    newParams.tempo = action.payload.value;
-    sequencerEngine.params = newParams;
+    sequencerEngine.tempo = action.payload.value;
   },
 });
 
 songListenerMiddleware.startListening({
-  actionCreator: loadProject,
+  actionCreator: loadSong,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sequencerEngine.params.tempo = state.song.params.tempo;
+    sequencerEngine.tempo = state.song.tempo;
+    state.steps.forEach((steps: Step[], trackIndex: number) => {
+      steps.forEach((step: Step, stepIndex: number) => {
+        sequencerEngine.setStepState(trackIndex, stepIndex, step);
+      });
+    });
+    state.tracks.forEach((track: Track, index: number) => {
+      sequencerEngine.setTrackState(index, track);
+    });
   },
 });
 
@@ -48,13 +55,11 @@ songListenerMiddleware.startListening({
   actionCreator: newProject,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
-    sequencerEngine.params.tempo = state.song.params.tempo;
-    state.steps.forEach((stepState: StepState) => {
-      sequencerEngine.setStepState(
-        stepState.trackId,
-        stepState.stepIndex,
-        stepState
-      );
+    sequencerEngine.tempo = state.song.tempo;
+    state.steps.forEach((steps: Step[], trackIndex: number) => {
+      steps.forEach((step: Step, stepIndex: number) => {
+        sequencerEngine.setStepState(trackIndex, stepIndex, step);
+      });
     });
   },
 });

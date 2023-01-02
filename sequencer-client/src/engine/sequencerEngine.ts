@@ -1,11 +1,10 @@
-import { TrackState } from "../features/tracks/tracks";
-import { GeneratorType } from "../features/tracks/GeneratorType";
+import { GeneratorType } from "../entities/generatorType";
 import { AudioEngine, audioEngine } from "./audioEngine";
 import { semitoneToHz } from "./pitchUtils";
 import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
-import { StepState } from "../features/steps/steps";
-import { SongParams } from "../features/song/song";
 import { Limiter, ToneAudioNode, Transport } from "tone";
+import { Track } from "../entities/track";
+import { Step } from "../entities/step";
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
@@ -28,17 +27,13 @@ function makeGenerator(
   }
 }
 
-function makeStepsForTrack(numSteps: number, trackId: number): StepState[] {
-  const steps = new Array<StepState>(numSteps);
+function makeStepsForTrack(numSteps: number, trackId: number): Step[] {
+  const steps = new Array<Step>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
     const enabled = Math.random() > 0.5;
     steps[stepIndex] = {
       enabled,
-      params: {
-        coarsePitch: randomPitch(),
-      },
-      stepIndex,
-      trackId,
+      coarsePitch: randomPitch(),
     };
   }
   return steps;
@@ -51,22 +46,20 @@ export class SequencerEngine {
 
   private readonly _timerID: any = undefined;
   private _currentStep: number = 0;
-  private _params: SongParams = {
-    tempo: 127.0,
-  };
+  private _tempo: number = 127.0;
 
-  set params(params: SongParams) {
-    this._params = params;
-    Transport.bpm.value = params.tempo;
+  set tempo(tempo: number) {
+    this._tempo = tempo;
+    Transport.bpm.value = tempo;
   }
 
-  get params(): SongParams {
-    return this._params;
+  get tempo(): number {
+    return this._tempo;
   }
 
   private readonly _numSteps: number = 16;
-  private readonly _steps: StepState[][];
-  private _trackStates: TrackState[];
+  private readonly _steps: Step[][];
+  private _trackStates: Track[];
   private readonly _generators: Generator[];
 
   private readonly _stepChangedCallbacks: Array<
@@ -80,8 +73,8 @@ export class SequencerEngine {
     // Object.keys() returns 2 keys per enumeration for numeric enums,
     // which is why the / 2 is necessary here.
     this.numTracks = Object.keys(GeneratorType).length / 2;
-    this._steps = new Array<StepState[]>(this.numTracks);
-    this._trackStates = new Array<TrackState>(this.numTracks);
+    this._steps = new Array<Step[]>(this.numTracks);
+    this._trackStates = new Array<Track>(this.numTracks);
     this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
       this.numTracks
     );
@@ -117,9 +110,9 @@ export class SequencerEngine {
 
     Transport.setLoopPoints("1:1:1", "17:1:1");
     Transport.loop = true;
-    Transport.bpm.value = this._params.tempo;
+    Transport.bpm.value = this._tempo;
     Transport.scheduleRepeat((time) => {
-      this._steps.forEach((steps: StepState[], index: number) => {
+      this._steps.forEach((steps: Step[], index: number) => {
         const trackState = this._trackStates[index];
         const step = steps[this._currentStep];
         if (!step.enabled || trackState.muted) {
@@ -134,7 +127,7 @@ export class SequencerEngine {
         this._generators[index].trigger(
           time,
           trackState.generatorParams,
-          semitoneToHz(step.params.coarsePitch)
+          semitoneToHz(step.coarsePitch)
         );
       });
       this._currentStep += 1;
@@ -164,19 +157,19 @@ export class SequencerEngine {
     Transport.pause();
   }
 
-  setTrackState(trackIndex: number, trackState: TrackState): void {
+  setTrackState(trackIndex: number, trackState: Track): void {
     this._trackStates[trackIndex] = trackState;
   }
 
-  getTrackState(trackIndex: number): TrackState {
+  getTrackState(trackIndex: number): Track {
     return this._trackStates[trackIndex];
   }
 
-  setStepState(trackIndex: number, stepIndex: number, state: StepState): void {
+  setStepState(trackIndex: number, stepIndex: number, state: Step): void {
     this._steps[trackIndex][stepIndex] = state;
   }
 
-  getStepState(trackIndex: number, stepIndex: number): StepState {
+  getStepState(trackIndex: number, stepIndex: number): Step {
     return this._steps[trackIndex][stepIndex];
   }
 
@@ -195,17 +188,17 @@ export class SequencerEngine {
   }
 
   randomizeTrack(trackIndex: number): void {
-    this._steps[trackIndex].forEach((step: StepState, stepIndex: number) => {
+    this._steps[trackIndex].forEach((step: Step, stepIndex: number) => {
       const newStep = { ...step };
       newStep.enabled = Math.random() > 0.5;
-      newStep.params.coarsePitch = randomPitch();
+      newStep.coarsePitch = randomPitch();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
     });
   }
 
   randomizeAllTracks(): void {
-    this._steps.forEach((_: StepState[], index: number) => {
+    this._steps.forEach((_: Step[], index: number) => {
       this.randomizeTrack(index);
     });
   }

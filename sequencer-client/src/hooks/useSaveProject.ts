@@ -9,15 +9,34 @@ import {
   collection,
   getFirestore,
   serverTimestamp,
-  updateDoc,
 } from "firebase/firestore";
-import { projectSavedAs } from "../features/song/song";
+import { projectSavedAs } from "../features/song/songSlice";
+import {
+  createProjectPayload,
+  ProjectPayload,
+} from "../adapters/firestorePersistenceAdapter";
+import { Project } from "../entities/project";
 
 export interface SaveProjectInterface {
   name: string;
   saveAs: (name: string) => Promise<void>;
   save: () => Promise<void>;
   canSave: boolean;
+}
+
+function createProjectPayloadFromCombinedState(
+  state: any,
+  uid: string
+): ProjectPayload {
+  const project: Project = {
+    song: state.song,
+    pattern: {
+      name: "Pattern 1",
+      steps: state.steps,
+    },
+    tracks: state.tracks,
+  };
+  return createProjectPayload(project, uid);
 }
 
 export default function useSaveProject(): SaveProjectInterface {
@@ -39,19 +58,17 @@ export default function useSaveProject(): SaveProjectInterface {
       );
     }
     try {
-      const db = getFirestore(app);
+      const projectPayload = createProjectPayloadFromCombinedState(
+        state,
+        auth.uid
+      );
+      projectPayload.name = name;
       // Save the project to the "projects" collection in firestore
-      const projectRef = await addDoc(collection(db, "projects"), {
-        name,
-        tracks: state.tracks,
-        steps: state.steps,
-        writers: [auth.uid],
-        readers: [auth.uid],
-        song: {
-          name,
-          params: state.song.params,
-        },
-      });
+      const db = getFirestore(app);
+      const projectRef = await addDoc(
+        collection(db, "projects"),
+        projectPayload
+      );
       // Give the current user read/write permissions for the new project
       await setDoc(doc(db, "project_permissions", projectRef.id), {
         timestamp: serverTimestamp(),
@@ -59,22 +76,17 @@ export default function useSaveProject(): SaveProjectInterface {
         writers: [auth.uid],
         readers: [auth.uid],
       });
-      dispatch(
-        projectSavedAs({
-          id: projectRef.id,
-          name,
-        })
-      );
+      const song = { ...state.song };
+      song.name = name;
+      song.id = projectRef.id;
+      dispatch(projectSavedAs(song));
     } catch (e) {
       console.log(e);
     }
   };
 
   const save = async (): Promise<void> => {
-    if (
-      state.song.currentProject == null ||
-      state.song.currentProject.id == null
-    ) {
+    if (state.song.id == null) {
       throw Error("Attempting to save a project without a name...");
     }
     if (auth.uid == null) {
@@ -83,16 +95,14 @@ export default function useSaveProject(): SaveProjectInterface {
       );
     }
     try {
+      const projectPayload = createProjectPayloadFromCombinedState(
+        state,
+        auth.uid
+      );
       const db = getFirestore(app);
       // Save the project to the "projects" collection in firestore
-      const projectRef = doc(db, "projects", state.song.currentProject.id);
-      await updateDoc(projectRef, {
-        tracks: state.tracks,
-        steps: state.steps,
-        song: {
-          params: state.song.params,
-        },
-      });
+      const projectRef = doc(db, "projects", state.song.id);
+      await setDoc(projectRef, projectPayload);
     } catch (e) {
       console.log(e);
     }
@@ -101,6 +111,6 @@ export default function useSaveProject(): SaveProjectInterface {
     name: projectName,
     saveAs,
     save,
-    canSave: state.song.currentProject?.id != null,
+    canSave: state.song.id != null,
   };
 }

@@ -6,7 +6,7 @@ import {
   TypedStartListening,
   TypedAddListener,
 } from "@reduxjs/toolkit";
-import { mute, unmute, setGeneratorParam, setTrackStates } from "./tracks";
+import { mute, unmute, setGeneratorParam, loadTracks } from "./tracks";
 
 export const tracksListenerMiddleware = createListenerMiddleware();
 
@@ -50,7 +50,7 @@ tracksListenerMiddleware.startListening({
 });
 
 tracksListenerMiddleware.startListening({
-  actionCreator: setTrackStates,
+  actionCreator: loadTracks,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     state.tracks.forEach((trackState, index: number) => {

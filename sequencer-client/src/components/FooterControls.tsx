@@ -1,6 +1,6 @@
 import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { togglePlayback } from "../features/song/song";
+import { togglePlayback } from "../features/song/songSlice";
 import { IconButton } from "@mui/material";
 import { PlayArrow, Pause, Casino } from "@mui/icons-material";
 import { Stack } from "@mui/system";

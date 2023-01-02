@@ -3,11 +3,15 @@ import { useAuth } from "./useAuth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setStepStates, StepState } from "../features/steps/steps";
-import { setTrackStates, TrackState } from "../features/tracks/tracks";
-import { loadProject as loadProjectAction } from "../features/song/song";
-
+import { loadSong } from "../features/song/songSlice";
+import {
+  extractProjectFromPayload,
+  ProjectPayload,
+} from "../adapters/firestorePersistenceAdapter";
+import { loadTracks } from "../features/tracks/tracks";
+import { loadSteps } from "../features/steps/steps";
 type LoadProject = (name: string) => Promise<void>;
+
 export function useLoadProject(): LoadProject {
   const app = useFirebaseApp();
   const dispatch = useDispatch();
@@ -24,35 +28,15 @@ export function useLoadProject(): LoadProject {
       const db = getFirestore(app);
       const projectRef = doc(db, "projects", projectId);
       const projectSnap = await getDoc(projectRef);
-
       if (projectSnap.exists()) {
         const projectState = projectSnap.data();
-        const trackStates = projectState.tracks;
-        if (trackStates == null) {
-          throw new Error("tracks object was missing from project.");
-        }
-        dispatch(setTrackStates(trackStates as TrackState[]));
-
-        const stepStates = projectState.steps;
-        if (stepStates == null) {
-          throw new Error("steps object was missing from project.");
-        }
-        dispatch(setStepStates(stepStates as StepState[]));
-
-        const songState = projectState.song;
-        if (songState == null) {
-          throw new Error("song object was missing from project.");
-        }
-        dispatch(
-          loadProjectAction({
-            project: {
-              name: projectState.name,
-              id: projectId,
-            },
-            params: songState.params,
-          })
+        const project = extractProjectFromPayload(
+          projectState as ProjectPayload
         );
-
+        project.song.id = projectId;
+        dispatch(loadSong(project.song));
+        dispatch(loadTracks(project.tracks));
+        dispatch(loadSteps(project.pattern.steps));
         navigate("/makebeats");
       } else {
         // doc.data() will be undefined in this case

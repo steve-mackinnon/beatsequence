@@ -10,7 +10,7 @@ import SaveProjectAsDialog from "./SaveProjectAsDialog";
 import useSaveProject from "../hooks/useSaveProject";
 import { SaveChangesBeforeClosingDialog } from "./SaveChangesBeforeClosingDialog";
 import { useAppDispatch } from "../hooks";
-import { newProject } from "../features/song/song";
+import { newProject } from "../features/song/songSlice";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 
