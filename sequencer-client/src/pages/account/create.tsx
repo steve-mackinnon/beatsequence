@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useCreateUserWithEmailAndPassword } from "../../hooks";
-import EmailPasswordForm from "../../common/EmailPasswordForm";
+import EmailPasswordForm from "../../shared-components/EmailPasswordForm";
 
 export default function Create(): ReactElement {
   return (

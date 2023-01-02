@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Box } from "@mui/material";
-import { ParamSlider } from "../common/ParamSlider";
+import { ParamSlider } from "../shared-components/ParamSlider";
 import { ParamInfo } from "../entities/paramInfo";
 
 export interface TrackParamsViewProps {

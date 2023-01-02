@@ -16,7 +16,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Outlet } from "react-router-dom";
-import Layout from "./common/Layout";
+import Layout from "./shared-components/Layout";
 import { app, db, auth, appCheck } from "./firebase";
 
 declare module "@mui/material/styles" {

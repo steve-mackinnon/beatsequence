@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Stack } from "@mui/system";
-import { ParamSlider } from "../common/ParamSlider";
+import { ParamSlider } from "../shared-components/ParamSlider";
 import { Typography } from "@mui/material";
 import { useProjectName } from "../hooks/useProjectName";
 import FileMenu from "./FileMenu";

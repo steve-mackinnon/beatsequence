@@ -1,7 +1,7 @@
 import React, { ReactElement, useRef, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { sequencerEngine } from "../engine/sequencerEngine";
-import { ParamScrubText } from "../common/ParamScrubText";
+import { ParamScrubText } from "../shared-components/ParamScrubText";
 import { enable, disable } from "../reducers/stepsSlice";
 import { selectTrackHasCoarsePitchParam } from "../reducers/tracksSlice";
 import styles from "./SequencerStep.module.css";
