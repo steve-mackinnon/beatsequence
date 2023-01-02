@@ -11,7 +11,7 @@ import {
   twoOnTheFloor,
   randomize,
   fillAllSteps,
-} from "../features/steps/steps";
+} from "../reducers/stepsSlice";
 import { useAppDispatch } from "../hooks";
 
 export interface TrackMenuProps {

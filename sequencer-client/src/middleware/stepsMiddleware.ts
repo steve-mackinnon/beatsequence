@@ -14,10 +14,10 @@ import {
   StepInfo,
   fillAllSteps,
   loadSteps,
-} from "./steps";
-import { sequencerEngine } from "../../engine";
-import type { RootState, AppDispatch } from "../../store";
-import { Step } from "../../entities/step";
+} from "../reducers/stepsSlice";
+import { sequencerEngine } from "../engine";
+import type { RootState, AppDispatch } from "../store";
+import { Step } from "../entities/step";
 
 export const stepsListenerMiddleware = createListenerMiddleware();
 

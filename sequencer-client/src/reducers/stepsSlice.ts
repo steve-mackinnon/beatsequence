@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
-import { sequencerEngine } from "../../engine";
-import { DEFAULT_PATTERN } from "../../entities/pattern";
-import { Step } from "../../entities/step";
+import { sequencerEngine } from "../engine";
+import { DEFAULT_PATTERN } from "../entities/pattern";
+import { Step } from "../entities/step";
 
 export interface StepInfo {
   trackId: number;

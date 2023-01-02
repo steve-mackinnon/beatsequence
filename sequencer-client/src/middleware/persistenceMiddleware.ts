@@ -4,10 +4,10 @@ import {
   TypedStartListening,
   TypedAddListener,
 } from "@reduxjs/toolkit";
-import { audioEngine, sequencerEngine } from "../../engine";
-import type { RootState, AppDispatch } from "../../store";
-import { Track, defaultNameForGeneratorType } from "../../entities/track";
-import { Step } from "../../entities/step";
+import { audioEngine, sequencerEngine } from "../engine";
+import type { RootState, AppDispatch } from "../store";
+import { Track, defaultNameForGeneratorType } from "../entities/track";
+import { Step } from "../entities/step";
 
 export const persistenceMiddleware = createListenerMiddleware();
 

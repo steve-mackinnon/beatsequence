@@ -7,7 +7,7 @@ import {
   mute,
   unmute,
   toggleParamViewVisibility,
-} from "../features/tracks/tracks";
+} from "../reducers/tracksSlice";
 import { TrackMenu } from "./TrackMenu";
 
 export interface TrackInfoProps {

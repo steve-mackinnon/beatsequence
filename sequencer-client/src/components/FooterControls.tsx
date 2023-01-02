@@ -1,10 +1,10 @@
 import React, { ReactElement, RefObject, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { togglePlayback } from "../features/song/songSlice";
+import { togglePlayback } from "../reducers/songSlice";
 import { IconButton } from "@mui/material";
 import { PlayArrow, Pause, Casino } from "@mui/icons-material";
 import { Stack } from "@mui/system";
-import { randomize } from "../features/steps/steps";
+import { randomize } from "../reducers/stepsSlice";
 
 export function FooterControls(): ReactElement {
   const dispatch = useAppDispatch();

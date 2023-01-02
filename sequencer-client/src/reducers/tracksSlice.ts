@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { sequencerEngine } from "../../engine";
-import { generatorHasPitchControls } from "../../entities/generatorType";
-import { RootState } from "../../store";
-import { CommonParams } from "../../entities/commonParams";
-import { Track, DEFAULT_TRACKS } from "../../entities/track";
+import { sequencerEngine } from "../engine";
+import { generatorHasPitchControls } from "../entities/generatorType";
+import { RootState } from "../store";
+import { CommonParams } from "../entities/commonParams";
+import { Track, DEFAULT_TRACKS } from "../entities/track";
 
 DEFAULT_TRACKS.forEach((trackState: Track, index: number) => {
   sequencerEngine.setTrackState(index, trackState);

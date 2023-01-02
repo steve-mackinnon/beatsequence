@@ -1,11 +1,11 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import stepsReducer from "./features/steps/steps";
-import tracksReducer from "./features/tracks/tracks";
-import songReducer from "./features/song/songSlice";
-import { stepsListenerMiddleware } from "./features/steps/stepsMiddleware";
-import { tracksListenerMiddleware } from "./features/tracks/tracksMiddleware";
-import { songListenerMiddleware } from "./features/song/songMiddleware";
-import { persistenceMiddleware } from "./features/persistence/persistenceMiddleware";
+import stepsReducer from "./reducers/stepsSlice";
+import tracksReducer from "./reducers/tracksSlice";
+import songReducer from "./reducers/songSlice";
+import { stepsListenerMiddleware } from "./middleware/stepsMiddleware";
+import { tracksListenerMiddleware } from "./middleware/tracksMiddleware";
+import { songListenerMiddleware } from "./middleware/songMiddleware";
+import { persistenceMiddleware } from "./middleware/persistenceMiddleware";
 
 const reducers = combineReducers({
   steps: stepsReducer,

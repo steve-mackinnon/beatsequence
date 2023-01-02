@@ -1,7 +1,7 @@
 import { useAppSelector, useAppDispatch } from ".";
-import { setParam as setSongParam } from "../features/song/songSlice";
-import { setParam } from "../features/steps/steps";
-import { setGeneratorParam } from "../features/tracks/tracks";
+import { setParam as setSongParam } from "../reducers/songSlice";
+import { setParam } from "../reducers/stepsSlice";
+import { setGeneratorParam } from "../reducers/tracksSlice";
 import { CommonParams } from "../entities/commonParams";
 export interface ParamInfo {
   trackId: number | undefined;

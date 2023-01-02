@@ -1,12 +1,17 @@
-import { sequencerEngine } from "../../engine";
-import type { RootState, AppDispatch } from "../../store";
+import { sequencerEngine } from "../engine";
+import type { RootState, AppDispatch } from "../store";
 import {
   createListenerMiddleware,
   addListener,
   TypedStartListening,
   TypedAddListener,
 } from "@reduxjs/toolkit";
-import { mute, unmute, setGeneratorParam, loadTracks } from "./tracks";
+import {
+  mute,
+  unmute,
+  setGeneratorParam,
+  loadTracks,
+} from "../reducers/tracksSlice";
 
 export const tracksListenerMiddleware = createListenerMiddleware();
 

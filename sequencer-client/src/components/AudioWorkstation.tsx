@@ -3,7 +3,7 @@ import { FooterControls } from "./FooterControls";
 import styles from "../styles/AudioWorkstation.module.css";
 import { TrackList } from "./TrackList";
 import { useAppDispatch } from "../hooks";
-import { togglePlayback } from "../features/song/songSlice";
+import { togglePlayback } from "../reducers/songSlice";
 import { HeaderControls } from "./HeaderControls";
 import { hotkeySuppressor } from "../hotkeySuppressor";
 

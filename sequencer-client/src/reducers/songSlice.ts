@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Song, DEFAULT_SONG } from "../../entities/song";
+import { Song, DEFAULT_SONG } from "../entities/song";
 
 export interface SongParamPayload {
   paramId: string;

@@ -3,13 +3,13 @@ import { useAuth } from "./useAuth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loadSong } from "../features/song/songSlice";
+import { loadSong } from "../reducers/songSlice";
 import {
   extractProjectFromPayload,
   ProjectPayload,
 } from "../adapters/firestorePersistenceAdapter";
-import { loadTracks } from "../features/tracks/tracks";
-import { loadSteps } from "../features/steps/steps";
+import { loadTracks } from "../reducers/tracksSlice";
+import { loadSteps } from "../reducers/stepsSlice";
 type LoadProject = (name: string) => Promise<void>;
 
 export function useLoadProject(): LoadProject {

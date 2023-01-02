@@ -10,7 +10,7 @@ import {
   getFirestore,
   serverTimestamp,
 } from "firebase/firestore";
-import { projectSavedAs } from "../features/song/songSlice";
+import { projectSavedAs } from "../reducers/songSlice";
 import {
   createProjectPayload,
   ProjectPayload,

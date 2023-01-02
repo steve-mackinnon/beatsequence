@@ -5,11 +5,11 @@ import {
   shutDownAudioEngine,
   loadSong,
   newProject,
-} from "./songSlice";
-import { RootState } from "../../store";
-import { audioEngine, sequencerEngine } from "../../engine";
-import { Step } from "../../entities/step";
-import { Track } from "../../entities/track";
+} from "../reducers/songSlice";
+import { RootState } from "../store";
+import { audioEngine, sequencerEngine } from "../engine";
+import { Step } from "../entities/step";
+import { Track } from "../entities/track";
 export const songListenerMiddleware = createListenerMiddleware();
 
 songListenerMiddleware.startListening({
