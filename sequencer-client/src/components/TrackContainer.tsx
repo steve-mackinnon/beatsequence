@@ -3,9 +3,9 @@ import { SequencerTrack } from "./SequencerTrack";
 import { TrackParamsView } from "./TrackParamsView";
 import { TrackInfoView } from "./TrackInfoView";
 import { Box } from "@mui/system";
-import { paramInfoForGeneratorType } from "../../entities/paramInfo";
+import { paramInfoForGeneratorType } from "../entities/paramInfo";
 import { Stack } from "@mui/material";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../hooks";
 
 export interface TrackInfo {
   trackIndex: number;

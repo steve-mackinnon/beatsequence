@@ -1,9 +1,13 @@
 import React, { ReactElement, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../hooks";
+import { useAppSelector, useAppDispatch } from "../hooks";
 import { Button, Stack, IconButton } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { SxProps } from "@mui/system";
-import { mute, unmute, toggleParamViewVisibility } from "./tracks";
+import {
+  mute,
+  unmute,
+  toggleParamViewVisibility,
+} from "../features/tracks/tracks";
 import { TrackMenu } from "./TrackMenu";
 
 export interface TrackInfoProps {

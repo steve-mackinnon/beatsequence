@@ -11,8 +11,8 @@ import {
   twoOnTheFloor,
   randomize,
   fillAllSteps,
-} from "../steps/steps";
-import { useAppDispatch } from "../../hooks";
+} from "../features/steps/steps";
+import { useAppDispatch } from "../hooks";
 
 export interface TrackMenuProps {
   trackId: number;

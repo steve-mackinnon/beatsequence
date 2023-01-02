@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { TrackContainer } from "./TrackContainer";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../hooks";
 import { Box } from "@mui/system";
 
 export function TrackList(): ReactElement {

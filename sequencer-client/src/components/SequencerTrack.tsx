@@ -1,4 +1,4 @@
-import { SequencerStep } from "../steps/SequencerStep";
+import { SequencerStep } from "./SequencerStep";
 import React, { ReactElement, ReactNode } from "react";
 import { Grid } from "@mui/material";
 
