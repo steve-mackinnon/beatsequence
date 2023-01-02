@@ -1,9 +1,12 @@
-import { FirestoreLoadProjectAdapter } from "./adapters/firestoreLoadProjectAdapter";
-import { FirestoreSaveProjectAdapter } from "./adapters/firestoreSaveProjectAdapter";
-import { FirebaseCreateUserAdapter } from "./adapters/firebaseCreateUserAdapter";
-import { FirebaseSignOutAdapter } from "./adapters/firebaseSignOutAdapter";
-import { FirebaseResetPasswordAdapter } from "./adapters/firebaseResetPasswordAdapter";
-import { FirebaseSignInAdapter } from "./adapters/firebaseSignInAdapter";
+import {
+  FirestoreLoadProjectAdapter,
+  FirestoreSaveProjectAdapter,
+  FirebaseCreateUserAdapter,
+  FirebaseSignOutAdapter,
+  FirebaseResetPasswordAdapter,
+  FirebaseSignInAdapter,
+  FirestoreListProjectAdapter,
+} from "./adapters";
 import {
   SaveProject,
   LoadProject,
@@ -13,7 +16,6 @@ import {
   SignIn,
 } from "./ports";
 import { db, auth } from "./firebase";
-import { FirestoreListProjectAdapter } from "./adapters/firestoreListProjectsAdapter";
 import { ListProjects } from "./ports/listProjects";
 
 export class PortProvider {
