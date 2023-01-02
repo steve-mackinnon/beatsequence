@@ -70,8 +70,10 @@ export const tracksSlice = createSlice({
         return trackState;
       });
     },
-    setTrackStates: (state, action: PayloadAction<Track[]>) => {
-      return action.payload;
+    loadTracks: (state, action: PayloadAction<Track[]>) => {
+      action.payload.forEach((track: Track, index: number) => {
+        state[index] = track;
+      });
     },
   },
   extraReducers: {
@@ -102,6 +104,6 @@ export const {
   setGeneratorParam,
   setDisplayName,
   toggleParamViewVisibility,
-  setTrackStates,
+  loadTracks,
 } = tracksSlice.actions;
 export default tracksSlice.reducer;

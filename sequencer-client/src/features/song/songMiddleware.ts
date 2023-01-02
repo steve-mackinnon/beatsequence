@@ -3,7 +3,7 @@ import {
   togglePlayback,
   setParam,
   shutDownAudioEngine,
-  loadProject,
+  loadSong,
   newProject,
 } from "./songSlice";
 import { RootState } from "../../store";
@@ -36,7 +36,7 @@ songListenerMiddleware.startListening({
 });
 
 songListenerMiddleware.startListening({
-  actionCreator: loadProject,
+  actionCreator: loadSong,
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.tempo = state.song.tempo;

@@ -13,6 +13,7 @@ import {
   randomize,
   StepInfo,
   fillAllSteps,
+  loadSteps,
 } from "./steps";
 import { sequencerEngine } from "../../engine";
 import type { RootState, AppDispatch } from "../../store";
@@ -43,6 +44,14 @@ function sendAllStepStatesToSequencerEngineForTrack(
 ): void {
   steps[trackId].forEach((step: Step, stepIndex: number) => {
     sequencerEngine.setStepState(trackId, stepIndex, step);
+  });
+}
+
+function sendAllStepStatesToSequencerEngine(steps: Step[][]): void {
+  steps.forEach((trackSteps: Step[], trackIndex: number) => {
+    trackSteps.forEach((step: Step, stepIndex: number) => {
+      sequencerEngine.setStepState(trackIndex, stepIndex, step);
+    });
   });
 }
 
@@ -101,5 +110,13 @@ stepsListenerMiddleware.startListening({
         state.steps
       );
     }
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: loadSteps,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngine(state.steps);
   },
 });

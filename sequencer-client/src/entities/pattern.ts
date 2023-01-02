@@ -2,7 +2,6 @@ import { Step } from "./step";
 import { NUM_DEFAULT_TRACKS } from "./track";
 
 export interface Pattern {
-  id?: string;
   name: string;
   steps: Step[][];
 }

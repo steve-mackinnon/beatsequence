@@ -3,11 +3,15 @@ import { useAuth } from "./useAuth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loadProject as loadProjectAction } from "../features/song/songSlice";
-import { Track } from "../entities/track";
-import { Step } from "../entities/step";
-
+import { loadSong } from "../features/song/songSlice";
+import {
+  extractProjectFromPayload,
+  ProjectPayload,
+} from "../adapters/firestorePersistenceAdapter";
+import { loadTracks } from "../features/tracks/tracks";
+import { loadSteps } from "../features/steps/steps";
 type LoadProject = (name: string) => Promise<void>;
+
 export function useLoadProject(): LoadProject {
   const app = useFirebaseApp();
   const dispatch = useDispatch();
@@ -24,55 +28,15 @@ export function useLoadProject(): LoadProject {
       const db = getFirestore(app);
       const projectRef = doc(db, "projects", projectId);
       const projectSnap = await getDoc(projectRef);
-
       if (projectSnap.exists()) {
         const projectState = projectSnap.data();
-        const trackStates = projectState.tracks;
-        if (trackStates == null) {
-          throw new Error("tracks object was missing from project.");
-        }
-        const stepStates = projectState.steps;
-        if (stepStates == null) {
-          throw new Error("steps object was missing from project.");
-        }
-
-        const tracks = trackStates as Track[];
-        const steps = stepStates as Step[];
-        const stepsForEachTrack = new Array<Step[]>();
-        const numStepsPerTrack = steps.length / tracks.length;
-        // Transform steps from flat array into a 2d steps-per-track array
-        for (
-          let trackIndex = 0;
-          trackIndex < trackStates.length;
-          ++trackIndex
-        ) {
-          stepsForEachTrack.push(new Array<Step>());
-          for (let stepIndex = 0; stepIndex < numStepsPerTrack; ++stepIndex) {
-            stepsForEachTrack[trackIndex].push(
-              steps[trackIndex * numStepsPerTrack + stepIndex]
-            );
-          }
-        }
-        const songState = projectState.song;
-        if (songState == null) {
-          throw new Error("song object was missing from project.");
-        }
-        dispatch(
-          loadProjectAction({
-            project: {
-              name: projectState.name,
-              id: projectId,
-              tempo: songState.params.tempo,
-              playing: false,
-              tracks,
-              pattern: {
-                name: "Pattern 1",
-                steps: stepsForEachTrack,
-              },
-            },
-          })
+        const project = extractProjectFromPayload(
+          projectState as ProjectPayload
         );
-
+        project.song.id = projectId;
+        dispatch(loadSong(project.song));
+        dispatch(loadTracks(project.tracks));
+        dispatch(loadSteps(project.pattern.steps));
         navigate("/makebeats");
       } else {
         // doc.data() will be undefined in this case

@@ -29,10 +29,10 @@ export const songSlice = createSlice({
     setParam: (song, action: PayloadAction<SongParamPayload>) => {
       song.tempo = action.payload.value;
     },
-    loadProject: (song, action: PayloadAction<LoadProjectPayload>) => {
-      song.id = action.payload.project.id;
-      song.name = action.payload.project.name;
-      song.tempo = action.payload.project.tempo;
+    loadSong: (song, action: PayloadAction<Song>) => {
+      song.id = action.payload.id;
+      song.name = action.payload.name;
+      song.tempo = action.payload.tempo;
     },
     projectSavedAs: (song, action: PayloadAction<Song>) => {
       song.id = action.payload.id;
@@ -51,7 +51,7 @@ export const {
   togglePlayback,
   shutDownAudioEngine,
   setParam,
-  loadProject,
+  loadSong,
   newProject,
   projectSavedAs,
 } = songSlice.actions;

@@ -79,6 +79,13 @@ export const stepsSlice = createSlice({
         step.enabled = true;
       });
     },
+    loadSteps: (state, action: PayloadAction<Step[][]>) => {
+      action.payload.forEach((trackSteps: Step[], trackIndex: number) => {
+        trackSteps.forEach((step: Step, stepIndex: number) => {
+          state[trackIndex][stepIndex] = step;
+        });
+      });
+    },
   },
   extraReducers: {
     "song/newProject": (state, _) => {
@@ -87,20 +94,6 @@ export const stepsSlice = createSlice({
           state[trackIndex][stepIndex] = step;
         });
       });
-    },
-    "song/loadProject": (state, payload) => {
-      console.log(payload);
-      const hasPattern = "pattern" in payload.payload.project;
-      if (!hasPattern) {
-        throw Error("Pattern shouldn't be null");
-      }
-      payload.payload.project.pattern.steps.forEach(
-        (trackSteps: Step[], trackIndex: number) => {
-          trackSteps.forEach((step: Step, stepIndex: number) => {
-            state[trackIndex][stepIndex] = step;
-          });
-        }
-      );
     },
   },
 });
@@ -113,6 +106,7 @@ export const {
   fourOnTheFloor,
   randomize,
   fillAllSteps,
+  loadSteps,
 } = stepsSlice.actions;
 
 export default stepsSlice.reducer;
