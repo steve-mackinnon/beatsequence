@@ -1,32 +1,37 @@
-import { useSignInWithEmailAndPassword as firebaseSignIn } from "react-firebase-hooks/auth";
-import { getAuth } from "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+import { useContext, useState } from "react";
+import { PortProviderContext } from "../context/PortProviderContext";
+import { User } from "../entities/user";
+import { SignIn } from "../ports";
 
-export type SignInWithEmailAndPassword = (
-  email: string,
-  password: string
-) => Promise<string | undefined>;
 export interface SignInWithEmailAndPasswordHook {
-  action: SignInWithEmailAndPassword;
+  action: SignIn["signInWithEmailAndPassword"];
   loading: boolean;
   error: string | undefined;
 }
 
 export function useSignInWithEmailAndPassword(): SignInWithEmailAndPasswordHook {
-  const app = useFirebaseApp();
-  const auth = getAuth(app);
-  const [signIn, , loading, error] = firebaseSignIn(auth);
+  const portProvider = useContext(PortProviderContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
-  const createUserWithEmailAndPassword = async (
+  const signInWithEmailAndPassword = async (
     email: string,
     password: string
-  ): Promise<string | undefined> => {
-    const userCredential = await signIn(email, password);
-    return userCredential?.user.uid;
+  ): Promise<User | undefined> => {
+    setLoading(true);
+    const user = await portProvider.signInAdapter.signInWithEmailAndPassword(
+      email,
+      password
+    );
+    if (user == null) {
+      setError("Failed to sign in.");
+    }
+    setLoading(false);
+    return user;
   };
   return {
-    action: createUserWithEmailAndPassword,
+    action: signInWithEmailAndPassword,
     loading,
-    error: error?.message,
+    error,
   };
 }

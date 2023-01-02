@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/authContext";
-import { useSendPasswordResetEmail as firbaseUseSendPasswordResetEmail } from "react-firebase-hooks/auth";
+import { useContext, useState } from "react";
+import { PortProviderContext } from "../context/PortProviderContext";
 
 export interface SendPasswordResetEmailHook {
   sending: boolean;
@@ -8,12 +7,24 @@ export interface SendPasswordResetEmailHook {
   error: string | undefined;
 }
 export function useSendPasswordResetEmail(): SendPasswordResetEmailHook {
-  const auth = useContext(AuthContext);
-  const [sendPasswordResetEmail, sending, error] =
-    firbaseUseSendPasswordResetEmail(auth);
+  const portProvider = useContext(PortProviderContext);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  const sendPasswordResetEmail = async (email: string): Promise<boolean> => {
+    setSending(true);
+    setError(undefined);
+    const success =
+      await portProvider.resetPasswordAdapter.sendPasswordResetEmail(email);
+    if (!success) {
+      setError("Failed to send password reset email.");
+      return false;
+    }
+    return true;
+  };
   return {
     sending,
     sendPasswordResetEmail,
-    error: error?.message,
+    error,
   };
 }

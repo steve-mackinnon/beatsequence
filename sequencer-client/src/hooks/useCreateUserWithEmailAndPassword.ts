@@ -1,32 +1,39 @@
-import { useCreateUserWithEmailAndPassword as firebaseCreateUser } from "react-firebase-hooks/auth";
-import { getAuth } from "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+import { useContext, useState } from "react";
+import { PortProviderContext } from "../context/PortProviderContext";
+import { CreateUser } from "../ports/createUser";
+import { User } from "../entities/user";
 
-export type CreateUserWithEmailAndPassword = (
-  email: string,
-  password: string
-) => Promise<string | undefined>;
 export interface CreateUserWithEmailAndPasswordHook {
-  action: CreateUserWithEmailAndPassword;
+  action: CreateUser["createUserWithEmailAndPassword"];
   loading: boolean;
   error: string | undefined;
 }
 export function useCreateUserWithEmailAndPassword(): CreateUserWithEmailAndPasswordHook {
-  const app = useFirebaseApp();
-  const auth = getAuth(app);
-  const [createUser, , loading, error] = firebaseCreateUser(auth);
+  const portProvider = useContext(PortProviderContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const createUserWithEmailAndPassword = async (
     email: string,
     password: string
-  ): Promise<string | undefined> => {
-    const userCredential = await createUser(email, password);
-    return userCredential?.user.uid;
+  ): Promise<User | undefined> => {
+    setLoading(true);
+    setError(undefined);
+    const user =
+      await portProvider.createUserAdapter.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+    if (user == null) {
+      setError("Failed to create user.");
+    }
+    setLoading(false);
+    return user;
   };
 
   return {
     action: createUserWithEmailAndPassword,
     loading,
-    error: error?.message,
+    error,
   };
 }
