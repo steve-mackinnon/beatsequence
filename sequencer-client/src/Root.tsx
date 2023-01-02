@@ -18,6 +18,8 @@ import "@fontsource/roboto/700.css";
 import { Outlet } from "react-router-dom";
 import Layout from "./shared-components/Layout";
 import { app, db, auth, appCheck } from "./firebase";
+import { PortProviderContext } from "./context/PortProviderContext";
+import { PortProvider } from "./PortProvider";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -61,24 +63,28 @@ const darkTheme = createTheme({
   },
 });
 
+const portProvider = new PortProvider();
+
 function App(): React.ReactElement {
   return (
-    <FirebaseAppProvider firebaseApp={app}>
-      <AppCheckProvider sdk={appCheck}>
-        <AuthProvider sdk={auth}>
-          <FirestoreProvider sdk={db}>
-            <Provider store={store}>
-              <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
-                <Layout>
-                  <Outlet />
-                </Layout>
-              </ThemeProvider>
-            </Provider>
-          </FirestoreProvider>
-        </AuthProvider>
-      </AppCheckProvider>
-    </FirebaseAppProvider>
+    <PortProviderContext.Provider value={portProvider}>
+      <FirebaseAppProvider firebaseApp={app}>
+        <AppCheckProvider sdk={appCheck}>
+          <AuthProvider sdk={auth}>
+            <FirestoreProvider sdk={db}>
+              <Provider store={store}>
+                <ThemeProvider theme={darkTheme}>
+                  <CssBaseline />
+                  <Layout>
+                    <Outlet />
+                  </Layout>
+                </ThemeProvider>
+              </Provider>
+            </FirestoreProvider>
+          </AuthProvider>
+        </AppCheckProvider>
+      </FirebaseAppProvider>
+    </PortProviderContext.Provider>
   );
 }
 
