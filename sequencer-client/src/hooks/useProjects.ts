@@ -1,14 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  getFirestore,
-} from "firebase/firestore";
-import { getApp } from "firebase/app";
-import { useAuth } from "./useAuth";
+import { useState, useEffect, useContext } from "react";
+import { PortProviderContext } from "../context/PortProviderContext";
 
 export interface ProjectInfo {
   id: string;
@@ -22,63 +13,29 @@ export interface ProjectsHook {
   error?: string;
 }
 export function useProjects(): ProjectsHook {
-  const { uid } = useAuth();
-  const app = getApp();
-  const db = getFirestore(app);
+  const portProvider = useContext(PortProviderContext);
   const [projects, setProjects] = useState<ProjectList | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
   // Asynchronously fetch data when the user signs in
   useEffect(() => {
-    async function fetchData(): Promise<void> {
-      if (uid == null) {
-        setError("Unable to fetch projects: user is not signed in.");
-        return;
-      }
-      try {
-        const projectPermissions = collection(db, "project_permissions");
-        const projectsQuery = query(
-          projectPermissions,
-          where("readers", "array-contains", uid),
-          orderBy("timestamp", "desc")
-        );
-        const projectDocs = await getDocs(projectsQuery);
-        const projects: ProjectInfo[] = [];
-        projectDocs.forEach((doc) => {
-          const data = doc.data();
-          let name = "unknown";
-          if (data.name != null) {
-            name = data.name as string;
-          } else {
-            console.log(
-              `name field not found for project with ID ${doc.id} from project_permissions`
-            );
-          }
-          projects.push({
-            id: doc.id,
-            name,
-          });
-        });
-        setProjects(projects);
-        setError(undefined);
-      } catch (e) {
-        console.log(e);
-        setError(
-          "An error occurred while fetching projects from the server. Please try again later."
-        );
-      }
-    }
     // Bail out if we already have data
     if (projects != null) {
       return;
     }
-    fetchData().catch((e) => {
-      console.log(e);
-      setError(
-        "An error occurred while fetching projects from the server. Please try again later."
-      );
-    });
-  }, [uid, db, projects]);
+    portProvider.listProjectsAdapter
+      .listProjects()
+      .then((projectList) => {
+        if (projectList == null) {
+          setError("Failed to fetch projects");
+          return;
+        }
+        setProjects(projectList);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  });
 
   return {
     projects,

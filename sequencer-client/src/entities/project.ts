@@ -8,3 +8,8 @@ export interface Project {
   pattern: Pattern;
   tracks: Track[];
 }
+
+export interface ProjectInfo {
+  id: string;
+  name: string;
+}
