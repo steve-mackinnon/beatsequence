@@ -1,11 +1,9 @@
-import { useSignOut as firebaseSignOut } from "react-firebase-hooks/auth";
-import { useFirebaseApp } from "reactfire";
-import { getAuth } from "firebase/auth";
+import { useContext } from "react";
+import { PortProviderContext } from "../context/PortProviderContext";
 
 export type SignOut = () => Promise<boolean>;
 
 export function useSignOut(): SignOut {
-  const auth = getAuth(useFirebaseApp());
-  const [signOut] = firebaseSignOut(auth);
-  return signOut;
+  const portProvider = useContext(PortProviderContext);
+  return async () => await portProvider.signOutAdapter.signOut();
 }
