@@ -1,0 +1,80 @@
+.SequencerStep {
+  display: flex;
+  flex-direction: column;
+}
+
+input.SequencerStep[type=checkbox] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: rgb(156, 161, 159);
+  /* Not removed via appearance */
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 0.5px;
+  border-color: rgb(18,18,18);
+  width: 69px;
+  height: 54px;
+  transform: translateY(-0.075em);
+  display: flex;
+  flex-grow: 1;
+  place-content: center;
+}
+
+@media (hover: hover) {
+  input.SequencerStep[type=checkbox]:hover {
+    background-color: rgb(204, 215, 213);
+  }
+  input.SequencerStep.playing:hover[type=checkbox] {
+    background-color: rgb(224, 52, 155);
+  }
+  input.SequencerStep.muted.playing:hover[type=checkbox] {
+    background-color: rgb(154, 165, 160);
+  }
+  input.SequencerStep.muted:hover[type=checkbox] {
+    background-color: rgb(154, 165, 160);
+  }
+  input.SequencerStep.muted:hover[type="checkbox"]:checked::before {
+    background-color: rgb(11, 66, 64);
+  }
+  input.SequencerStep[type="checkbox"]:checked:hover::before {
+    background-color: rgb(21, 155, 150);
+  }
+  input.SequencerStep.playing[type="checkbox"]:checked:hover::before {
+    background-color: rgb(170, 34, 116);
+  }
+  input.SequencerStep.muted.playing[type="checkbox"]:checked:hover::before {
+    background-color: rgb(64, 11, 43);
+  }  
+}
+input.SequencerStep.playing[type=checkbox] {
+  background-color: rgb(166, 38, 115);
+}
+input.SequencerStep.muted.playing[type=checkbox] {
+  background-color: rgb(72, 77, 75);
+}
+input.SequencerStep.muted[type=checkbox] {
+  background-color: rgb(76, 81, 79);
+}
+input.SequencerStep.muted[type="checkbox"]:checked::before {
+  background-color: rgb(17, 103, 100);
+}
+input.SequencerStep[type="checkbox"]:checked::before {
+  background-color: rgb(31, 224, 218);
+}
+input.SequencerStep.playing[type="checkbox"]:checked::before {
+  background-color: rgb(245, 50, 167);
+}
+input.SequencerStep.muted.playing[type="checkbox"]:checked::before {
+  background-color: rgb(110, 19, 74);
+}
+input.SequencerStep[type="checkbox"]::before {
+  content: "";
+  width: 68px;
+  height: 53px;
+  border-radius: 8px;
+}

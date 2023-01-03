@@ -1,6 +1,0 @@
-.ColorText {
-  background: linear-gradient(75deg, rgb(31, 224, 218) 25.16%, rgb(245,50,167) 60.98%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
