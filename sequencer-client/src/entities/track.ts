@@ -38,13 +38,28 @@ function decayTimeForGeneratorType(generatorType: GeneratorType): number {
     case GeneratorType.Kick:
       return 0.4;
     case GeneratorType.Snare:
-      return 0.12;
+      return 0.2;
     case GeneratorType.ClosedHH:
       return 0.03;
     case GeneratorType.SineBleep:
       return 0.26;
     case GeneratorType.SquareBleep:
-      return 0.09;
+      return 0.12;
+  }
+}
+
+function gainForGeneratorType(generatorType: GeneratorType): number {
+  switch (generatorType) {
+    case GeneratorType.Kick:
+      return 1.0;
+    case GeneratorType.Snare:
+      return 1.2;
+    case GeneratorType.ClosedHH:
+      return 0.8;
+    case GeneratorType.SineBleep:
+      return 1.2;
+    case GeneratorType.SquareBleep:
+      return 1.2;
   }
 }
 
@@ -54,8 +69,8 @@ export const DEFAULT_TRACKS: Track[] = (() => {
     const generatorType = generatorTypeForTrackIndex(index);
     const generatorParams = {
       decayTime: decayTimeForGeneratorType(generatorType),
-      gain: 1.0,
-      transientTime: 0.1,
+      gain: gainForGeneratorType(generatorType),
+      transientTime: 0.3,
       triggerProbability: 100.0,
     };
 
