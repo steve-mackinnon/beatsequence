@@ -1,15 +1,10 @@
 import { GeneratorType } from "../entities/generatorType";
 import { AudioEngine, audioEngine } from "./audioEngine";
-import { semitoneToHz } from "./pitchUtils";
 import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { Limiter, ToneAudioNode, Transport } from "tone";
 import { Track } from "../entities/track";
-import { Step } from "../entities/step";
+import { generateRandomNote, Step, noteToHz } from "../entities/step";
 import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
-
-function randomPitch(): number {
-  return Math.floor(Math.random() * (36 * 2) - 36);
-}
 
 function makeGenerator(
   type: GeneratorType,
@@ -34,7 +29,7 @@ function makeStepsForTrack(numSteps: number, trackId: number): Step[] {
     const enabled = Math.random() > 0.5;
     steps[stepIndex] = {
       enabled,
-      coarsePitch: randomPitch(),
+      note: generateRandomNote(),
     };
   }
   return steps;
@@ -131,7 +126,7 @@ export class SequencerEngine {
         this._generators[index].trigger(
           time,
           trackState.generatorParams,
-          semitoneToHz(step.coarsePitch)
+          noteToHz(step.note)
         );
       });
       this._currentStep += 1;
@@ -195,7 +190,7 @@ export class SequencerEngine {
     this._steps[trackIndex].forEach((step: Step, stepIndex: number) => {
       const newStep = { ...step };
       newStep.enabled = Math.random() > 0.5;
-      newStep.coarsePitch = randomPitch();
+      newStep.note = generateRandomNote();
       this._steps[trackIndex][stepIndex] = newStep;
       this._broadcastStepUpdate(trackIndex, stepIndex);
     });

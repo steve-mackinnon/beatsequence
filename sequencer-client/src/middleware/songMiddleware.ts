@@ -31,7 +31,7 @@ songListenerMiddleware.startListening({
 songListenerMiddleware.startListening({
   actionCreator: setParam,
   effect: (action) => {
-    sequencerEngine.tempo = action.payload.value;
+    sequencerEngine.tempo = action.payload.value as number;
   },
 });
 

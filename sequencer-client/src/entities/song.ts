@@ -6,7 +6,7 @@ export interface Song {
 }
 
 export const DEFAULT_SONG: Song = {
-  name: "New Project",
+  name: "Untitled",
   tempo: 127.0,
   playing: false,
 };

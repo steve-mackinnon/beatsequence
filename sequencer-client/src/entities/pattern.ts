@@ -17,7 +17,7 @@ export const DEFAULT_PATTERN: Pattern = {
       for (let stepIndex = 0; stepIndex < NUM_DEFAULT_STEPS; ++stepIndex) {
         steps[trackIndex].push({
           enabled: false,
-          coarsePitch: 0,
+          note: "C3",
         });
       }
     }

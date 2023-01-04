@@ -26,17 +26,26 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
   const [dragStartValue, setDragStartValue] = useState<null | number>(null);
   const [startY, setStartY] = useState<null | number>(null);
 
+  const captureStartValue = (): void => {
+    let startValue = value;
+    if (typeof startValue === "string") {
+      if (paramInfo.toNumber == null) {
+        throw new Error("toNumber is required for string values");
+      }
+      startValue = paramInfo.toNumber(startValue);
+    }
+    setDragStartValue(startValue);
+  };
   const onMouseDown = (e: MouseEvent<HTMLInputElement>): void => {
     if (receivedTouchEvent) {
       return;
     }
-    setDragStartValue(value);
+    captureStartValue();
     setStartY(e.screenY);
   };
   const onTouchStart = (e: TouchEvent): void => {
     setReceivedTouchEvent(true);
-    setDragStartValue(value);
-
+    captureStartValue();
     const touch = e.touches.item(0);
     setStartY(touch.screenY);
   };
@@ -50,7 +59,15 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
     } else {
       increment -= e.screenY as number;
     }
-    setValue(dragStartValue + increment);
+    const newValue = dragStartValue + increment;
+    if (typeof value === "string") {
+      if (paramInfo.valueToString == null) {
+        throw new Error("toNumber is required for string values");
+      }
+      setValue(paramInfo.valueToString(newValue));
+    } else {
+      setValue(newValue);
+    }
   };
 
   const onMouseUp = (_e: any): void => {

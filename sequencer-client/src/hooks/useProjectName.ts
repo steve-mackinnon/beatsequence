@@ -6,6 +6,6 @@ export function useProjectName(): ProjectName {
     if (state.song.name != null) {
       return state.song.name;
     }
-    return "New Project";
+    return "Untitled";
   });
 }

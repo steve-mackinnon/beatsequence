@@ -1,4 +1,4 @@
-import { Step } from "../entities/step";
+import { Step, pitchOffsetToNoteName } from "../entities/step";
 import { Track } from "../entities/track";
 import { Project } from "../entities/project";
 import { Pattern } from "../entities/pattern";
@@ -44,13 +44,25 @@ interface StepV1 {
   stepIndex: number;
   trackId: number;
 }
-function maybeMigrateStepsFromv1(steps: any[]): Step[] {
+interface StepV2 {
+  enabled: boolean;
+  coarsePitch: number;
+}
+function maybeMigrateSteps(steps: any[]): Step[] {
+  if ("coarsePitch" in steps[0]) {
+    return steps.map((step: StepV2) => {
+      return {
+        enabled: step.enabled,
+        note: pitchOffsetToNoteName(step.coarsePitch),
+      };
+    });
+  }
   // Bail early if steps are not in the v1 format
   if ("params" in steps[0] && steps[0].params != null) {
     return steps.map((step: StepV1) => {
       return {
         enabled: step.enabled,
-        coarsePitch: step.params.coarsePitch,
+        note: pitchOffsetToNoteName(step.params.coarsePitch),
       };
     });
   }
@@ -73,7 +85,7 @@ function maybeMigrateTracksFromV1(tracks: any[]): Track[] {
 }
 export const extractProjectFromPayload = (payload: ProjectPayload): Project => {
   let { name, tracks, steps, song } = payload;
-  steps = maybeMigrateStepsFromv1(steps);
+  steps = maybeMigrateSteps(steps);
   tracks = maybeMigrateTracksFromV1(tracks);
 
   const stepsForEachTrack = new Array<Step[]>();

@@ -16,7 +16,7 @@ test("serialize and deserialize", () => {
     for (let stepIndex = 0; stepIndex < 16; ++stepIndex) {
       steps[trackIndex].push({
         enabled: true,
-        coarsePitch: 12,
+        note: "C4",
       });
     }
   }
@@ -66,7 +66,7 @@ test("serialize and deserialize", () => {
   expect(extractedProject).toEqual(project);
 });
 
-interface OldFormatStep {
+interface StepV1 {
   enabled: boolean;
   params: {
     coarsePitch: number;
@@ -75,15 +75,15 @@ interface OldFormatStep {
   trackId: number;
 }
 
-test("deserialize old format", () => {
-  const steps = new Array<OldFormatStep>();
+test("deserialize v1 format", () => {
+  const steps = new Array<StepV1>();
   // Populate steps with 2 tracks, each with 16 steps
   for (let trackIndex = 0; trackIndex < 2; ++trackIndex) {
     for (let stepIndex = 0; stepIndex < 16; ++stepIndex) {
       steps.push({
         enabled: true,
         params: {
-          coarsePitch: 14,
+          coarsePitch: 12,
         },
         stepIndex,
         trackId: trackIndex,
@@ -121,5 +121,63 @@ test("deserialize old format", () => {
     100
   );
   // New step format has coarsePitch
-  expect(deserialized.pattern.steps[0][0].coarsePitch).toEqual(14);
+  expect(deserialized.pattern.steps[0][0].note).toEqual("C4");
+});
+
+interface StepV2 {
+  enabled: boolean;
+  coarsePitch: number;
+}
+
+test("deserialize v2 format", () => {
+  const steps = new Array<StepV2>();
+  // Populate steps with 2 tracks, each with 16 steps
+  for (let trackIndex = 0; trackIndex < 2; ++trackIndex) {
+    for (let stepIndex = 0; stepIndex < 16; ++stepIndex) {
+      steps.push({
+        enabled: true,
+        coarsePitch: 13,
+      });
+    }
+  }
+  const track1: Track = {
+    muted: false,
+    generatorType: GeneratorType.Kick,
+    displayName: "Kick",
+    generatorParams: {
+      triggerProbability: 100,
+      gain: 0.5,
+      decayTime: 0.3,
+    },
+    paramViewVisible: true,
+    soloed: false,
+  };
+  const track2: Track = {
+    muted: true,
+    generatorType: GeneratorType.SineBleep,
+    displayName: "Sine",
+    generatorParams: {
+      triggerProbability: 60,
+      gain: 0.8,
+      decayTime: 0.5,
+    },
+    paramViewVisible: true,
+    soloed: true,
+  };
+  const song: any = {
+    name: "My song",
+    params: {
+      tempo: 42,
+    },
+    playing: false,
+  };
+  const project: any = {
+    song,
+    steps,
+    tracks: [track1, track2],
+  };
+  const deserialized = extractProjectFromPayload(project);
+
+  // New step format has coarsePitch
+  expect(deserialized.pattern.steps[0][0].note).toEqual("C#4");
 });

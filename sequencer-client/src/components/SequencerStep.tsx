@@ -8,6 +8,7 @@ import {
   selectTrackIsEffectivelyMuted,
 } from "../reducers/tracksSlice";
 import styles from "./SequencerStep.module.css";
+import { noteNameToPitchOffset, pitchOffsetToNoteName } from "../entities";
 
 export interface SequencerStepProps {
   stepIndex: number;
@@ -96,8 +97,10 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         trackId={props.trackId}
         stepIndex={props.stepIndex}
         name="coarsePitch"
-        min={-64}
-        max={64}
+        min={-72}
+        max={72}
+        toNumber={noteNameToPitchOffset}
+        valueToString={pitchOffsetToNoteName}
         round={true}
       />
     );
