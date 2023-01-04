@@ -97,8 +97,8 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
         trackId={props.trackId}
         stepIndex={props.stepIndex}
         name="coarsePitch"
-        min={-64}
-        max={64}
+        min={-72}
+        max={72}
         toNumber={noteNameToPitchOffset}
         valueToString={pitchOffsetToNoteName}
         round={true}
