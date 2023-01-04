@@ -4,6 +4,7 @@ import { generatorHasPitchControls } from "../entities/generatorType";
 import { RootState } from "../store";
 import { CommonParams } from "../entities/commonParams";
 import { Track, DEFAULT_TRACKS } from "../entities/track";
+import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
 
 DEFAULT_TRACKS.forEach((trackState: Track, index: number) => {
   sequencerEngine.setTrackState(index, trackState);
@@ -29,46 +30,27 @@ export const tracksSlice = createSlice({
   initialState: DEFAULT_TRACKS,
   reducers: {
     mute: (state, action: PayloadAction<TrackInfo>) => {
-      state.map((trackState: Track) => {
-        if (trackState.id === action.payload.trackId) {
-          trackState.muted = true;
-        }
-        return trackState;
-      });
+      state[action.payload.trackId].muted = true;
     },
     unmute: (state, action: PayloadAction<TrackInfo>) => {
-      state.map((trackState: Track) => {
-        if (trackState.id === action.payload.trackId) {
-          trackState.muted = false;
-        }
-        return trackState;
-      });
+      state[action.payload.trackId].muted = false;
+    },
+    toggleSolo: (state, action: PayloadAction<TrackInfo>) => {
+      const wasSoloed = state[action.payload.trackId].soloed;
+      state[action.payload.trackId].soloed = !wasSoloed;
     },
     setGeneratorParam: (state, action: PayloadAction<TrackParamPayload>) => {
-      state.map((trackState: Track) => {
-        if (trackState.id === action.payload.trackId) {
-          const paramId = action.payload.paramId;
-          trackState.generatorParams[paramId as keyof CommonParams] = action
-            .payload.paramValue as number;
-        }
-        return trackState;
-      });
+      const paramId = action.payload.paramId;
+      state[action.payload.trackId].generatorParams[
+        paramId as keyof CommonParams
+      ] = action.payload.paramValue as number;
     },
     setDisplayName: (state, action: PayloadAction<SetDisplayNamePayload>) => {
-      state.map((trackState: Track) => {
-        if (trackState.id === action.payload.trackId) {
-          trackState.displayName = action.payload.name;
-        }
-        return trackState;
-      });
+      state[action.payload.trackId].displayName = action.payload.name;
     },
     toggleParamViewVisibility: (state, action: PayloadAction<TrackInfo>) => {
-      state.map((trackState: Track) => {
-        if (trackState.id === action.payload.trackId) {
-          trackState.paramViewVisible = !trackState.paramViewVisible;
-        }
-        return trackState;
-      });
+      const wasVisible = state[action.payload.trackId].paramViewVisible;
+      state[action.payload.trackId].paramViewVisible = !wasVisible;
     },
     loadTracks: (state, action: PayloadAction<Track[]>) => {
       action.payload.forEach((track: Track, index: number) => {
@@ -98,6 +80,14 @@ export function selectTrackHasCoarsePitchParam(
   return generatorHasPitchControls(generatorType);
 }
 
+export function selectTrackIsEffectivelyMuted(
+  state: RootState,
+  trackId: number
+): boolean {
+  const track = state.tracks[trackId];
+  return shouldTrackBeMuted(track, state.tracks);
+}
+
 export const {
   mute,
   unmute,
@@ -105,5 +95,6 @@ export const {
   setDisplayName,
   toggleParamViewVisibility,
   loadTracks,
+  toggleSolo,
 } = tracksSlice.actions;
 export default tracksSlice.reducer;

@@ -1,13 +1,25 @@
 import { GeneratorType } from "./generatorType";
 import { CommonParams } from "./commonParams";
+import { KickParams } from "../generators";
 
 export interface Track {
-  id?: number;
   muted: boolean;
   generatorType: GeneratorType;
   generatorParams: CommonParams;
   displayName: string;
   paramViewVisible: boolean;
+  soloed: boolean;
+}
+
+export function MakeTrack(generatorType: GeneratorType): Track {
+  return {
+    muted: false,
+    generatorType,
+    generatorParams: generatorParamsForGeneratorType(generatorType),
+    displayName: defaultNameForGeneratorType(generatorType),
+    paramViewVisible: false,
+    soloed: false,
+  };
 }
 
 export const NUM_DEFAULT_TRACKS = 5;
@@ -16,6 +28,19 @@ function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
   return trackIndex;
 }
 
+function generatorParamsForGeneratorType(
+  generatorType: GeneratorType
+): CommonParams {
+  const params: CommonParams = {
+    decayTime: decayTimeForGeneratorType(generatorType),
+    gain: gainForGeneratorType(generatorType),
+    triggerProbability: 100.0,
+  };
+  if (generatorType === GeneratorType.Kick) {
+    (params as KickParams).transientTime = 0.3;
+  }
+  return params;
+}
 export function defaultNameForGeneratorType(
   generatorType: GeneratorType
 ): string {
@@ -67,21 +92,7 @@ export const DEFAULT_TRACKS: Track[] = (() => {
   const tracks = new Array<Track>();
   for (let index = 0; index < NUM_DEFAULT_TRACKS; ++index) {
     const generatorType = generatorTypeForTrackIndex(index);
-    const generatorParams = {
-      decayTime: decayTimeForGeneratorType(generatorType),
-      gain: gainForGeneratorType(generatorType),
-      transientTime: 0.3,
-      triggerProbability: 100.0,
-    };
-
-    tracks.push({
-      id: index,
-      muted: false,
-      generatorType,
-      generatorParams,
-      displayName: defaultNameForGeneratorType(generatorType),
-      paramViewVisible: false, // TODO: Refactor this out in UI-level some state
-    });
+    tracks.push(MakeTrack(generatorType));
   }
   return tracks;
 })();
