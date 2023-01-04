@@ -37,7 +37,7 @@ function generatorParamsForGeneratorType(
     triggerProbability: 100.0,
   };
   if (generatorType === GeneratorType.Kick) {
-    (params as KickParams).transientTime = 1.2;
+    (params as KickParams).transientTime = 0.3;
   }
   return params;
 }
