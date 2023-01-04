@@ -14,6 +14,27 @@ export interface ParamInfo {
   valueToString?: (value: number) => string;
 }
 
+function trimParamToRange(
+  param: number | string,
+  paramInfo: ParamInfo
+): number | string {
+  let value = param;
+  if (typeof value === "string") {
+    if (paramInfo.toNumber == null || paramInfo.valueToString == null) {
+      return value;
+    }
+    value = paramInfo.toNumber(value);
+  }
+  if (value > paramInfo.max) {
+    value = paramInfo.max;
+  } else if (value < paramInfo.min) {
+    value = paramInfo.min;
+  }
+  if (typeof param === "string" && paramInfo.valueToString != null) {
+    return paramInfo.valueToString(value);
+  }
+  return value;
+}
 export function useParameter(
   paramInfo: ParamInfo
 ): [number | string, (newValue: number | string) => void] {
@@ -34,17 +55,7 @@ export function useParameter(
   return [
     paramValue,
     (newValue: number | string): void => {
-      let value = newValue;
-      if (typeof value === "number") {
-        if (value > paramInfo.max) {
-          value = paramInfo.max;
-        } else if (value < paramInfo.min) {
-          value = paramInfo.min;
-        }
-        if (paramInfo.round ?? false) {
-          value = Math.round(value);
-        }
-      }
+      const value = trimParamToRange(newValue, paramInfo);
       if (paramInfo.trackId == null) {
         dispatch(
           setSongParam({
