@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Button, Link as MuiLink, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import styles from "../styles/Homepage.module.css";
@@ -42,13 +42,9 @@ export default function Home(): ReactElement {
           Designed with mobile in mind. The responsive interface allows you to
           create seamlessly on any device.
         </Typography>
-        <Typography variant="h3">
-          Developed by electronic music producer and software engineer{" "}
-          <MuiLink href="https://stevedarko.com">Steve Darko</MuiLink>.
-        </Typography>
         <Typography variant="subtitle1">
           <strong>Note:</strong> Beatsequence is currently in early beta and has
-          a minimal feature set. More features are coming!
+          a minimal feature set. More to come...
         </Typography>
       </MainContainer>
     </div>
