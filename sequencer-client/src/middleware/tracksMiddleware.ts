@@ -11,6 +11,7 @@ import {
   unmute,
   setGeneratorParam,
   loadTracks,
+  toggleSolo,
 } from "../reducers/tracksSlice";
 
 export const tracksListenerMiddleware = createListenerMiddleware();
@@ -61,5 +62,16 @@ tracksListenerMiddleware.startListening({
     state.tracks.forEach((trackState, index: number) => {
       sequencerEngine.setTrackState(index, trackState);
     });
+  },
+});
+
+tracksListenerMiddleware.startListening({
+  actionCreator: toggleSolo,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sequencerEngine.setTrackState(
+      action.payload.trackId,
+      state.tracks[action.payload.trackId]
+    );
   },
 });

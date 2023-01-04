@@ -4,6 +4,7 @@ import { generatorHasPitchControls } from "../entities/generatorType";
 import { RootState } from "../store";
 import { CommonParams } from "../entities/commonParams";
 import { Track, DEFAULT_TRACKS } from "../entities/track";
+import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
 
 DEFAULT_TRACKS.forEach((trackState: Track, index: number) => {
   sequencerEngine.setTrackState(index, trackState);
@@ -33,6 +34,10 @@ export const tracksSlice = createSlice({
     },
     unmute: (state, action: PayloadAction<TrackInfo>) => {
       state[action.payload.trackId].muted = false;
+    },
+    toggleSolo: (state, action: PayloadAction<TrackInfo>) => {
+      const wasSoloed = state[action.payload.trackId].soloed;
+      state[action.payload.trackId].soloed = !wasSoloed;
     },
     setGeneratorParam: (state, action: PayloadAction<TrackParamPayload>) => {
       const paramId = action.payload.paramId;
@@ -75,6 +80,14 @@ export function selectTrackHasCoarsePitchParam(
   return generatorHasPitchControls(generatorType);
 }
 
+export function selectTrackIsEffectivelyMuted(
+  state: RootState,
+  trackId: number
+): boolean {
+  const track = state.tracks[trackId];
+  return shouldTrackBeMuted(track, state.tracks);
+}
+
 export const {
   mute,
   unmute,
@@ -82,5 +95,6 @@ export const {
   setDisplayName,
   toggleParamViewVisibility,
   loadTracks,
+  toggleSolo,
 } = tracksSlice.actions;
 export default tracksSlice.reducer;

@@ -3,7 +3,10 @@ import { useAppSelector, useAppDispatch } from "../hooks";
 import { sequencerEngine } from "../engine/sequencerEngine";
 import { ParamScrubText } from "../shared-components/ParamScrubText";
 import { enable, disable } from "../reducers/stepsSlice";
-import { selectTrackHasCoarsePitchParam } from "../reducers/tracksSlice";
+import {
+  selectTrackHasCoarsePitchParam,
+  selectTrackIsEffectivelyMuted,
+} from "../reducers/tracksSlice";
 import styles from "./SequencerStep.module.css";
 
 export interface SequencerStepProps {
@@ -14,7 +17,9 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
   const stepState = useAppSelector((state) => {
     return state.steps[props.trackId][props.stepIndex];
   });
-  const trackState = useAppSelector((state) => state.tracks[props.trackId]);
+  const isEffectivelyMuted = useAppSelector((state) =>
+    selectTrackIsEffectivelyMuted(state, props.trackId)
+  );
   const showCoarsePitchControl = useAppSelector((state) =>
     selectTrackHasCoarsePitchParam(state, props.trackId)
   );
@@ -61,7 +66,7 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
   };
 
   const inputClassNames: String[] = [styles.SequencerStep];
-  if (trackState.muted) {
+  if (isEffectivelyMuted) {
     inputClassNames.push(styles.muted);
   }
   if (isCurrentStep) {

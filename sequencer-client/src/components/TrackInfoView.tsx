@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { Button, Stack, IconButton } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
@@ -7,15 +7,31 @@ import {
   mute,
   unmute,
   toggleParamViewVisibility,
+  toggleSolo,
+  selectTrackIsEffectivelyMuted,
 } from "../reducers/tracksSlice";
 import { TrackMenu } from "./TrackMenu";
 
+const getButtonStyle = (on: boolean, size: number): SxProps => {
+  const color = on ? "rgb(219, 218, 174)" : "rgb(153, 134, 100)";
+  return {
+    color,
+    maxWidth: `${size}px`,
+    minWidth: `${size}px`,
+  };
+};
 export interface TrackInfoProps {
   trackId: number;
 }
 export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const dispatch = useAppDispatch();
-  const muted = useAppSelector((state) => state.tracks[props.trackId].muted);
+  const isMuted = useAppSelector((state) =>
+    selectTrackIsEffectivelyMuted(state, props.trackId)
+  );
+  const isSoloed = useAppSelector(
+    (state) => state.tracks[props.trackId].soloed
+  );
+
   const trackName = useAppSelector(
     (state) => state.tracks[props.trackId].displayName
   );
@@ -23,13 +39,25 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     (state) => state.tracks[props.trackId].paramViewVisible
   );
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
+  const [mobileOrientation, setMobileOrientation] = useState(false);
+
+  useEffect(() => {
+    const handleResize = (): void => {
+      setMobileOrientation(document.body.clientWidth <= 650);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const dispatchMute = (): void => {
-    if (muted) {
+    if (isMuted) {
       dispatch(unmute({ trackId: props.trackId }));
       return;
     }
     dispatch(mute({ trackId: props.trackId }));
+  };
+  const dispatchToggleSolo = (): void => {
+    dispatch(toggleSolo({ trackId: props.trackId }));
   };
   const onEnableTrackButtonTouchStart = (e: any): void => {
     setReceivedTouchEvent(true);
@@ -45,31 +73,38 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     dispatch(toggleParamViewVisibility({ trackId: props.trackId }));
   };
 
-  const buttonStyle: SxProps = muted
-    ? {
-        color: "rgb(153, 134, 100)",
-        maxWidth: "56px",
-        minWidth: "56px",
-      }
-    : {
-        color: "rgb(219, 218, 174)",
-        maxWidth: "56px",
-        minWidth: "56px",
-      };
   const containerStyle: SxProps = {
     flexDirection: "column",
     alignItems: "center",
   };
+  const soloButton = (
+    <IconButton
+      sx={{ ...getButtonStyle(isSoloed, 40), fontSize: "1rem" }}
+      onClick={() => dispatchToggleSolo()}
+    >
+      S
+    </IconButton>
+  );
   return (
     <Stack sx={containerStyle}>
       <Button
-        sx={buttonStyle}
+        sx={getButtonStyle(!isMuted, 56)}
         onTouchStart={onEnableTrackButtonTouchStart}
         onClick={onEnableTrackButtonClick}
       >
         {trackName}
       </Button>
-      <TrackMenu trackId={props.trackId} />
+      {mobileOrientation && soloButton}
+      <Stack
+        sx={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TrackMenu trackId={props.trackId} />
+        {!mobileOrientation && soloButton}
+      </Stack>
       <IconButton onClick={onParamViewToggleClick}>
         {showParamView ? <ExpandLess /> : <ExpandMore />}
       </IconButton>
