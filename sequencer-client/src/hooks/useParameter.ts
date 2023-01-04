@@ -11,7 +11,7 @@ export interface ParamInfo {
   max: number;
   round?: boolean;
   toNumber?: (value: string) => number;
-  toString?: (value: number) => string;
+  valueToString?: (value: number) => string;
 }
 
 export function useParameter(

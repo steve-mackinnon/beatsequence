@@ -61,10 +61,10 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
     }
     const newValue = dragStartValue + increment;
     if (typeof value === "string") {
-      if (paramInfo.toString == null) {
+      if (paramInfo.valueToString == null) {
         throw new Error("toNumber is required for string values");
       }
-      setValue(paramInfo.toString(newValue));
+      setValue(paramInfo.valueToString(newValue));
     } else {
       setValue(newValue);
     }
