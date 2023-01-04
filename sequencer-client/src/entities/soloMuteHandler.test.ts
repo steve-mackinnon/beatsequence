@@ -1,10 +1,10 @@
-import { Track } from "./track";
+import { MakeTrack } from "./track";
 import { GeneratorType } from "./generatorType";
 import { shouldTrackBeMuted } from "./soloMuteHandler";
 
 describe("no soloed tracks", () => {
-  const track1 = new Track(GeneratorType.ClosedHH);
-  const track2 = new Track(GeneratorType.Kick);
+  const track1 = MakeTrack(GeneratorType.ClosedHH);
+  const track2 = MakeTrack(GeneratorType.Kick);
   const allTracks = [track1, track2];
   track1.soloed = false;
   track1.muted = false;
@@ -19,8 +19,8 @@ describe("no soloed tracks", () => {
 });
 
 describe("one soloed track", () => {
-  const track1 = new Track(GeneratorType.ClosedHH);
-  const track2 = new Track(GeneratorType.Kick);
+  const track1 = MakeTrack(GeneratorType.ClosedHH);
+  const track2 = MakeTrack(GeneratorType.Kick);
   const allTracks = [track1, track2];
   track1.soloed = true;
   track1.muted = false;
@@ -35,9 +35,9 @@ describe("one soloed track", () => {
 });
 
 describe("multiple soloed tracks", () => {
-  const track1 = new Track(GeneratorType.ClosedHH);
-  const track2 = new Track(GeneratorType.Kick);
-  const track3 = new Track(GeneratorType.SineBleep);
+  const track1 = MakeTrack(GeneratorType.ClosedHH);
+  const track2 = MakeTrack(GeneratorType.Kick);
+  const track3 = MakeTrack(GeneratorType.SineBleep);
   const allTracks = [track1, track2, track3];
   track1.soloed = true;
   track1.muted = false;

@@ -2,23 +2,24 @@ import { GeneratorType } from "./generatorType";
 import { CommonParams } from "./commonParams";
 import { KickParams } from "../generators";
 
-export class Track {
-  id?: number;
+export interface Track {
   muted: boolean;
   generatorType: GeneratorType;
   generatorParams: CommonParams;
   displayName: string;
   paramViewVisible: boolean;
   soloed: boolean;
+}
 
-  constructor(generatorType: GeneratorType) {
-    this.generatorType = generatorType;
-    this.displayName = defaultNameForGeneratorType(generatorType);
-    this.paramViewVisible = false;
-    this.soloed = false;
-    this.muted = false;
-    this.generatorParams = generatorParamsForGeneratorType(generatorType);
-  }
+export function MakeTrack(generatorType: GeneratorType): Track {
+  return {
+    muted: false,
+    generatorType,
+    generatorParams: generatorParamsForGeneratorType(generatorType),
+    displayName: defaultNameForGeneratorType(generatorType),
+    paramViewVisible: false,
+    soloed: false,
+  };
 }
 
 export const NUM_DEFAULT_TRACKS = 5;
@@ -91,7 +92,7 @@ export const DEFAULT_TRACKS: Track[] = (() => {
   const tracks = new Array<Track>();
   for (let index = 0; index < NUM_DEFAULT_TRACKS; ++index) {
     const generatorType = generatorTypeForTrackIndex(index);
-    tracks.push(new Track(generatorType));
+    tracks.push(MakeTrack(generatorType));
   }
   return tracks;
 })();
