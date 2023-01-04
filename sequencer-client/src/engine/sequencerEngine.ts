@@ -5,6 +5,7 @@ import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
 import { Limiter, ToneAudioNode, Transport } from "tone";
 import { Track } from "../entities/track";
 import { Step } from "../entities/step";
+import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
 
 function randomPitch(): number {
   return Math.floor(Math.random() * (36 * 2) - 36);
@@ -86,7 +87,6 @@ export class SequencerEngine {
     for (const trackIndex of Array(this.numTracks).keys()) {
       this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
       this._trackStates[trackIndex] = {
-        id: trackIndex,
         muted: false,
         generatorType: GeneratorType.SineBleep,
         generatorParams: {
@@ -96,6 +96,7 @@ export class SequencerEngine {
         },
         displayName: "default",
         paramViewVisible: false,
+        soloed: false,
       };
 
       this._stepChangedCallbacks[trackIndex] =
@@ -115,7 +116,10 @@ export class SequencerEngine {
       this._steps.forEach((steps: Step[], index: number) => {
         const trackState = this._trackStates[index];
         const step = steps[this._currentStep];
-        if (!step.enabled || trackState.muted) {
+        if (
+          !step.enabled ||
+          shouldTrackBeMuted(trackState, this._trackStates)
+        ) {
           return;
         }
         if (

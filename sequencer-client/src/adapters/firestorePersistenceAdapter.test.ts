@@ -22,7 +22,6 @@ test("serialize and deserialize", () => {
   }
 
   const track1: Track = {
-    id: 1,
     muted: false,
     generatorType: GeneratorType.Kick,
     displayName: "Kick",
@@ -32,9 +31,9 @@ test("serialize and deserialize", () => {
       decayTime: 0.3,
     },
     paramViewVisible: true,
+    soloed: false,
   };
   const track2: Track = {
-    id: 2,
     muted: true,
     generatorType: GeneratorType.SineBleep,
     displayName: "Sine",
@@ -44,6 +43,7 @@ test("serialize and deserialize", () => {
       decayTime: 0.5,
     },
     paramViewVisible: true,
+    soloed: true,
   };
   const song: Song = {
     name: "My song",

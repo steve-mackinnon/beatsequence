@@ -1,13 +1,24 @@
 import { GeneratorType } from "./generatorType";
 import { CommonParams } from "./commonParams";
+import { KickParams } from "../generators";
 
-export interface Track {
+export class Track {
   id?: number;
   muted: boolean;
   generatorType: GeneratorType;
   generatorParams: CommonParams;
   displayName: string;
   paramViewVisible: boolean;
+  soloed: boolean;
+
+  constructor(generatorType: GeneratorType) {
+    this.generatorType = generatorType;
+    this.displayName = defaultNameForGeneratorType(generatorType);
+    this.paramViewVisible = false;
+    this.soloed = false;
+    this.muted = false;
+    this.generatorParams = generatorParamsForGeneratorType(generatorType);
+  }
 }
 
 export const NUM_DEFAULT_TRACKS = 5;
@@ -16,6 +27,19 @@ function generatorTypeForTrackIndex(trackIndex: number): GeneratorType {
   return trackIndex;
 }
 
+function generatorParamsForGeneratorType(
+  generatorType: GeneratorType
+): CommonParams {
+  const params: CommonParams = {
+    decayTime: decayTimeForGeneratorType(generatorType),
+    gain: gainForGeneratorType(generatorType),
+    triggerProbability: 100.0,
+  };
+  if (generatorType === GeneratorType.Kick) {
+    (params as KickParams).transientTime = 1.2;
+  }
+  return params;
+}
 export function defaultNameForGeneratorType(
   generatorType: GeneratorType
 ): string {
@@ -67,21 +91,7 @@ export const DEFAULT_TRACKS: Track[] = (() => {
   const tracks = new Array<Track>();
   for (let index = 0; index < NUM_DEFAULT_TRACKS; ++index) {
     const generatorType = generatorTypeForTrackIndex(index);
-    const generatorParams = {
-      decayTime: decayTimeForGeneratorType(generatorType),
-      gain: gainForGeneratorType(generatorType),
-      transientTime: 0.3,
-      triggerProbability: 100.0,
-    };
-
-    tracks.push({
-      id: index,
-      muted: false,
-      generatorType,
-      generatorParams,
-      displayName: defaultNameForGeneratorType(generatorType),
-      paramViewVisible: false, // TODO: Refactor this out in UI-level some state
-    });
+    tracks.push(new Track(generatorType));
   }
   return tracks;
 })();
