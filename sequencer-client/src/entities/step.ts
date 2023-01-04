@@ -20,7 +20,8 @@ export function noteNameToPitchOffset(noteName: string): number {
     "A#",
     "B",
   ];
-  const noteNameParts = noteName.split(/([0-9]+)/);
+  // Split the note name into its parts
+  const noteNameParts = noteName.split(/(-?[0-9]+)/);
   const noteNamePart = noteNameParts[0];
   const octavePart = noteNameParts[1];
   const octave = parseInt(octavePart) - 3;
@@ -44,7 +45,9 @@ export function pitchOffsetToNoteName(coarsePitch: number): string {
     "B",
   ];
   const octave = Math.floor(coarsePitch / 12) + 3;
-  const noteName = noteNames[coarsePitch % 12];
+  const noteIndex =
+    coarsePitch < 0 ? (12 + (coarsePitch % 12)) % 12 : coarsePitch % 12;
+  const noteName = noteNames[noteIndex];
   return `${noteName}${octave}`;
 }
 

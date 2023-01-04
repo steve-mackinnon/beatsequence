@@ -19,6 +19,15 @@ describe("map coarse pitch to note name", () => {
   test("2 pitch offset maps to D3", () => {
     expect(pitchOffsetToNoteName(2)).toEqual("D3");
   });
+  test("-12 pitch offset maps to C2", () => {
+    expect(pitchOffsetToNoteName(-12)).toEqual("C2");
+  });
+  test("-50 pitch offset maps to A#-2", () => {
+    expect(pitchOffsetToNoteName(-50)).toEqual("A#-2");
+  });
+  test("-60 pitch offset maps to C-2", () => {
+    expect(pitchOffsetToNoteName(-60)).toEqual("C-2");
+  });
 });
 
 describe("map note name to pitch offset", () => {
@@ -39,6 +48,12 @@ describe("map note name to pitch offset", () => {
   });
   test("D3 maps to 2 pitch offset", () => {
     expect(noteNameToPitchOffset("D3")).toEqual(2);
+  });
+  test("A#-2 maps to -50 pitch offset", () => {
+    expect(noteNameToPitchOffset("A#-2")).toEqual(-50);
+  });
+  test("C-2 maps to -60 pitch offset", () => {
+    expect(noteNameToPitchOffset("C-2")).toEqual(-60);
   });
 });
 
