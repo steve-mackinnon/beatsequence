@@ -14,6 +14,8 @@ import {
   StepInfo,
   fillAllSteps,
   loadSteps,
+  rotateLeft,
+  rotateRight,
 } from "../reducers/stepsSlice";
 import { sequencerEngine } from "../engine";
 import type { RootState, AppDispatch } from "../store";
@@ -118,5 +120,27 @@ stepsListenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sendAllStepStatesToSequencerEngine(state.steps);
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: rotateLeft,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngineForTrack(
+      action.payload.trackId,
+      state.steps
+    );
+  },
+});
+
+stepsListenerMiddleware.startListening({
+  actionCreator: rotateRight,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sendAllStepStatesToSequencerEngineForTrack(
+      action.payload.trackId,
+      state.steps
+    );
   },
 });

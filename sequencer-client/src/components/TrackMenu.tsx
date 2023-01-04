@@ -48,6 +48,8 @@ export function TrackMenu(props: TrackMenuProps): ReactElement {
       <IconButton
         {...bindTrigger(popupState)}
         sx={{
+          width: "60px",
+          height: "26px",
           color: "rgb(219, 218, 174)",
         }}
       >

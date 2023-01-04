@@ -3,7 +3,7 @@ import seedrandom from "seedrandom";
 import { sequencerEngine } from "../engine";
 import { DEFAULT_PATTERN } from "../entities/pattern";
 import { Step } from "../entities/step";
-
+import { rotateStepsLeft, rotateStepsRight } from "../entities/stepRotator";
 export interface StepInfo {
   trackId: number;
   stepIndex: number;
@@ -86,6 +86,16 @@ export const stepsSlice = createSlice({
         });
       });
     },
+    rotateLeft: (state, action: PayloadAction<SequencerMacroPayload>) => {
+      state[action.payload.trackId] = rotateStepsLeft(
+        state[action.payload.trackId]
+      );
+    },
+    rotateRight: (state, action: PayloadAction<SequencerMacroPayload>) => {
+      state[action.payload.trackId] = rotateStepsRight(
+        state[action.payload.trackId]
+      );
+    },
   },
   extraReducers: {
     "song/newProject": (state, _) => {
@@ -107,6 +117,8 @@ export const {
   randomize,
   fillAllSteps,
   loadSteps,
+  rotateLeft,
+  rotateRight,
 } = stepsSlice.actions;
 
 export default stepsSlice.reducer;
