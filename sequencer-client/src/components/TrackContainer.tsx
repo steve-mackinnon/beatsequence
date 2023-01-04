@@ -26,11 +26,7 @@ export function TrackContainer(props: TrackInfo): ReactElement {
       sx={{
         display: "flex",
         justifyContent: "space-evenly",
-        flexFlow: {
-          mobile: "row",
-          tablet: "row",
-          desktop: "row",
-        },
+        flexFlow: "row",
         paddingBottom: "10px",
         paddingLeft: "15px",
         paddingTop: "10px",

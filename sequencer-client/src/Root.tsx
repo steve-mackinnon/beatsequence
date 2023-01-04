@@ -42,7 +42,7 @@ const darkTheme = createTheme({
   breakpoints: {
     values: {
       mobile: 0,
-      tablet: 650,
+      tablet: 708,
       laptop: 1024,
       desktop: 1284,
     },

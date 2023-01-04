@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks";
+import React, { ReactElement, useState } from "react";
+import { useAppSelector, useAppDispatch, useMobileMode } from "../hooks";
 import { Button, Stack, IconButton } from "@mui/material";
 import { Tune } from "@mui/icons-material";
 import { SxProps } from "@mui/system";
@@ -39,16 +39,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     (state) => state.tracks[props.trackId].paramViewVisible
   );
   const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
-  const [mobileOrientation, setMobileOrientation] = useState(false);
-
-  useEffect(() => {
-    const handleResize = (): void => {
-      setMobileOrientation(document.body.clientWidth <= 650);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const mobileMode = useMobileMode();
 
   const dispatchMute = (): void => {
     if (isMuted) {
@@ -102,9 +93,9 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         >
           {trackName}
         </Button>
-        {!mobileOrientation && soloButton}
+        {!mobileMode && soloButton}
       </Stack>
-      {mobileOrientation && soloButton}
+      {mobileMode && soloButton}
       <TrackMenu trackId={props.trackId} />
       <IconButton onClick={onParamViewToggleClick}>
         <Tune

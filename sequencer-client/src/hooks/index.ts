@@ -8,6 +8,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export * from "./useAuth";
 export * from "./useCreateUserWithEmailAndPassword";
 export * from "./useLoadProject";
+export * from "./useMobileMode";
 export * from "./useParameter";
 export * from "./useProjects";
 export * from "./useProjectName";
