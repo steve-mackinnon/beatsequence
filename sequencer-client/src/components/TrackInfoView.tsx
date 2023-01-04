@@ -1,8 +1,8 @@
 import React, { ReactElement, useState } from "react";
 import { useAppSelector, useAppDispatch, useMobileMode } from "../hooks";
 import { Button, Stack, IconButton } from "@mui/material";
-import { Tune } from "@mui/icons-material";
-import { SxProps } from "@mui/system";
+import { Tune, ArrowLeft, ArrowRight } from "@mui/icons-material";
+import { SxProps, styled } from "@mui/system";
 import {
   mute,
   unmute,
@@ -10,6 +10,8 @@ import {
   toggleSolo,
   selectTrackIsEffectivelyMuted,
 } from "../reducers/tracksSlice";
+import { rotateLeft, rotateRight } from "../reducers/stepsSlice";
+
 import { TrackMenu } from "./TrackMenu";
 
 const getButtonStyle = (on: boolean, size: number): SxProps => {
@@ -51,6 +53,12 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const dispatchToggleSolo = (): void => {
     dispatch(toggleSolo({ trackId: props.trackId }));
   };
+  const onRotateLeftClick = (_: any): void => {
+    dispatch(rotateLeft({ trackId: props.trackId }));
+  };
+  const onRotateRightClick = (_: any): void => {
+    dispatch(rotateRight({ trackId: props.trackId }));
+  };
   const onEnableTrackButtonTouchStart = (e: any): void => {
     setReceivedTouchEvent(true);
     dispatchMute();
@@ -69,24 +77,33 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
     flexDirection: "column",
     alignItems: "center",
   };
+  const SmallIconButton = styled(IconButton)({
+    width: "50px",
+    height: "26px",
+  });
   const soloButton = (
-    <IconButton
-      sx={{ ...getButtonStyle(isSoloed, 40), fontSize: "1rem" }}
+    <SmallIconButton
+      aria-label="Toggle track solo"
+      sx={{
+        ...getButtonStyle(isSoloed, mobileMode ? 50 : 30),
+        fontSize: "1rem",
+        width: "30px",
+      }}
       onClick={() => dispatchToggleSolo()}
     >
       S
-    </IconButton>
+    </SmallIconButton>
   );
+  const horizontalRowStyle: SxProps = {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  };
   return (
     <Stack sx={containerStyle}>
-      <Stack
-        sx={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Stack sx={horizontalRowStyle}>
         <Button
+          aria-label="Toggle track enabled"
           sx={getButtonStyle(!isMuted, 56)}
           onTouchStart={onEnableTrackButtonTouchStart}
           onClick={onEnableTrackButtonClick}
@@ -96,14 +113,33 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
         {!mobileMode && soloButton}
       </Stack>
       {mobileMode && soloButton}
+      <Stack sx={horizontalRowStyle}>
+        <SmallIconButton
+          aria-label="Shift sequence left"
+          onClick={onRotateLeftClick}
+          sx={{ color: "rgb(219, 218, 174)" }}
+        >
+          <ArrowLeft />
+        </SmallIconButton>
+        <SmallIconButton
+          aria-label="Shift sequence right"
+          onClick={onRotateRightClick}
+          sx={{ color: "rgb(219, 218, 174)" }}
+        >
+          <ArrowRight />
+        </SmallIconButton>
+      </Stack>
       <TrackMenu trackId={props.trackId} />
-      <IconButton onClick={onParamViewToggleClick}>
+      <SmallIconButton
+        aria-label="Show additional controls"
+        onClick={onParamViewToggleClick}
+      >
         <Tune
           sx={{
             color: showParamView ? "rgb(219, 218, 174)" : "rgb(153, 134, 100)",
           }}
         />
-      </IconButton>
+      </SmallIconButton>
     </Stack>
   );
 }
