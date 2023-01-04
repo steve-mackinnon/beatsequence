@@ -2,9 +2,9 @@ import { rotateStepsLeft, rotateStepsRight } from "./stepRotator";
 
 describe("left rotation", () => {
   const steps = [
-    { enabled: true, coarsePitch: 0 },
-    { enabled: false, coarsePitch: 1 },
-    { enabled: false, coarsePitch: 2 },
+    { enabled: true, note: "C3" },
+    { enabled: false, note: "C#3" },
+    { enabled: false, note: "D4" },
   ];
   const rotatedSteps = rotateStepsLeft(steps);
   test("first step becomes last step", () => {
@@ -20,9 +20,9 @@ describe("left rotation", () => {
 
 describe("right rotation", () => {
   const steps = [
-    { enabled: true, coarsePitch: 0 },
-    { enabled: false, coarsePitch: 1 },
-    { enabled: false, coarsePitch: 2 },
+    { enabled: true, note: "C3" },
+    { enabled: false, note: "C#3" },
+    { enabled: false, note: "D4" },
   ];
   const rotatedSteps = rotateStepsRight(steps);
   test("first step becomes second step", () => {

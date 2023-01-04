@@ -3,7 +3,7 @@ import { Song, DEFAULT_SONG } from "../entities/song";
 
 export interface SongParamPayload {
   paramId: string;
-  value: number;
+  value: number | string;
 }
 export interface SaveAsPayload {
   name: string;
@@ -27,7 +27,7 @@ export const songSlice = createSlice({
       song.playing = false;
     },
     setParam: (song, action: PayloadAction<SongParamPayload>) => {
-      song.tempo = action.payload.value;
+      song.tempo = action.payload.value as number;
     },
     loadSong: (song, action: PayloadAction<Song>) => {
       song.id = action.payload.id;
@@ -40,7 +40,7 @@ export const songSlice = createSlice({
       song.tempo = action.payload.tempo;
     },
     newProject: (song, _) => {
-      song.name = "New project";
+      song.name = "Untitled";
       song.tempo = 127;
       song.playing = false;
     },

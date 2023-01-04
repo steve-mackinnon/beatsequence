@@ -16,7 +16,7 @@ test("serialize and deserialize", () => {
     for (let stepIndex = 0; stepIndex < 16; ++stepIndex) {
       steps[trackIndex].push({
         enabled: true,
-        coarsePitch: 12,
+        note: "C4",
       });
     }
   }
@@ -83,7 +83,7 @@ test("deserialize old format", () => {
       steps.push({
         enabled: true,
         params: {
-          coarsePitch: 14,
+          coarsePitch: 12,
         },
         stepIndex,
         trackId: trackIndex,
@@ -121,5 +121,5 @@ test("deserialize old format", () => {
     100
   );
   // New step format has coarsePitch
-  expect(deserialized.pattern.steps[0][0].coarsePitch).toEqual(14);
+  expect(deserialized.pattern.steps[0][0].note).toEqual("C4");
 });

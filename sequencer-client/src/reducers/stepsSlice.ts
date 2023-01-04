@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import seedrandom from "seedrandom";
 import { sequencerEngine } from "../engine";
 import { DEFAULT_PATTERN } from "../entities/pattern";
-import { Step } from "../entities/step";
+import { Step, generateRandomNote } from "../entities/step";
 import { rotateStepsLeft, rotateStepsRight } from "../entities/stepRotator";
 export interface StepInfo {
   trackId: number;
@@ -13,7 +13,7 @@ interface SetParamPayload {
   paramId: string;
   trackId: number;
   stepIndex: number;
-  value: number;
+  value: number | string;
 }
 
 interface SequencerMacroPayload {
@@ -46,7 +46,10 @@ export const stepsSlice = createSlice({
     setParam: (state, action: PayloadAction<SetParamPayload>) => {
       // TODO: this assumes that the param is always coarse pitch
       const step = state[action.payload.trackId][action.payload.stepIndex];
-      step.coarsePitch = action.payload.value;
+      if (typeof action.payload.value === "number") {
+        throw new Error("setParam only supports string values in stepsSlice");
+      }
+      step.note = action.payload.value;
     },
     twoOnTheFloor: (state, action: PayloadAction<SequencerMacroPayload>) => {
       state[action.payload.trackId].forEach((step: Step, stepIndex: number) => {
@@ -69,7 +72,7 @@ export const stepsSlice = createSlice({
         ) {
           trackSteps.forEach((step: Step, stepIndex: number) => {
             step.enabled = rng.quick() > 0.5;
-            step.coarsePitch = Math.floor(rng.quick() * (36 * 2) - 36);
+            step.note = generateRandomNote(rng);
           });
         }
       });

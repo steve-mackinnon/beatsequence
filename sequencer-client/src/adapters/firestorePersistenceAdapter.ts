@@ -1,4 +1,4 @@
-import { Step } from "../entities/step";
+import { Step, pitchOffsetToNoteName } from "../entities/step";
 import { Track } from "../entities/track";
 import { Project } from "../entities/project";
 import { Pattern } from "../entities/pattern";
@@ -50,7 +50,7 @@ function maybeMigrateStepsFromv1(steps: any[]): Step[] {
     return steps.map((step: StepV1) => {
       return {
         enabled: step.enabled,
-        coarsePitch: step.params.coarsePitch,
+        note: pitchOffsetToNoteName(step.params.coarsePitch),
       };
     });
   }

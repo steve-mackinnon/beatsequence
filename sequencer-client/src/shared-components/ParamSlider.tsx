@@ -85,7 +85,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
           return value;
         }}
         onChange={onChange}
-        value={value}
+        value={value as number}
         valueLabelDisplay="auto"
         valueLabelFormat={(value: number) =>
           formatValueLabel(value, props.paramInfo.round ?? false)

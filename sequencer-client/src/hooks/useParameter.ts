@@ -10,16 +10,18 @@ export interface ParamInfo {
   min: number;
   max: number;
   round?: boolean;
+  toNumber?: (value: string) => number;
+  toString?: (value: number) => string;
 }
 
 export function useParameter(
   paramInfo: ParamInfo
-): [number, (newValue: number) => void] {
+): [number | string, (newValue: number | string) => void] {
   const paramValue = useAppSelector((state) => {
     if (paramInfo.stepIndex != null && paramInfo.trackId != null) {
       // TODO: This hack assumes steps only have a coarse pitch parameter
       const step = state.steps[paramInfo.trackId][paramInfo.stepIndex];
-      return step.coarsePitch;
+      return step.note;
     } else if (paramInfo.trackId != null) {
       const track = state.tracks[paramInfo.trackId];
       return track.generatorParams[paramInfo.name as keyof CommonParams];
@@ -31,15 +33,17 @@ export function useParameter(
 
   return [
     paramValue,
-    (newValue: number): void => {
+    (newValue: number | string): void => {
       let value = newValue;
-      if (value > paramInfo.max) {
-        value = paramInfo.max;
-      } else if (value < paramInfo.min) {
-        value = paramInfo.min;
-      }
-      if (paramInfo.round ?? false) {
-        value = Math.round(value);
+      if (typeof value === "number") {
+        if (value > paramInfo.max) {
+          value = paramInfo.max;
+        } else if (value < paramInfo.min) {
+          value = paramInfo.min;
+        }
+        if (paramInfo.round ?? false) {
+          value = Math.round(value);
+        }
       }
       if (paramInfo.trackId == null) {
         dispatch(
@@ -62,7 +66,7 @@ export function useParameter(
           setGeneratorParam({
             paramId: paramInfo.name,
             trackId: paramInfo.trackId,
-            paramValue: value,
+            paramValue: value as number,
           })
         );
       }
