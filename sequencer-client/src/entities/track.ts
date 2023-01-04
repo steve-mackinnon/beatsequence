@@ -63,7 +63,7 @@ function decayTimeForGeneratorType(generatorType: GeneratorType): number {
     case GeneratorType.Kick:
       return 0.4;
     case GeneratorType.Snare:
-      return 0.2;
+      return 0.1;
     case GeneratorType.ClosedHH:
       return 0.03;
     case GeneratorType.SineBleep:
@@ -80,11 +80,11 @@ function gainForGeneratorType(generatorType: GeneratorType): number {
     case GeneratorType.Snare:
       return 1.2;
     case GeneratorType.ClosedHH:
-      return 0.8;
+      return 0.4;
     case GeneratorType.SineBleep:
-      return 1.2;
+      return 1.1;
     case GeneratorType.SquareBleep:
-      return 1.2;
+      return 1.1;
   }
 }
 
