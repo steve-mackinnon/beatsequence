@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { Button, Stack, IconButton } from "@mui/material";
-import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import { Tune } from "@mui/icons-material";
 import { SxProps } from "@mui/system";
 import {
   mute,
@@ -46,6 +46,7 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
       setMobileOrientation(document.body.clientWidth <= 650);
     };
     window.addEventListener("resize", handleResize);
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -87,14 +88,6 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   );
   return (
     <Stack sx={containerStyle}>
-      <Button
-        sx={getButtonStyle(!isMuted, 56)}
-        onTouchStart={onEnableTrackButtonTouchStart}
-        onClick={onEnableTrackButtonClick}
-      >
-        {trackName}
-      </Button>
-      {mobileOrientation && soloButton}
       <Stack
         sx={{
           flexDirection: "row",
@@ -102,11 +95,23 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
           alignItems: "center",
         }}
       >
-        <TrackMenu trackId={props.trackId} />
+        <Button
+          sx={getButtonStyle(!isMuted, 56)}
+          onTouchStart={onEnableTrackButtonTouchStart}
+          onClick={onEnableTrackButtonClick}
+        >
+          {trackName}
+        </Button>
         {!mobileOrientation && soloButton}
       </Stack>
+      {mobileOrientation && soloButton}
+      <TrackMenu trackId={props.trackId} />
       <IconButton onClick={onParamViewToggleClick}>
-        {showParamView ? <ExpandLess /> : <ExpandMore />}
+        <Tune
+          sx={{
+            color: showParamView ? "rgb(219, 218, 174)" : "rgb(153, 134, 100)",
+          }}
+        />
       </IconButton>
     </Stack>
   );

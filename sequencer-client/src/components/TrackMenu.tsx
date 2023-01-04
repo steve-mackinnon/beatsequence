@@ -45,7 +45,12 @@ export function TrackMenu(props: TrackMenuProps): ReactElement {
 
   return (
     <>
-      <IconButton {...bindTrigger(popupState)}>
+      <IconButton
+        {...bindTrigger(popupState)}
+        sx={{
+          color: "rgb(219, 218, 174)",
+        }}
+      >
         <MoreHoriz />
       </IconButton>
       <Menu {...bindMenu(popupState)}>
