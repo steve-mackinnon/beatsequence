@@ -21,3 +21,5 @@ next-env.d.ts
 
 .parcel-cache
 /dist
+
+.firebaserc
