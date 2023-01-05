@@ -18,3 +18,8 @@ npm-debug.log
 next-env.d.ts
 
 *.log
+
+.parcel-cache
+/dist
+
+.firebaserc

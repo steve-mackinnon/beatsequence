@@ -7,7 +7,7 @@ import {
   selectTrackHasCoarsePitchParam,
   selectTrackIsEffectivelyMuted,
 } from "../reducers/tracksSlice";
-import styles from "./SequencerStep.module.css";
+import * as styles from "./SequencerStep.module.css";
 import { noteNameToPitchOffset, pitchOffsetToNoteName } from "../entities";
 
 export interface SequencerStepProps {

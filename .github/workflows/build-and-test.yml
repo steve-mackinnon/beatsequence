@@ -32,5 +32,5 @@ jobs:
         cache: 'npm'
         cache-dependency-path: sequencer-client/yarn.lock
     - run: yarn install --frozen-lockfile
-    - run: yarn run build --if-present
+    - run: yarn run build
     - run: yarn test

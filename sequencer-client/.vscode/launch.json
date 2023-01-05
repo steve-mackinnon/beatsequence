@@ -8,8 +8,12 @@
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "url": "http://localhost:1234",
+      "webRoot": "${workspaceFolder}",
+      "breakOnLoad": true,
+      "sourceMapPathOverrides": {
+        "/__parcel_source_root/*": "${webRoot}/*"
+      }
     },
     {
       "name": "Debug CRA Tests",
