@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { Button, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
-import styles from "../styles/Homepage.module.css";
+import * as styles from "../styles/Homepage.module.css";
 export default function Home(): ReactElement {
   const MainContainer = styled("main")({
     display: "flex",
