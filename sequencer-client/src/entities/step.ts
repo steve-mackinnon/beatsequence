@@ -24,7 +24,7 @@ export function extractNoteAndOctave(noteName: string): NoteAndOctave {
   if (noteNameParts.length < 2) {
     throw new Error("Invalid input note name");
   }
-  if (!NOTES.includes(noteNameParts[0])) {
+  if (!(NOTES as string[]).includes(noteNameParts[0])) {
     throw new Error("Invalid input");
   }
   const noteNamePart = noteNameParts[0];
