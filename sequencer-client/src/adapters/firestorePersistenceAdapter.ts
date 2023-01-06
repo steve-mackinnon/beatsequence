@@ -4,6 +4,7 @@ import { Project } from "../entities/project";
 import { Pattern } from "../entities/pattern";
 import { Note } from "../entities/note";
 import { ScaleType } from "../entities/musicalScale";
+import { Song } from "../entities/song";
 
 export interface ProjectPayload {
   readers: string[];
@@ -76,6 +77,19 @@ function maybeMigrateSteps(steps: any[]): Step[] {
   return steps;
 }
 
+function maybeMigrateSong(song: any): any {
+  if (song.scale != null) {
+    return song;
+  }
+  return {
+    ...song,
+    scale: {
+      rootNote: "C",
+      type: "chromatic",
+    },
+  };
+}
+
 function maybeMigrateTracksFromV1(tracks: any[]): Track[] {
   // Bail early if tracks are not in the v1 format
   if (
@@ -94,6 +108,7 @@ export const extractProjectFromPayload = (payload: ProjectPayload): Project => {
   let { name, tracks, steps, song } = payload;
   steps = maybeMigrateSteps(steps);
   tracks = maybeMigrateTracksFromV1(tracks);
+  song = maybeMigrateSong(song);
 
   const stepsForEachTrack = new Array<Step[]>();
   const numStepsPerTrack = steps.length / tracks.length;
