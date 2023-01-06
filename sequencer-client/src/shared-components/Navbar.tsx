@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import ProfileMenu from "../components/ProfileMenu";
 import { useAuth } from "../hooks";
+import logo from "../../public/beatsequence-logo-white.png";
 
 interface NavbarProps {
   showSignInLink?: boolean;
@@ -34,12 +35,7 @@ export default function Navbar(props: NavbarProps): ReactElement {
             height: 30,
           }}
         >
-          <img
-            src="beatsequence-logo-white.png"
-            alt="Beatsequence homepage"
-            width={160}
-            height={30}
-          />
+          <img src={logo} alt="Beatsequence homepage" width={160} height={30} />
         </Link>
         <Stack
           flexDirection="row"
