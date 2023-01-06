@@ -2,6 +2,8 @@ import { Step, pitchOffsetToNoteName } from "../entities/step";
 import { Track } from "../entities/track";
 import { Project } from "../entities/project";
 import { Pattern } from "../entities/pattern";
+import { Note } from "../entities/note";
+import { ScaleType } from "../entities/musicalScale";
 
 export interface ProjectPayload {
   readers: string[];
@@ -12,6 +14,10 @@ export interface ProjectPayload {
   song: {
     params: {
       tempo: number;
+    };
+    scale: {
+      rootNote: Note;
+      type: ScaleType;
     };
   };
 }
@@ -32,6 +38,7 @@ export const createProjectPayload = (
       params: {
         tempo: project.song.tempo,
       },
+      scale: project.song.scale,
     },
   };
 };
@@ -108,6 +115,7 @@ export const extractProjectFromPayload = (payload: ProjectPayload): Project => {
       name,
       tempo: song.params.tempo,
       playing: false,
+      scale: song.scale,
     },
     pattern,
     tracks,

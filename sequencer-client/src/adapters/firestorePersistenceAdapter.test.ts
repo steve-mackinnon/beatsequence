@@ -49,6 +49,10 @@ test("serialize and deserialize", () => {
     name: "My song",
     tempo: 42,
     playing: false,
+    scale: {
+      rootNote: "C",
+      type: "chromatic",
+    },
   };
   const project: Project = {
     song,
@@ -122,6 +126,11 @@ test("deserialize v1 format", () => {
   );
   // New step format has coarsePitch
   expect(deserialized.pattern.steps[0][0].note).toEqual("C4");
+  // New song format has a C chromatic scale by default
+  expect(deserialized.song.scale).toEqual({
+    rootNote: "C",
+    type: "chromatic",
+  });
 });
 
 interface StepV2 {

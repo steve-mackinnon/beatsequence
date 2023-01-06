@@ -5,6 +5,7 @@ import { Limiter, ToneAudioNode, Transport } from "tone";
 import { Track } from "../entities/track";
 import { generateRandomNote, Step, noteToHz } from "../entities/step";
 import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
+import { Note } from "../entities/note";
 import {
   GetNotesForScale,
   MusicalScale,
@@ -49,7 +50,7 @@ export class SequencerEngine {
   private _currentStep: number = 0;
   private _tempo: number = 127.0;
   private _scale: MusicalScale = { rootNote: "C", type: "chromatic" };
-  private readonly _scaleNotes: Note[] = GetNotesForScale(this._scale);
+  private _scaleNotes: Note[] = GetNotesForScale(this._scale);
 
   set tempo(tempo: number) {
     this._tempo = tempo;
@@ -218,7 +219,7 @@ export class SequencerEngine {
     this._stepChangedCallbacks[trackIndex][stepIndex] = callback;
   }
 
-  setScale(scale: Scale): void {
+  setScale(scale: MusicalScale): void {
     if (scale === this._scale) {
       return;
     }
