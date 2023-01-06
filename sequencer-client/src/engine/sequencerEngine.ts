@@ -5,6 +5,11 @@ import { Limiter, ToneAudioNode, Transport } from "tone";
 import { Track } from "../entities/track";
 import { generateRandomNote, Step, noteToHz } from "../entities/step";
 import { shouldTrackBeMuted } from "../entities/soloMuteHandler";
+import {
+  GetNotesForScale,
+  MusicalScale,
+  snapStepToScale,
+} from "../entities/musicalScale";
 
 function makeGenerator(
   type: GeneratorType,
@@ -43,6 +48,8 @@ export class SequencerEngine {
   private readonly _timerID: any = undefined;
   private _currentStep: number = 0;
   private _tempo: number = 127.0;
+  private _scale: MusicalScale = { rootNote: "C", type: "chromatic" };
+  private readonly _scaleNotes: Note[] = GetNotesForScale(this._scale);
 
   set tempo(tempo: number) {
     this._tempo = tempo;
@@ -123,10 +130,11 @@ export class SequencerEngine {
         ) {
           return;
         }
+        const snappedStep = snapStepToScale(step, this._scaleNotes);
         this._generators[index].trigger(
           time,
           trackState.generatorParams,
-          noteToHz(step.note)
+          noteToHz(snappedStep.note)
         );
       });
       this._currentStep += 1;
@@ -208,6 +216,14 @@ export class SequencerEngine {
     callback: StepChangedCallback | null
   ): void {
     this._stepChangedCallbacks[trackIndex][stepIndex] = callback;
+  }
+
+  setScale(scale: Scale): void {
+    if (scale === this._scale) {
+      return;
+    }
+    this._scale = scale;
+    this._scaleNotes = GetNotesForScale(scale);
   }
 }
 

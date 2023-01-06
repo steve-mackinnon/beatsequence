@@ -1,3 +1,4 @@
+import { Note, NOTES } from "./note";
 import seedrandom from "seedrandom";
 
 export interface Step {
@@ -6,29 +7,34 @@ export interface Step {
 }
 
 export function noteNameToPitchOffset(noteName: string): number {
-  const noteNames = [
-    "C",
-    "C#",
-    "D",
-    "D#",
-    "E",
-    "F",
-    "F#",
-    "G",
-    "G#",
-    "A",
-    "A#",
-    "B",
-  ];
   // Split the note name into its parts
-  const noteNameParts = noteName.split(/(-?[0-9]+)/);
-  const noteNamePart = noteNameParts[0];
-  const octavePart = noteNameParts[1];
-  const octave = parseInt(octavePart) - 3;
-  const noteIndex = noteNames.indexOf(noteNamePart);
-  return octave * 12 + noteIndex;
+  const { note, octave } = extractNoteAndOctave(noteName);
+  const noteIndex = NOTES.indexOf(note);
+  // Octave 3 is the octave that contains middle C, so we treat C3 as 0
+  return (octave - 3) * 12 + noteIndex;
 }
 
+export interface NoteAndOctave {
+  note: Note;
+  octave: number;
+}
+
+export function extractNoteAndOctave(noteName: string): NoteAndOctave {
+  const noteNameParts = noteName.split(/(-?[0-9]+)/);
+  if (noteNameParts.length < 2) {
+    throw new Error("Invalid input note name");
+  }
+  if (!NOTES.includes(noteNameParts[0])) {
+    throw new Error("Invalid input");
+  }
+  const noteNamePart = noteNameParts[0];
+  const octavePart = noteNameParts[1];
+  const octave = parseInt(octavePart);
+  return {
+    note: noteNamePart as Note,
+    octave,
+  };
+}
 export function pitchOffsetToNoteName(coarsePitch: number): string {
   const noteNames = [
     "C",

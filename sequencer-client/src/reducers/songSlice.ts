@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Song, DEFAULT_SONG } from "../entities/song";
+import { ScaleType } from "../entities/musicalScale";
+import { Note } from "../entities/note";
 
 export interface SongParamPayload {
   paramId: string;
@@ -44,6 +46,12 @@ export const songSlice = createSlice({
       song.tempo = 127;
       song.playing = false;
     },
+    setScaleRootNote: (song, action: PayloadAction<Note>) => {
+      song.scale.rootNote = action.payload;
+    },
+    setScaleType: (song, action: PayloadAction<ScaleType>) => {
+      song.scale.type = action.payload;
+    },
   },
 });
 
@@ -54,5 +62,7 @@ export const {
   loadSong,
   newProject,
   projectSavedAs,
+  setScaleRootNote,
+  setScaleType,
 } = songSlice.actions;
 export default songSlice.reducer;

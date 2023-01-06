@@ -5,6 +5,7 @@ import { IconButton } from "@mui/material";
 import { PlayArrow, Pause, Casino } from "@mui/icons-material";
 import { Stack } from "@mui/system";
 import { randomize } from "../reducers/stepsSlice";
+import { ScaleSelectionToolbarButtons } from "./ScaleSelectionToolbarButtons";
 
 export function FooterControls(): ReactElement {
   const dispatch = useAppDispatch();
@@ -38,13 +39,18 @@ export function FooterControls(): ReactElement {
       }}
     >
       <div />
-      <IconButton onClick={onRandomizeClick}>
+      <ScaleSelectionToolbarButtons />
+      <IconButton
+        onClick={onRandomizeClick}
+        aria-label={"Randomize all tracks"}
+      >
         <Casino color="action" />
       </IconButton>
       <IconButton
         onClick={onPlayStopClick}
         onFocus={(_) => blurOnFocus(playRef)}
         ref={playRef}
+        aria-label={"Toggle playback"}
       >
         {playing ? <Pause /> : <PlayArrow />}
       </IconButton>

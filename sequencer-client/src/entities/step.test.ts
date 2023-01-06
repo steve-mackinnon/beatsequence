@@ -1,4 +1,9 @@
-import { pitchOffsetToNoteName, noteNameToPitchOffset, noteToHz } from "./step";
+import {
+  pitchOffsetToNoteName,
+  noteNameToPitchOffset,
+  noteToHz,
+  extractNoteAndOctave,
+} from "./step";
 
 describe("map coarse pitch to note name", () => {
   test("0 pitch offest maps to C3", () => {
@@ -66,5 +71,31 @@ describe("note to Hz", () => {
   });
   test("G1 is 49.00 Hz", () => {
     expect(noteToHz("G1")).toBeCloseTo(49);
+  });
+});
+
+describe("extract note and octave", () => {
+  test("C3 returns C and 3", () => {
+    expect(extractNoteAndOctave("C3")).toEqual({ note: "C", octave: 3 });
+  });
+  test("C#3 returns C# and 3", () => {
+    expect(extractNoteAndOctave("C#3")).toEqual({ note: "C#", octave: 3 });
+  });
+  test("C#-2 returns C# and -2", () => {
+    expect(extractNoteAndOctave("C#-2")).toEqual({ note: "C#", octave: -2 });
+  });
+  describe("invalid input", () => {
+    test("empty input fails", () => {
+      expect(() => extractNoteAndOctave("")).toThrow();
+    });
+    test("invalid note fails", () => {
+      expect(() => extractNoteAndOctave("X3")).toThrow();
+    });
+    test("invalid octave fails", () => {
+      expect(() => extractNoteAndOctave("C")).toThrow();
+    });
+    test("invalid string fails", () => {
+      expect(() => extractNoteAndOctave("foobar")).toThrow();
+    });
   });
 });
