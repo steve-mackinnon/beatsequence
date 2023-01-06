@@ -1,3 +1,4 @@
+import { Note, NOTES } from "./note";
 import seedrandom from "seedrandom";
 
 export interface Step {
@@ -5,20 +6,6 @@ export interface Step {
   note: string;
 }
 
-export const NOTES: Note[] = [
-  "C",
-  "C#",
-  "D",
-  "D#",
-  "E",
-  "F",
-  "F#",
-  "G",
-  "G#",
-  "A",
-  "A#",
-  "B",
-];
 export function noteNameToPitchOffset(noteName: string): number {
   // Split the note name into its parts
   const { note, octave } = extractNoteAndOctave(noteName);
@@ -26,20 +13,6 @@ export function noteNameToPitchOffset(noteName: string): number {
   // Octave 3 is the octave that contains middle C, so we treat C3 as 0
   return (octave - 3) * 12 + noteIndex;
 }
-
-export type Note =
-  | "C"
-  | "C#"
-  | "D"
-  | "D#"
-  | "E"
-  | "F"
-  | "F#"
-  | "G"
-  | "G#"
-  | "A"
-  | "A#"
-  | "B";
 
 export interface NoteAndOctave {
   note: Note;

@@ -5,6 +5,8 @@ import {
   shutDownAudioEngine,
   loadSong,
   newProject,
+  setScaleRootNote,
+  setScaleType,
 } from "../reducers/songSlice";
 import { RootState } from "../store";
 import { audioEngine, sequencerEngine } from "../engine";
@@ -61,5 +63,21 @@ songListenerMiddleware.startListening({
         sequencerEngine.setStepState(trackIndex, stepIndex, step);
       });
     });
+  },
+});
+
+songListenerMiddleware.startListening({
+  actionCreator: setScaleRootNote,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sequencerEngine.setScale(state.song.scale);
+  },
+});
+
+songListenerMiddleware.startListening({
+  actionCreator: setScaleType,
+  effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sequencerEngine.setScale(state.song.scale);
   },
 });

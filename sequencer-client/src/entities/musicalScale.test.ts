@@ -1,15 +1,19 @@
-import { MakeMusicalScale, snapStepToScale } from "./musicalScale";
-import { Step } from "./step";
+import { snapStepToScale, GetNotesForScale } from "./musicalScale";
 
 describe("make a scale", () => {
   test("C major equals C D E F G A B", () => {
-    const scale = MakeMusicalScale("C", "major");
-    expect(scale.notes).toEqual(["C", "D", "E", "F", "G", "A", "B"]);
-    expect(scale.scaleType).toEqual("major");
-    expect(scale.rootNote).toEqual("C");
+    expect(GetNotesForScale({ rootNote: "C", type: "major" })).toEqual([
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B",
+    ]);
   });
   test("A minor equals A B C D E F G", () => {
-    expect(MakeMusicalScale("A", "minor").notes).toEqual([
+    expect(GetNotesForScale({ rootNote: "A", type: "minor" })).toEqual([
       "A",
       "B",
       "C",
@@ -20,7 +24,7 @@ describe("make a scale", () => {
     ]);
   });
   test("G chromatic equals G G# A A# B C C# D D# E F F#", () => {
-    expect(MakeMusicalScale("G", "chromatic").notes).toEqual([
+    expect(GetNotesForScale({ rootNote: "G", type: "chromatic" })).toEqual([
       "G",
       "G#",
       "A",
@@ -39,7 +43,7 @@ describe("make a scale", () => {
 
 describe("snap step to a scale", () => {
   test("snap to C major", () => {
-    const scale = MakeMusicalScale("C", "major");
+    const scale = GetNotesForScale({ rootNote: "C", type: "major" });
     expect(
       snapStepToScale(
         {
@@ -62,7 +66,7 @@ describe("snap step to a scale", () => {
     });
   });
   test("snap to E minor", () => {
-    const scale = MakeMusicalScale("E", "minor");
+    const scale = GetNotesForScale({ rootNote: "E", type: "minor" });
     expect(snapStepToScale({ enabled: true, note: "F4" }, scale)).toEqual({
       enabled: true,
       note: "E4",
