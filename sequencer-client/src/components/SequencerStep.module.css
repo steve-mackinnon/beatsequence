@@ -55,7 +55,7 @@ input.SequencerStep.playing[type=checkbox] {
   background-color: rgb(166, 38, 115);
 }
 input.SequencerStep.muted.playing[type=checkbox] {
-  background-color: rgb(72, 77, 75);
+  background-color: rgb(77, 20, 54);
 }
 input.SequencerStep.muted[type=checkbox] {
   background-color: rgb(76, 81, 79);
