@@ -5,19 +5,12 @@ import { Provider } from "react-redux";
 import "normalize.css/normalize.css";
 import "./styles/global.css";
 import { store } from "./store";
-import {
-  FirebaseAppProvider,
-  AppCheckProvider,
-  FirestoreProvider,
-  AuthProvider,
-} from "reactfire";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Outlet } from "react-router-dom";
 import Layout from "./shared-components/Layout";
-import { app, db, auth, appCheck } from "./firebase";
 import { PortProviderContext } from "./context/PortProviderContext";
 import { PortProvider } from "./PortProvider";
 
@@ -68,22 +61,14 @@ const portProvider = new PortProvider();
 function App(): React.ReactElement {
   return (
     <PortProviderContext.Provider value={portProvider}>
-      <FirebaseAppProvider firebaseApp={app}>
-        <AppCheckProvider sdk={appCheck}>
-          <AuthProvider sdk={auth}>
-            <FirestoreProvider sdk={db}>
-              <Provider store={store}>
-                <ThemeProvider theme={darkTheme}>
-                  <CssBaseline />
-                  <Layout>
-                    <Outlet />
-                  </Layout>
-                </ThemeProvider>
-              </Provider>
-            </FirestoreProvider>
-          </AuthProvider>
-        </AppCheckProvider>
-      </FirebaseAppProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <Layout>
+            <Outlet />
+          </Layout>
+        </ThemeProvider>
+      </Provider>
     </PortProviderContext.Provider>
   );
 }

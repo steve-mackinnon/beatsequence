@@ -1,12 +1,11 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+import { app } from "../firebase";
 import { useState, useEffect } from "react";
 
 export interface Auth {
   uid: string | undefined;
 }
 export function useAuth(): Auth {
-  const app = useFirebaseApp();
   const [uid, setUid] = useState<string | undefined>(
     getAuth(app).currentUser?.uid
   );
@@ -16,7 +15,7 @@ export function useAuth(): Auth {
       setUid(user?.uid);
     });
     return unsubscribe;
-  }, [app]);
+  }, []);
 
   return {
     uid,
