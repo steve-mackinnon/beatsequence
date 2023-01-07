@@ -69,7 +69,7 @@ function decayTimeForGeneratorType(generatorType: GeneratorType): number {
     case GeneratorType.SineBleep:
       return 0.26;
     case GeneratorType.SquareBleep:
-      return 0.12;
+      return 0.1;
   }
 }
 
@@ -82,9 +82,9 @@ function gainForGeneratorType(generatorType: GeneratorType): number {
     case GeneratorType.ClosedHH:
       return 0.4;
     case GeneratorType.SineBleep:
-      return 1.1;
+      return 1.0;
     case GeneratorType.SquareBleep:
-      return 1.1;
+      return 0.6;
   }
 }
 
