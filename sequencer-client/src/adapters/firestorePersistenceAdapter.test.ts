@@ -51,7 +51,7 @@ test("serialize and deserialize", () => {
     playing: false,
     scale: {
       rootNote: "C",
-      type: "chromatic",
+      type: "Chromatic",
     },
   };
   const project: Project = {
