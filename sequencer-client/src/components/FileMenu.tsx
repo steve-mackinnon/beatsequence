@@ -52,15 +52,17 @@ export default function FileMenu(): ReactElement {
   const menuItems: ReactElement[] = [];
   if (auth.currentUser == null) {
     menuItems.push(
-      <MenuItem onClick={handleCreateAccountClick}>
+      <MenuItem onClick={handleCreateAccountClick} key={"createAccount"}>
         Create an account to save...
       </MenuItem>
     );
   } else {
     menuItems.push(
-      <MenuItem onClick={handleNewProjectClick}>New project</MenuItem>
+      <MenuItem onClick={handleNewProjectClick} key={"newProject"}>
+        New project
+      </MenuItem>
     );
-    menuItems.push(<Divider />);
+    menuItems.push(<Divider key="div1" />);
     menuItems.push(
       <MenuItem
         disabled={!canSave}
@@ -70,6 +72,7 @@ export default function FileMenu(): ReactElement {
             popupState.close();
           })();
         }}
+        key={"save"}
       >
         Save
       </MenuItem>
@@ -79,6 +82,7 @@ export default function FileMenu(): ReactElement {
         onClick={() => {
           setSaveAsDialogOpen(true);
         }}
+        key={"saveAs"}
       >
         Save As...
       </MenuItem>

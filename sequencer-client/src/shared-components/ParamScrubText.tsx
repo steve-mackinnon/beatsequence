@@ -93,6 +93,7 @@ export function ParamScrubText(paramInfo: ParamInfo): ReactElement {
         width: 50,
       }}
       value={value}
+      onChange={(e) => setValue(e.target.value)}
       onMouseDown={onMouseDown}
       onTouchStartCapture={onTouchStart}
     />
