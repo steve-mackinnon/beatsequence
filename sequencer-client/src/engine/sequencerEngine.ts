@@ -22,8 +22,9 @@ function makeGenerator(
     case GeneratorType.ClosedHH:
       return new HiHat(destination);
     case GeneratorType.SineBleep:
+      return new Pluck(destination, "sine");
     case GeneratorType.SquareBleep:
-      return new Pluck(destination);
+      return new Pluck(destination, "square");
     case GeneratorType.Snare:
       return new Snare(destination);
   }
