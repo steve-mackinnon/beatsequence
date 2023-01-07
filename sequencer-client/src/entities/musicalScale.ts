@@ -2,17 +2,17 @@ import { Step, extractNoteAndOctave } from "./step";
 import { Note, NOTES } from "./note";
 
 export type ScaleType =
-  | "major"
-  | "minor"
-  | "chromatic"
-  | "double harm min"
-  | "double harm maj";
+  | "Major"
+  | "Minor"
+  | "Chromatic"
+  | "Double Harm. Min."
+  | "Double Harm. Maj.";
 export const SCALE_TYPES: ScaleType[] = [
-  "major",
-  "minor",
-  "chromatic",
-  "double harm min",
-  "double harm maj",
+  "Major",
+  "Minor",
+  "Chromatic",
+  "Double Harm. Min.",
+  "Double Harm. Maj.",
 ];
 
 export interface MusicalScale {
@@ -30,19 +30,19 @@ function getScaleNotes(rootNote: Note, scaleType: ScaleType): Note[] {
   const rootNoteIndex = NOTES.indexOf(rootNote);
   let scaleIndices: number[];
   switch (scaleType) {
-    case "major":
+    case "Major":
       scaleIndices = MAJOR_SCALE_INDICES;
       break;
-    case "minor":
+    case "Minor":
       scaleIndices = MINOR_SCALE_INDICES;
       break;
-    case "chromatic":
+    case "Chromatic":
       scaleIndices = CHROMATIC_SCALE_INDICES;
       break;
-    case "double harm min":
+    case "Double Harm. Min.":
       scaleIndices = DOUBLE_HARM_MINOR_INDICES;
       break;
-    case "double harm maj":
+    case "Double Harm. Maj.":
       scaleIndices = DOUBLE_HARM_MAJOR_INDICES;
       break;
   }
