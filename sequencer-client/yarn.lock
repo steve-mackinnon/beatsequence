@@ -2699,7 +2699,7 @@
     "@parcel/utils" "2.8.2"
     posthtml "^0.16.4"
 
-"@parcel/plugin@2.8.2":
+"@parcel/plugin@2.8.2", "@parcel/plugin@^2.2.1":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@parcel/plugin/-/plugin-2.8.2.tgz#f8d147cf32e52f7feff245d64d640890a18a6fd9"
   integrity sha512-YG7TWfKsoNm72jbz3b3TLec0qJHVkuAWSzGzowdIhX37cP1kRfp6BU2VcH+qYPP/KYJLzhcZa9n3by147mGcxw==
@@ -2769,7 +2769,7 @@
     "@parcel/utils" "2.8.2"
     nullthrows "^1.1.1"
 
-"@parcel/source-map@^2.1.1":
+"@parcel/source-map@^2.0.2", "@parcel/source-map@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@parcel/source-map/-/source-map-2.1.1.tgz#fb193b82dba6dd62cc7a76b326f57bb35000a782"
   integrity sha512-Ejx1P/mj+kMjQb8/y5XxDUn4reGdr+WyKYloBljpppUy8gs42T+BNoEOuRYqDVdgPc6NxduzIDoJS9pOFfV5Ew==
@@ -2909,6 +2909,13 @@
     posthtml-render "^3.0.0"
     semver "^5.7.1"
 
+"@parcel/ts-utils@^2.2.1":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@parcel/ts-utils/-/ts-utils-2.8.2.tgz#2a1d6ce57cce088ec313b773bd2860c7217d49cf"
+  integrity sha512-ahEUuL26bjGhKX+fMwK1dmvqzU0t3xWbm0mya81nPTXSZ0clN19yaW3+ei7/HMUmX/8H6tbmUp7a1/lyqsoYoQ==
+  dependencies:
+    nullthrows "^1.1.1"
+
 "@parcel/types@2.8.2":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@parcel/types/-/types-2.8.2.tgz#1a2cc2ec20a52f42dabd9260dbb912b927e2d75d"
@@ -2922,7 +2929,7 @@
     "@parcel/workers" "2.8.2"
     utility-types "^3.10.0"
 
-"@parcel/utils@2.8.2":
+"@parcel/utils@2.8.2", "@parcel/utils@^2.2.1":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@parcel/utils/-/utils-2.8.2.tgz#7e917d2ebd5326e12e878858a416e50706bc804d"
   integrity sha512-Ufax7wZxC9FNsUpR0EU7Z22LEY/q9jjsDTwswctCdfpWb7TE/NudOfM9myycfRvwBVEYN50lPbkt1QltEVnXQQ==
@@ -8463,6 +8470,16 @@ param-case@^3.0.4:
   dependencies:
     dot-case "^3.0.4"
     tslib "^2.0.3"
+
+parcel-transformer-tsc-sourcemaps@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/parcel-transformer-tsc-sourcemaps/-/parcel-transformer-tsc-sourcemaps-1.0.2.tgz#ff85fab4ef45f275d3fee7a30b09491485bdecdf"
+  integrity sha512-QsclQnMygnhEF9AP1wemdeyb6mXk1C0oPrT+UVrN9B+Nc17teN4361kptN/tHSYmdMepEK8EBhRAlf9iWTfj1Q==
+  dependencies:
+    "@parcel/plugin" "^2.2.1"
+    "@parcel/source-map" "^2.0.2"
+    "@parcel/ts-utils" "^2.2.1"
+    "@parcel/utils" "^2.2.1"
 
 parcel@^2.8.2:
   version "2.8.2"
