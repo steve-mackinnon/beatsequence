@@ -33,21 +33,12 @@ const Container = styled("div")(
 
 export function ParamSlider(props: ParamSliderProps): ReactElement {
   const [value, setValue] = useParameter(props.paramInfo);
-  const [receivedTouchEvent, setReceivedTouchEvent] = useState(false);
 
   const onChange = (
     event: Event,
     value: number | number[],
     _thumbIndex: number
   ): void => {
-    if (event instanceof TouchEvent) {
-      setReceivedTouchEvent(true);
-    } else if (event instanceof MouseEvent && receivedTouchEvent) {
-      // Hack to work around a MUI Slider bug in some mobile browsers where a
-      // mouse event is received after touch moved events that resets the
-      // slider to the initial value before the interaction began.
-      return;
-    }
     setValue(value as number);
   };
   return (
