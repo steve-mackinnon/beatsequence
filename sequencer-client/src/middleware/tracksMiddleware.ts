@@ -1,4 +1,4 @@
-import { sequencerEngine } from "../engine";
+import { audioEngine, sequencerEngine } from "../engine";
 import type { RootState, AppDispatch } from "../store";
 import {
   createListenerMiddleware,
@@ -12,7 +12,9 @@ import {
   setGeneratorParam,
   loadTracks,
   toggleSolo,
+  loadSample,
 } from "../reducers/tracksSlice";
+import { sampleManager } from "../engine/sampleManager";
 
 export const tracksListenerMiddleware = createListenerMiddleware();
 
@@ -68,6 +70,24 @@ tracksListenerMiddleware.startListening({
 tracksListenerMiddleware.startListening({
   actionCreator: toggleSolo,
   effect: (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState;
+    sequencerEngine.setTrackState(
+      action.payload.trackId,
+      state.tracks[action.payload.trackId]
+    );
+  },
+});
+
+tracksListenerMiddleware.startListening({
+  actionCreator: loadSample,
+  effect: async (action, listenerApi) => {
+    const rawAudioFile = sampleManager.getRawFile(action.payload.sampleId);
+    if (rawAudioFile == null) {
+      console.log("Could not find sample!");
+      return;
+    }
+    const decodedAudio = await audioEngine.decodeAudioFileData(rawAudioFile);
+    sampleManager.addSample(action.payload.sampleId, decodedAudio);
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setTrackState(
       action.payload.trackId,

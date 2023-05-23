@@ -69,6 +69,13 @@ export class AudioEngine {
   currentTime(): number {
     return context.currentTime;
   }
+
+  public async decodeAudioFileData(
+    audioFileData: ArrayBuffer
+  ): Promise<AudioBuffer> {
+    const audioData = await context.decodeAudioData(audioFileData);
+    return audioData;
+  }
 }
 
 export const audioEngine = new AudioEngine();

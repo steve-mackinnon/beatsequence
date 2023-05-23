@@ -1,11 +1,20 @@
 export class SampleManager {
-  private readonly samples = new Map<string, ArrayBuffer>();
+  private readonly rawFiles = new Map<string, ArrayBuffer>();
+  private readonly samples = new Map<string, AudioBuffer>();
 
-  public addSample(id: string, audioData: ArrayBuffer): void {
-    this.samples.set(id, audioData);
+  public addRawFile(id: string, rawFileData: ArrayBuffer): void {
+    this.rawFiles.set(id, rawFileData);
   }
 
-  public getSample(id: string): ArrayBuffer | undefined {
+  public getRawFile(id: string): ArrayBuffer | undefined {
+    return this.rawFiles.get(id);
+  }
+
+  public addSample(id: string, sample: AudioBuffer): void {
+    this.samples.set(id, sample);
+  }
+
+  public getSample(id: string): AudioBuffer | undefined {
     return this.samples.get(id);
   }
 }

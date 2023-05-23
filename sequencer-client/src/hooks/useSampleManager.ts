@@ -8,7 +8,7 @@ export interface SampleManagerInterface {
 export function useSampleManager(): SampleManagerInterface {
   return {
     addSample: (id: string, file: ArrayBuffer) =>
-      sampleManager.addSample(id, file),
-    getSample: (id: string) => sampleManager.getSample(id),
+      sampleManager.addRawFile(id, file),
+    getSample: (id: string) => sampleManager.getRawFile(id),
   };
 }

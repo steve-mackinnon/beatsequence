@@ -4,6 +4,7 @@ export enum GeneratorType {
   ClosedHH,
   SineBleep,
   SquareBleep,
+  Sampler,
 }
 
 export function generatorHasPitchControls(generator: GeneratorType): boolean {
@@ -14,6 +15,7 @@ export function generatorHasPitchControls(generator: GeneratorType): boolean {
       return false;
     case GeneratorType.SineBleep:
     case GeneratorType.SquareBleep:
+    case GeneratorType.Sampler:
       return true;
   }
 }

@@ -1,6 +1,6 @@
 import { GeneratorType } from "../entities/generatorType";
 import { AudioEngine, audioEngine } from "./audioEngine";
-import { Kick, Generator, HiHat, Pluck, Snare } from "../generators";
+import { Kick, Generator, HiHat, Pluck, Sampler, Snare } from "../generators";
 import { Limiter, ToneAudioNode, Transport } from "tone";
 import { Track } from "../entities/track";
 import { generateRandomNote, Step, noteToHz } from "../entities/step";
@@ -64,7 +64,7 @@ export class SequencerEngine {
   private readonly _numSteps: number = 16;
   private readonly _steps: Step[][];
   private _trackStates: Track[];
-  private readonly _generators: Generator[];
+  private readonly _generators: Generator[][];
 
   private readonly _stepChangedCallbacks: Array<
     Array<StepChangedCallback | null>
@@ -83,7 +83,7 @@ export class SequencerEngine {
       this.numTracks
     );
 
-    this._generators = new Array<Generator>(this.numTracks);
+    this._generators = new Array<Generator[]>(this.numTracks);
 
     this._masterFX = new Limiter(-4.0).toDestination();
 
@@ -106,9 +106,9 @@ export class SequencerEngine {
         new Array<StepChangedCallback | null>(this._numSteps);
       this._stepChangedCallbacks[trackIndex].fill(null);
 
-      this._generators[trackIndex] = makeGenerator(
-        trackIndex as GeneratorType,
-        this._masterFX
+      this._generators[trackIndex] = new Array<Generator>();
+      this._generators[trackIndex].push(
+        makeGenerator(trackIndex as GeneratorType, this._masterFX)
       );
     }
 
@@ -132,10 +132,12 @@ export class SequencerEngine {
           return;
         }
         const snappedStep = snapStepToScale(step, this._scaleNotes);
-        this._generators[index].trigger(
-          time,
-          trackState.generatorParams,
-          noteToHz(snappedStep.note)
+        this._generators[index].forEach((generator) =>
+          generator.trigger(
+            time,
+            trackState.generatorParams,
+            noteToHz(snappedStep.note)
+          )
         );
       });
       this._currentStep += 1;
@@ -167,6 +169,15 @@ export class SequencerEngine {
 
   setTrackState(trackIndex: number, trackState: Track): void {
     this._trackStates[trackIndex] = trackState;
+
+    // Hack to add a sample generator when a sample is added for the
+    // first time
+    if (
+      trackState.sampleId != null &&
+      this._generators[trackIndex].length < 2
+    ) {
+      this._generators[trackIndex].push(new Sampler(this._masterFX));
+    }
   }
 
   getTrackState(trackIndex: number): Track {
