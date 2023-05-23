@@ -11,6 +11,7 @@ import {
   MusicalScale,
   snapStepToScale,
 } from "../entities/musicalScale";
+import { sampleManager } from "./sampleManager";
 
 function makeGenerator(
   type: GeneratorType,
@@ -76,7 +77,7 @@ export class SequencerEngine {
   constructor() {
     // Object.keys() returns 2 keys per enumeration for numeric enums,
     // which is why the / 2 is necessary here.
-    this.numTracks = Object.keys(GeneratorType).length / 2;
+    this.numTracks = Object.keys(GeneratorType).length / 2 - 1;
     this._steps = new Array<Step[]>(this.numTracks);
     this._trackStates = new Array<Track>(this.numTracks);
     this._stepChangedCallbacks = new Array<Array<StepChangedCallback | null>>(
@@ -169,15 +170,7 @@ export class SequencerEngine {
 
   setTrackState(trackIndex: number, trackState: Track): void {
     this._trackStates[trackIndex] = trackState;
-
-    // Hack to add a sample generator when a sample is added for the
-    // first time
-    if (
-      trackState.sampleId != null &&
-      this._generators[trackIndex].length < 2
-    ) {
-      this._generators[trackIndex].push(new Sampler(this._masterFX));
-    }
+    this.maybeAddSamplerToTrack(trackIndex, trackState);
   }
 
   getTrackState(trackIndex: number): Track {
@@ -236,6 +229,22 @@ export class SequencerEngine {
     }
     this._scale = scale;
     this._scaleNotes = GetNotesForScale(scale);
+  }
+
+  private maybeAddSamplerToTrack(trackIndex: number, trackState: Track): void {
+    // Hack to add a sample generator when a sample is added for the
+    // first time
+    if (
+      trackState.sampleId != null &&
+      this._generators[trackIndex].length < 2
+    ) {
+      const sample = sampleManager.getSample(trackState.sampleId);
+      if (sample == null) {
+        console.log("Sample not found!");
+        return;
+      }
+      this._generators[trackIndex].push(new Sampler(this._masterFX, sample));
+    }
   }
 }
 
