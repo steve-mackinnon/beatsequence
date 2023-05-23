@@ -12,6 +12,7 @@ export * from "./useMobileMode";
 export * from "./useParameter";
 export * from "./useProjects";
 export * from "./useProjectName";
+export * from "./useSampleManager";
 export * from "./useSaveProject";
 export * from "./useSendPasswordResetEmail";
 export * from "./useSignInWithEmailAndPassword";

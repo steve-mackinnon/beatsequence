@@ -24,6 +24,11 @@ export interface SetDisplayNamePayload {
   name: string;
 }
 
+export interface LoadSamplePayload {
+  trackId: number;
+  sampleId: string;
+}
+
 export const tracksSlice = createSlice({
   name: "tracks",
   // `createSlice` will infer the state type from the `initialState` argument
@@ -56,6 +61,9 @@ export const tracksSlice = createSlice({
       action.payload.forEach((track: Track, index: number) => {
         state[index] = track;
       });
+    },
+    loadSample: (state, action: PayloadAction<LoadSamplePayload>) => {
+      state[action.payload.trackId].sampleId = action.payload.sampleId;
     },
   },
   extraReducers: {
@@ -96,5 +104,6 @@ export const {
   toggleParamViewVisibility,
   loadTracks,
   toggleSolo,
+  loadSample,
 } = tracksSlice.actions;
 export default tracksSlice.reducer;

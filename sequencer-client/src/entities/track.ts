@@ -9,6 +9,7 @@ export interface Track {
   displayName: string;
   paramViewVisible: boolean;
   soloed: boolean;
+  sampleId?: string;
 }
 
 export function MakeTrack(generatorType: GeneratorType): Track {
