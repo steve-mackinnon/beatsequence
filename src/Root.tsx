@@ -60,7 +60,9 @@ const portProvider = new PortProvider();
 
 function App(): React.ReactElement {
   return (
+    // To swap out the backend, use a different portProver here
     <PortProviderContext.Provider value={portProvider}>
+      // React-redux store provider
       <Provider store={store}>
         <ThemeProvider theme={darkTheme}>
           <CssBaseline />
