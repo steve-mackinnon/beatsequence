@@ -11,7 +11,7 @@ export class Pluck implements Generator {
   private readonly _ampEnv: AmplitudeEnvelope;
   private readonly _osc: PolySynth;
 
-  constructor(destination: ToneAudioNode) {
+  constructor(destination: ToneAudioNode, type: "sine" | "square") {
     this._gain = new Gain(1.0).connect(destination);
     this._ampEnv = new AmplitudeEnvelope({
       attack: 0.01,
@@ -23,7 +23,7 @@ export class Pluck implements Generator {
     this._osc.maxPolyphony = 10;
     this._osc.set({
       oscillator: {
-        type: "sine",
+        type,
       },
     });
   }
