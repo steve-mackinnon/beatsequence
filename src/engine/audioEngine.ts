@@ -37,7 +37,7 @@ export class AudioEngine {
       return;
     }
     if (playing) {
-      const notifyPlaybackListeners = () => {
+      const notifyPlaybackListeners = (): void => {
         this._playing = true;
         this._playbackListeners.forEach((listener) => listener(true));
       };

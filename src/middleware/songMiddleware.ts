@@ -16,7 +16,7 @@ export const songListenerMiddleware = createListenerMiddleware();
 
 songListenerMiddleware.startListening({
   actionCreator: togglePlayback,
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     audioEngine.playing = state.song.playing;
   },
@@ -24,7 +24,7 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: shutDownAudioEngine,
-  effect: (action, listenerApi) => {
+  effect: () => {
     audioEngine.playing = false;
     void audioEngine.shutDown();
   },
@@ -39,7 +39,7 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: loadSong,
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.tempo = state.song.tempo;
     state.steps.forEach((steps: Step[], trackIndex: number) => {
@@ -55,7 +55,7 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: newProject,
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.tempo = state.song.tempo;
     state.steps.forEach((steps: Step[], trackIndex: number) => {
@@ -68,7 +68,7 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: setScaleRootNote,
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setScale(state.song.scale);
   },
@@ -76,7 +76,7 @@ songListenerMiddleware.startListening({
 
 songListenerMiddleware.startListening({
   actionCreator: setScaleType,
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     sequencerEngine.setScale(state.song.scale);
   },

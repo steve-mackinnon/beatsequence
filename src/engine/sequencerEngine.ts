@@ -47,7 +47,6 @@ export type StepChangedCallback = () => void;
 export class SequencerEngine {
   private _audioEngine: AudioEngine | null = null;
 
-  private readonly _timerID: any = undefined;
   private _currentStep: number = 0;
   private _tempo: number = 127.0;
   private _scale: MusicalScale = { rootNote: "C", type: "Chromatic" };

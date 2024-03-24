@@ -36,7 +36,7 @@ const syncEntireState = (state: RootState): void => {
 };
 persistenceMiddleware.startListening({
   type: "persist/REHYDRATE",
-  effect: (action, listenerApi) => {
+  effect: (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     syncEntireState(state);
   },
