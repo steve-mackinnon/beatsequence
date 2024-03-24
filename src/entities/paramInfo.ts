@@ -11,7 +11,7 @@ export interface ParamInfo {
   valueSelector: (state: RootState, trackId: number) => number;
 }
 
-function getDecayTimeParamInfo(trackId: number): ParamInfo {
+function getDecayTimeParamInfo(): ParamInfo {
   return {
     name: "decayTime",
     displayName: "Decay",
@@ -23,7 +23,7 @@ function getDecayTimeParamInfo(trackId: number): ParamInfo {
   };
 }
 
-function getGainParamInfo(trackId: number): ParamInfo {
+function getGainParamInfo(): ParamInfo {
   return {
     name: "gain",
     displayName: "Gain",
@@ -35,7 +35,7 @@ function getGainParamInfo(trackId: number): ParamInfo {
   };
 }
 
-function getTriggerProbabilityParamInfo(trackId: number): ParamInfo {
+function getTriggerProbabilityParamInfo(): ParamInfo {
   return {
     name: "triggerProbability",
     displayName: "Chance",
@@ -47,11 +47,11 @@ function getTriggerProbabilityParamInfo(trackId: number): ParamInfo {
   };
 }
 
-function getCommonParamsForTrack(trackId: number): ParamInfo[] {
+function getCommonParamsForTrack(): ParamInfo[] {
   return [
-    getGainParamInfo(trackId),
-    getDecayTimeParamInfo(trackId),
-    getTriggerProbabilityParamInfo(trackId),
+    getGainParamInfo(),
+    getDecayTimeParamInfo(),
+    getTriggerProbabilityParamInfo(),
   ];
 }
 
@@ -60,7 +60,7 @@ export function paramInfoForGeneratorType(
 ): ParamInfo[] {
   switch (generatorType) {
     case GeneratorType.Kick:
-      return getCommonParamsForTrack(GeneratorType.Kick).concat({
+      return getCommonParamsForTrack().concat({
         name: "transientTime",
         displayName: "Punch",
         min: 0.01,
@@ -73,12 +73,12 @@ export function paramInfoForGeneratorType(
         },
       });
     case GeneratorType.Snare:
-      return getCommonParamsForTrack(GeneratorType.Snare);
+      return getCommonParamsForTrack();
     case GeneratorType.ClosedHH:
-      return getCommonParamsForTrack(GeneratorType.ClosedHH);
+      return getCommonParamsForTrack();
     case GeneratorType.SineBleep:
-      return getCommonParamsForTrack(GeneratorType.SineBleep);
+      return getCommonParamsForTrack();
     case GeneratorType.SquareBleep:
-      return getCommonParamsForTrack(GeneratorType.SquareBleep);
+      return getCommonParamsForTrack();
   }
 }

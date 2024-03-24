@@ -62,10 +62,6 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
     }
   };
 
-  const onStepEnableChange = (event: any): void => {
-    dispatchStepToggleEvent();
-  };
-
   const inputClassNames: String[] = [styles.SequencerStep];
   if (isEffectivelyMuted) {
     inputClassNames.push(styles.muted);
@@ -79,9 +75,9 @@ export function SequencerStep(props: SequencerStepProps): ReactElement {
       type="checkbox"
       className={inputClassNames.join(" ")}
       checked={stepState.enabled}
-      onChange={onStepEnableChange}
+      onChange={() => dispatchStepToggleEvent()}
       ref={inputRef}
-      onFocus={(event: React.FocusEvent<HTMLInputElement, Element>) => {
+      onFocus={() => {
         // Hack to fix bug where pressing spacebar for playback toggle
         // would toggle a step if had focus.
         if (inputRef.current != null) {

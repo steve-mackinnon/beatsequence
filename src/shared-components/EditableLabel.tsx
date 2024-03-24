@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
+const StyledTextField = styled(TextField)<TextFieldProps>(() => ({
   minHeight: 15,
   maxHeight: 15,
 }));

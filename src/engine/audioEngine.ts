@@ -37,20 +37,20 @@ export class AudioEngine {
       return;
     }
     if (playing) {
-      const notifyPlaybackListeners = (playing: boolean): void => {
+      const notifyPlaybackListeners = () => {
         this._playing = true;
         this._playbackListeners.forEach((listener) => listener(true));
       };
       if (context.state !== "running") {
         start()
           .then(() => {
-            notifyPlaybackListeners(true);
+            notifyPlaybackListeners();
           })
           .catch((e: any) => {
             console.log(e);
           });
       } else {
-        notifyPlaybackListeners(true);
+        notifyPlaybackListeners();
       }
     } else {
       // Transport.stop();

@@ -4,7 +4,6 @@ import { Project } from "../entities/project";
 import { Pattern } from "../entities/pattern";
 import { Note } from "../entities/note";
 import { ScaleType } from "../entities/musicalScale";
-import { Song } from "../entities/song";
 
 export interface ProjectPayload {
   readers: string[];

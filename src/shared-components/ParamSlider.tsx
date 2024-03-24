@@ -21,7 +21,7 @@ export interface ParamSliderProps {
 }
 
 const Container = styled("div")(
-  ({ theme }) => `
+  () => `
   display: flex;
   flex-direction: row;
   width: 200px;
@@ -35,7 +35,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
   const [value, setValue] = useParameter(props.paramInfo);
 
   const onChange = (
-    event: Event,
+    _: Event,
     value: number | number[],
     _thumbIndex: number
   ): void => {

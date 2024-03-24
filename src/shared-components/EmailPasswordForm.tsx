@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const ContainerForm = styled("form")(
-  ({ theme }) => `
+  () => `
   padding: 1rem;
   width: 100%;
   justify-content: center;

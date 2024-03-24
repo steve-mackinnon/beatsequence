@@ -30,7 +30,7 @@ function makeGenerator(
   }
 }
 
-function makeStepsForTrack(numSteps: number, trackId: number): Step[] {
+function makeStepsForTrack(numSteps: number): Step[] {
   const steps = new Array<Step>(numSteps);
   for (const stepIndex of Array(numSteps).keys()) {
     const enabled = Math.random() > 0.5;
@@ -89,7 +89,7 @@ export class SequencerEngine {
     this._masterFX = new Limiter(-4.0).toDestination();
 
     for (const trackIndex of Array(this.numTracks).keys()) {
-      this._steps[trackIndex] = makeStepsForTrack(this._numSteps, trackIndex);
+      this._steps[trackIndex] = makeStepsForTrack(this._numSteps);
       this._trackStates[trackIndex] = {
         muted: false,
         generatorType: GeneratorType.SineBleep,
