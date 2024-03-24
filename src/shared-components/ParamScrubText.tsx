@@ -9,7 +9,7 @@ import { styled } from "@mui/system";
 import { useParameter, ParamInfo } from "../hooks";
 
 const StyledInput = styled("input")(
-  ({ theme }) => `
+  () => `
   border: none;
   background-color: rgb(18,18,18);
   color: rgb(229,229,229);

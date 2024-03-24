@@ -1,5 +1,4 @@
-import React, { ReactElement, useState } from "react";
-import { useAppSelector, useAppDispatch, useMobileMode } from "../hooks";
+import { ReactElement, useState } from "react";
 import { Button, Stack, IconButton } from "@mui/material";
 import { Tune, ArrowLeft, ArrowRight } from "@mui/icons-material";
 import { SxProps, styled } from "@mui/system";
@@ -11,7 +10,7 @@ import {
   selectTrackIsEffectivelyMuted,
 } from "../reducers/tracksSlice";
 import { rotateLeft, rotateRight } from "../reducers/stepsSlice";
-
+import { useAppDispatch, useAppSelector, useMobileMode } from "../hooks";
 import { TrackMenu } from "./TrackMenu";
 
 const getButtonStyle = (on: boolean, size: number): SxProps => {
@@ -59,17 +58,17 @@ export function TrackInfoView(props: TrackInfoProps): ReactElement {
   const onRotateRightClick = (_: any): void => {
     dispatch(rotateRight({ trackId: props.trackId }));
   };
-  const onEnableTrackButtonTouchStart = (e: any): void => {
+  const onEnableTrackButtonTouchStart = (_: any): void => {
     setReceivedTouchEvent(true);
     dispatchMute();
   };
-  const onEnableTrackButtonClick = (e: any): void => {
+  const onEnableTrackButtonClick = (_: any): void => {
     if (receivedTouchEvent) {
       return;
     }
     dispatchMute();
   };
-  const onParamViewToggleClick = (e_: any): void => {
+  const onParamViewToggleClick = (_: any): void => {
     dispatch(toggleParamViewVisibility({ trackId: props.trackId }));
   };
 
