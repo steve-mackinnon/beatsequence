@@ -47,6 +47,7 @@ export function ParamSlider(props: ParamSliderProps): ReactElement {
         sx={{
           display: "flex",
           flexShrink: 0,
+          width: "55px",
         }}
         htmlFor={props.label}
       >
