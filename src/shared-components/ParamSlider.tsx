@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Slider, InputLabel } from "@mui/material";
 import { ParamInfo, useParameter } from "../hooks";
 import { styled } from "@mui/system";
