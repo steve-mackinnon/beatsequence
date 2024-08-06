@@ -6,6 +6,8 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
+  // Note: `apiKey` does not grant access to Firebase services, it's a public app identifier:
+  // https://firebase.google.com/docs/projects/api-keys#api-keys-for-firebase-are-different
   apiKey: "AIzaSyCJrCkNuTumjOHhr5QU0RMPbdhNcf0QJ2s",
   authDomain: "beat-sequence.firebaseapp.com",
   projectId: "beat-sequence",
