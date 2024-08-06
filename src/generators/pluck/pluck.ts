@@ -2,10 +2,6 @@ import { CommonParams } from "../../entities/commonParams";
 import { AmplitudeEnvelope, PolySynth, Gain, Synth, ToneAudioNode } from "tone";
 import { Generator } from "../generator";
 
-export interface OscParams extends CommonParams {
-  osc_type: OscillatorType;
-}
-
 export class Pluck implements Generator {
   private readonly _gain: Gain;
   private readonly _ampEnv: AmplitudeEnvelope;
