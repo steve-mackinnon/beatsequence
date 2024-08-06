@@ -42,10 +42,6 @@ export default function Home(): ReactElement {
           Designed with mobile in mind. The responsive interface allows you to
           create seamlessly on any device.
         </Typography>
-        <Typography variant="subtitle1">
-          <strong>Note:</strong> Beatsequence is currently in early beta and has
-          a minimal feature set. More to come...
-        </Typography>
       </MainContainer>
     </div>
   );
