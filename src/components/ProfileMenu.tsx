@@ -7,7 +7,7 @@ import {
 } from "material-ui-popup-state/hooks";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "../hooks";
-import MuiAvatar from "@mui/material/Avatar";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function ProfileMenu(): ReactElement {
   const popupState = usePopupState({
@@ -30,7 +30,7 @@ export default function ProfileMenu(): ReactElement {
   return (
     <>
       <Button {...bindTrigger(popupState)}>
-        <MuiAvatar sx={{ color: "white" }}>SD</MuiAvatar>
+        <AccountCircleIcon />
       </Button>
       <Menu {...bindMenu(popupState)}>
         <MenuItem
