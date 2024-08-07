@@ -1,4 +1,4 @@
-# Beat Sequence
+# Beatsequence
 
 Check it out at [beatsequence.com](https://beatsequence.com/)
 
