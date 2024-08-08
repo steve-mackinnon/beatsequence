@@ -62,6 +62,7 @@ export class SequencerEngine {
   }
 
   private readonly _numSteps: number = 16;
+  // 2d array of steps for each track
   private readonly _steps: Step[][];
   private _trackStates: Track[];
   private readonly _generators: Generator[];
@@ -112,9 +113,15 @@ export class SequencerEngine {
       );
     }
 
+    // Currently, we hardcode a 16 bar global loop
     Transport.setLoopPoints("1:1:1", "17:1:1");
     Transport.loop = true;
     Transport.bpm.value = this._tempo;
+
+    // Here's the main sequencer loop that leverages Tone's Transport.scheduleRepeat
+    // register a callback that gets executed on every 16th note. When the callback runs,
+    // we determine which generators should be triggered given their enable state,
+    // trigger probability, etc.
     Transport.scheduleRepeat((time) => {
       this._steps.forEach((steps: Step[], index: number) => {
         const trackState = this._trackStates[index];
@@ -138,10 +145,7 @@ export class SequencerEngine {
           noteToHz(snappedStep.note)
         );
       });
-      this._currentStep += 1;
-      if (this._currentStep === 16) {
-        this._currentStep = 0;
-      }
+      this._currentStep = (this._currentStep + 1) % 16;
     }, "16n");
   }
 
@@ -175,10 +179,6 @@ export class SequencerEngine {
 
   setStepState(trackIndex: number, stepIndex: number, state: Step): void {
     this._steps[trackIndex][stepIndex] = state;
-  }
-
-  getStepState(trackIndex: number, stepIndex: number): Step {
-    return this._steps[trackIndex][stepIndex];
   }
 
   getCurrentStepIndex(): number {
